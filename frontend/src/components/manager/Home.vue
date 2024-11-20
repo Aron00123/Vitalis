@@ -33,6 +33,7 @@
 </template>
 
 <script setup>
+console.log('home')
 import { reactive, onMounted } from "vue";
 // import request from "../../utils/request"; // 引入封装的 axios 实例
 

@@ -34,7 +34,7 @@ const router = createRouter({
             path: '/',
             name: 'Manager',
             component: Manager,
-            redirect: '/home',
+
             children: [
                 {
                     path: '403',
@@ -159,32 +159,32 @@ const router = createRouter({
             meta: {name: '注册'},
             component: Register,
         },
-        // {
-        //     path: '*',
-        //     name: 'NotFound',
-        //     meta: {name: '无法访问'},
-        //     component: NotFound,
-        // },
+        {
+            path: '/:catchAll(.*)',
+            name: 'NotFound',
+            meta: {name: '无法访问'},
+            component: NotFound,
+        },
     ]
 
 });
 
-router.beforeEach((to, from) => {
-    const user = JSON.parse(localStorage.getItem("xm-user") || '{}');
-    console.log(user)
-    if (to.path === '/') {
-        if (user.role) {
-            if (user.role === 'USER') {
-                return '/front/home';
-            } else {
-                return '/home';
-            }
-            //return '/';
-        } else {
-            return '/login';
-        }
-    }
-    return true;
-});
+// router.beforeEach((to, from) => {
+//     const user = JSON.parse(localStorage.getItem("xm-user") || '{}');
+//     console.log(user)
+//     if (to.path === '/') {
+//         if (user.role) {
+//             if (user.role === 'USER') {
+//                 return '/front/home';
+//             } else {
+//                 return '/home';
+//             }
+//             //return '/';
+//         } else {
+//             return '/login';
+//         }
+//     }
+//     return true;
+// });
 
 export default router;

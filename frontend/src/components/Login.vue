@@ -66,18 +66,19 @@ const router = useRouter();
 // 登录方法
 const onLogin = () => {
   console.log(form.username)
-  if (form.username === 'admin' && form.password === '123456' && form.role === 'ADMIN') {
-    localStorage.setItem("xm-user", JSON.stringify({
-      id: 1,
-      username: 'admin',
-      password: '123456',
-      name: 'admin',
-      role: 'ADMIN'
-    }));
-    router.push("/");
-    ElMessage.success("登录成功");
-    return
-  } else if (form.username === 'zhangsan' && form.password === '123456' && form.role === 'USER') {
+  // if (form.username === 'admin' && form.password === '123456' && form.role === 'ADMIN') {
+  //   localStorage.setItem("xm-user", JSON.stringify({
+  //     id: 1,
+  //     username: 'admin',
+  //     password: '123456',
+  //     name: 'admin',
+  //     role: 'ADMIN'
+  //   }));
+  //   router.push("/");
+  //   ElMessage.success("登录成功");
+  //   return
+  // }
+  if (form.username === 'zhangsan' && form.password === '123456' && form.role === 'USER') {
     localStorage.setItem("xm-user", JSON.stringify({
       id: 1,
       username: 'zhangsan',
