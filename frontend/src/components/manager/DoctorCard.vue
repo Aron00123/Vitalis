@@ -1,49 +1,49 @@
 <template>
-<!--  <div>-->
-<!--    <div class="search">-->
-<!--      <el-select v-model="departmentId" placeholder="请选择科室" style="width: 200px">-->
-<!--        <el-option v-for="item in departmentData" :key="item.id" :label="item.name" :value="item.id">-->
-<!--        </el-option>-->
-<!--      </el-select>-->
-<!--      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>-->
-<!--      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>-->
-<!--    </div>-->
+  <div>
+    <div class="search">
+      <el-select v-model="departmentId" placeholder="请选择科室" style="width: 200px">
+        <el-option v-for="item in departmentData" :key="item.id" :label="item.name" :value="item.id">
+        </el-option>
+      </el-select>
+      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
+      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
+    </div>
 
-<!--    <div class="table" style="padding: 15px 20px">-->
-<!--      <el-row :gutter="20">-->
-<!--        <el-col :span="6" v-for="item in tableData" :key="item.id" style="margin-bottom: 20px">-->
-<!--          <div style="text-align: center; background-color: #ecf8fd" class="card">-->
-<!--            <img :src="item.avatar" alt="" style="width: 100px; height: 100px; border-radius: 50%">-->
-<!--            <div style="font-weight: 550; margin-top: 10px">-->
-<!--              {{item.name}} <span style="color: #383535; margin-left: 5px; font-weight: 500">{{item.departmentName}}</span>-->
-<!--            </div>-->
-<!--            <div style="margin-top: 20px; color: #353523; padding: 0 10px; text-align: left; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 4;">-->
-<!--              简介：{{item.description}}-->
-<!--            </div>-->
-<!--            <div style="margin-top: 15px">-->
-<!--              挂号费：<span style="color: red; font-weight: 550; margin-right: 20px">￥{{item.price}}</span> 剩余：{{item.num}}-->
-<!--            </div>-->
-<!--            <div style="margin-top: 15px">-->
-<!--              <el-button type="primary" size="mini" @click="reserve(item.id)" :disabled="item.num === 0">挂号</el-button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </el-col>-->
-<!--      </el-row>-->
+    <div class="table" style="padding: 15px 20px">
+      <el-row :gutter="20">
+        <el-col :span="6" v-for="item in tableData" :key="item.id" style="margin-bottom: 20px">
+          <div style="text-align: center; background-color: #ecf8fd" class="card">
+            <img :src="item.avatar" alt="" style="width: 100px; height: 100px; border-radius: 50%">
+            <div style="font-weight: 550; margin-top: 10px">
+              {{item.name}} <span style="color: #383535; margin-left: 5px; font-weight: 500">{{item.departmentName}}</span>
+            </div>
+            <div style="margin-top: 20px; color: #353523; padding: 0 10px; text-align: left; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 4;">
+              简介：{{item.description}}
+            </div>
+            <div style="margin-top: 15px">
+              挂号费：<span style="color: red; font-weight: 550; margin-right: 20px">￥{{item.price}}</span> 剩余：{{item.num}}
+            </div>
+            <div style="margin-top: 15px">
+              <el-button type="primary" size="mini" @click="reserve(item.id)" :disabled="item.num === 0">挂号</el-button>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
 
-<!--      <div class="pagination">-->
-<!--        <el-pagination-->
-<!--            background-->
-<!--            @current-change="handleCurrentChange"-->
-<!--            :current-page="pageNum"-->
-<!--            :page-sizes="[5, 10, 20]"-->
-<!--            :page-size="pageSize"-->
-<!--            layout="total, prev, pager, next"-->
-<!--            :total="total">-->
-<!--        </el-pagination>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-  <h1>DoctorCard</h1>
+      <div class="pagination">
+        <el-pagination
+            background
+            @current-change="handleCurrentChange"
+            :current-page="pageNum"
+            :page-sizes="[5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, prev, pager, next"
+            :total="total">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script setup>

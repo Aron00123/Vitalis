@@ -1,41 +1,41 @@
 <template>
-<!--  <div>-->
-<!--    <div class="search">-->
-<!--      <el-input placeholder="请输入挂号状态" style="width: 200px" v-model="status"></el-input>-->
-<!--      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>-->
-<!--      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>-->
-<!--    </div>-->
+  <div>
+    <div class="search">
+      <el-input placeholder="请输入挂号状态" style="width: 200px" v-model="status"></el-input>
+      <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
+      <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
+    </div>
 
-<!--    <div class="table">-->
-<!--      <el-table :data="tableData" stripe>-->
-<!--        <el-table-column prop="id" label="序号" width="80" align="center" sortable></el-table-column>-->
-<!--        <el-table-column prop="userName" label="患者姓名" show-overflow-tooltip></el-table-column>-->
-<!--        <el-table-column prop="doctorName" label="医生姓名" show-overflow-tooltip></el-table-column>-->
-<!--        <el-table-column prop="time" label="挂号时间"></el-table-column>-->
-<!--        <el-table-column prop="status" label="挂号状态"></el-table-column>-->
+    <div class="table">
+      <el-table :data="tableData" stripe>
+        <el-table-column prop="id" label="序号" width="80" align="center" sortable></el-table-column>
+        <el-table-column prop="userName" label="患者姓名" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="doctorName" label="医生姓名" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="time" label="挂号时间"></el-table-column>
+        <el-table-column prop="status" label="挂号状态"></el-table-column>
 
-<!--        <el-table-column label="操作" width="180" align="center">-->
-<!--          <template v-slot="scope">-->
-<!--            <el-button plain type="danger" size="mini" v-if="scope.row.status === '未叫号' && user.role === 'USER'" @click="del(scope.row.id)">取消挂号</el-button>-->
-<!--            <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR'" @click="call(scope.row)">叫号</el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-<!--      </el-table>-->
+        <el-table-column label="操作" width="180" align="center">
+          <template v-slot="scope">
+            <el-button plain type="danger" size="mini" v-if="scope.row.status === '未叫号' && user.role === 'USER'" @click="del(scope.row.id)">取消挂号</el-button>
+            <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR'" @click="call(scope.row)">叫号</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-<!--      <div class="pagination">-->
-<!--        <el-pagination-->
-<!--            background-->
-<!--            @current-change="handleCurrentChange"-->
-<!--            :current-page="pageNum"-->
-<!--            :page-sizes="[5, 10, 20]"-->
-<!--            :page-size="pageSize"-->
-<!--            layout="total, prev, pager, next"-->
-<!--            :total="total">-->
-<!--        </el-pagination>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-  <h1>Reserve</h1>
+      <div class="pagination">
+        <el-pagination
+            background
+            @current-change="handleCurrentChange"
+            :current-page="pageNum"
+            :page-sizes="[5, 10, 20]"
+            :page-size="pageSize"
+            layout="total, prev, pager, next"
+            :total="total">
+        </el-pagination>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script setup>

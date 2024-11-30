@@ -65,7 +65,8 @@ const router = useRouter();
 
 // 登录方法
 const onLogin = () => {
-  console.log(form.username)
+  // console.log(form.username)
+
   // if (form.username === 'admin' && form.password === '123456' && form.role === 'ADMIN') {
   //   localStorage.setItem("xm-user", JSON.stringify({
   //     id: 1,
