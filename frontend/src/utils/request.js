@@ -3,7 +3,8 @@ import { useRouter } from 'vue-router';
 
 // 创建 axios 实例
 const request = axios.create({
-    baseURL: import.meta.env.VITE_APP_BASEURL, // 使用 Vite 的环境变量
+    // baseURL: import.meta.env.VITE_APP_BASEURL
+    baseURL: "http://loaclhost:9090",
     timeout: 30000, // 请求超时 30s
 });
 

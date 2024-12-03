@@ -7,7 +7,7 @@
           <el-input
               prefix-icon="el-icon-user"
               placeholder="请输入账号"
-              v-model="form.username"
+              v-model="form.id"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -50,7 +50,7 @@ import request from "../utils/request.js";
 
 // 定义响应式数据
 const form = reactive({
-  username: "",
+  id: "",
   password: "",
   role: "",
 });
@@ -65,7 +65,7 @@ const router = useRouter();
 
 // 登录方法
 const onLogin = () => {
-  // console.log(form.username)
+  console.log(form)
 
   // if (form.username === 'admin' && form.password === '123456' && form.role === 'ADMIN') {
   //   localStorage.setItem("xm-user", JSON.stringify({
@@ -79,7 +79,7 @@ const onLogin = () => {
   //   ElMessage.success("登录成功");
   //   return
   // }
-  if (form.username === 'zhangsan' && form.password === '123456' && form.role === 'USER') {
+  if (form.id === 'zhangsan' && form.password === '123456' && form.role === 'USER') {
     localStorage.setItem("xm-user", JSON.stringify({
       id: 1,
       username: 'zhangsan',

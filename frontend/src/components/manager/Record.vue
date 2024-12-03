@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="search">
+    <div class="search" v-if="user.role !== 'USER'">
       <el-input
           placeholder="请输入患者姓名查询"
           style="width: 200px"
@@ -44,13 +44,20 @@
             >
           </template>
         </el-table-column>
-        <el-table-column prop="inhospital" label="是否住院"></el-table-column>
-        <el-table-column
-            prop="inhostpitalRecord"
-            label="是否住院登记"
-        ></el-table-column>
 
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column prop="prescription" label="处方">
+          <template #default="{ row }">
+            <el-button
+                type="primary"
+                size="mini"
+                @click="viewEditor(row.prescription)"
+            >查看处方</el-button
+            >
+          </template>
+        </el-table-column>
+
+
+        <el-table-column label="操作" width="180" align="center" v-if="user.role !== 'USER'">
           <template #default="{ row }">
             <el-button
                 plain
@@ -59,14 +66,6 @@
                 @click="handleEdit(row)"
                 size="mini"
             >填写医嘱病历</el-button
-            >
-            <el-button
-                plain
-                type="primary"
-                v-if="user.role === 'ADMIN' && row.inhospital === '是' && row.inhostpitalRecord === '否'"
-                @click="registration(row)"
-                size="mini"
-            >住院登记</el-button
             >
           </template>
         </el-table-column>

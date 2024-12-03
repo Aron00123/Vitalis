@@ -7,7 +7,7 @@
           <el-input
               prefix-icon="el-icon-user"
               placeholder="请输入账号"
-              v-model="form.username"
+              v-model="form.id"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -50,7 +50,7 @@ import request from "../utils/request";
 
 // 创建响应式数据和表单规则
 const form = reactive({
-  username: "",
+  id: "",
   password: "",
   confirmPass: "",
   role: "USER",
@@ -83,7 +83,8 @@ const router = useRouter();
 
 // 注册方法
 const register = () => {
-  if (form.username === 'zhangsan' && form.password === '123456' && form.role === 'USER') {
+  console.log(form.id + form.password)
+  if (form.id === 'zhangsan' && form.password === '123456' && form.role === 'USER') {
     router.push("/login"); // 跳转登录页面
     ElMessage.success("注册成功");
       return
