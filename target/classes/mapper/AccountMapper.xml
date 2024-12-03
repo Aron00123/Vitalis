@@ -6,7 +6,7 @@
 
     <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        id, password, role
+        id, password, newPassword, role
     </sql>
 
     <!-- 查询所有记录 -->
@@ -26,8 +26,8 @@
 
     <!-- 插入新记录 -->
     <insert id="insert" parameterType="com.example.vitalis.entity.Account" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO Account (id, password, role)
-        VALUES (#{id}, #{password}, #{role})
+        INSERT INTO Account (id, password, newPassword, role)
+        VALUES (#{id}, #{password}, #{newPassword}, #{role})
     </insert>
 
     <!-- 根据ID删除记录 -->
@@ -41,6 +41,7 @@
         UPDATE Account
         <set>
             <if test="password != null">password = #{password},</if>
+            <if test="newPassword != null">newPassword = #{newPassword}. </if>if>
             <if test="role != null">role = #{role},</if>
         </set>
         WHERE id = #{id}
