@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vitalis.mapper.MedicineMapper">
+
+    <!-- 基本字段列表 -->
+    <sql id="Base_Column_List">
+        id, name, manufacturer, expiryDate, dosage, precautions, effects, stock, price
+    </sql>
+
+    <!-- 查询所有记录 -->
+    <select id="selectAll" resultType="com.example.vitalis.entity.Medicine">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Medicine
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="selectById" resultType="com.example.vitalis.entity.Medicine">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Medicine
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入新记录 -->
+    <insert id="insert" parameterType="com.example.vitalis.entity.Medicine" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Medicine (id, name, manufacturer, expiryDate, dosage, precautions, effects, stock, price)
+        VALUES (#{id}, #{name}, #{manufacturer}, #{expiryDate}, #{dosage}, #{precautions}, #{effects}, #{stock}, #{price})
+    </insert>
+
+    <!-- 根据ID删除记录 -->
+    <delete id="deleteById">
+        DELETE FROM Medicine
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID更新记录 -->
+    <update id="updateById" parameterType="com.example.vitalis.entity.Medicine">
+        UPDATE Medicine
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="expiryDate != null">expiryDate = #{expiryDate},</if>
+            <if test="dosage != null">dosage = #{dosage},</if>
+            <if test="precautions != null">precautions = #{precautions},</if>
+            <if test="effects != null">effects = #{effects},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="price != null">price = #{price},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -6,5 +6,5 @@ public enum RoleEnum {
     // 医生
     DOCTOR,
     // 患者
-    USER,
+    PATIENT,
 }

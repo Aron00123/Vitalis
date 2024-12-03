@@ -15,6 +15,10 @@ public enum ResultCodeEnum {
     USER_NOT_EXIST_ERROR("5004", "用户不存在"),
     PARAM_PASSWORD_ERROR("5005", "原密码输入错误"),
     PLAN_EXIST_ERROR("5006", "该医生已有当天的排班，请勿重复添加"),
+    DEPARTMENT_EXIST_ERROR("5007", "该科室已存在"),
+    DISEASE_EXIST_ERROR("5008", "该疾病已存在"),
+    MEDICINE_EXIST_ERROR("5009", "该药品已存在"),
+    PRESCRIPTION_EXIST_ERROR("5010", "该处方已存在"),
     ;
 
     public String code;

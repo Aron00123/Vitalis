@@ -1,74 +1,92 @@
 package com.example.vitalis.entity;
 
-
-import java.io.Serializable;
-
-public class Doctor extends Account implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private Integer id;
-
-    private String username;
-
-    private String password;
-
+/**
+ * 医生实体类
+ */
+public class Doctor {
+    /** 身份证号 */
+    private String id;
+    /** 姓名 */
     private String name;
-
+    /** 性别 */
+    private String gender;
+    /** 职称 */
+    private String title;
+    /** 主治疾病 */
+    private String specialty;
+    /** 科室ID */
+    private Integer departId;
+    /** 就诊限额 */
+    private Integer consultLimit;
+    /** 坐诊日 */
+    private String consultDays;
+    /** 联系电话 */
     private String phone;
+    /** 照片 */
+    private String photo;
 
-    private String email;
-
-    private String avatar;
-
-    private String role;
-    private String description;
-    private Double price;
-    private String time;
-    private String position;
-    private Integer departmentId;
-
-    private String departmentName;
-    private String week;
-    private Integer num;
-
-    @Override
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    @Override
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
+
+    public Integer getDepartId() {
+        return departId;
+    }
+
+    public void setDepartId(Integer departId) {
+        this.departId = departId;
+    }
+
+    public Integer getConsultLimit() {
+        return consultLimit;
+    }
+
+    public void setConsultLimit(Integer consultLimit) {
+        this.consultLimit = consultLimit;
+    }
+
+    public String getConsultDays() {
+        return consultDays;
+    }
+
+    public void setConsultDays(String consultDays) {
+        this.consultDays = consultDays;
     }
 
     public String getPhone() {
@@ -79,95 +97,11 @@ public class Doctor extends Account implements Serializable {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String getAvatar() {
-        return avatar;
-    }
-
-    @Override
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    @Override
-    public String getRole() {
-        return role;
-    }
-
-    @Override
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public Integer getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
-    }
-
-    public String getWeek() {
-        return week;
-    }
-
-    public void setWeek(String week) {
-        this.week = week;
-    }
-
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

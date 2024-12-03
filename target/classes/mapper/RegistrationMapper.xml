@@ -4,80 +4,49 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.vitalis.mapper.RegistrationMapper">
 
+    <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        id,user_id,room,price,status,medicine,hos_status
+        registrationId, departmentId, doctorId, patientId, appointDate, appointAddress
     </sql>
 
+    <!-- 查询所有预约记录 -->
     <select id="selectAll" resultType="com.example.vitalis.entity.Registration">
-        select registration.*, user.name as userName
-        from registration
-        left join user on registration.user_id = user.id
-        <where>
-            <if test="id != null"> and id= #{id}</if>
-            <if test="userId != null"> and user_id = #{userId}</if>
-            <if test="hosStatus != null"> and hos_status = #{hosStatus}</if>
-            <if test="userName != null"> and user.name = #{userName}</if>
-        </where>
-        order by id desc
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Registration
     </select>
 
+    <!-- 根据挂号单ID查询预约记录 -->
     <select id="selectById" resultType="com.example.vitalis.entity.Registration">
-        select
-        <include refid="Base_Column_List" />
-        from registration
-        where id = #{id}
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Registration
+        WHERE registrationId = #{registrationId}
     </select>
 
-    <delete id="deleteById">
-        delete from registration
-        where  id = #{id}
-    </delete>
-
-    <insert id="insert" parameterType="com.example.vitalis.entity.Registration" useGeneratedKeys="true">
-        insert into registration
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="id != null">id,</if>
-                <if test="userId != null">user_id,</if>
-                <if test="room != null">room,</if>
-                <if test="price != null">price,</if>
-                <if test="status != null">status,</if>
-                <if test="medicine != null">medicine,</if>
-                <if test="hosStatus != null">hos_status,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">#{id},</if>
-                <if test="userId != null">#{userId},</if>
-                <if test="room != null">#{room},</if>
-                <if test="price != null">#{price},</if>
-                <if test="status != null">#{status},</if>
-                <if test="medicine != null">#{medicine},</if>
-                <if test="hosStatus != null">#{hosStatus},</if>
-        </trim>
+    <!-- 插入预约记录 -->
+    <insert id="insert" parameterType="com.example.vitalis.entity.Registration" useGeneratedKeys="true" keyProperty="registrationId">
+        INSERT INTO Registration (registrationId, departmentId, doctorId, patientId, appointDate, appointAddress)
+        VALUES (#{registrationId}, #{departmentId}, #{doctorId}, #{patientId}, #{appointDate}, #{appointAddress})
     </insert>
 
+    <!-- 根据挂号单ID删除预约记录 -->
+    <delete id="deleteById">
+        DELETE FROM Registration
+        WHERE registrationId = #{registrationId}
+    </delete>
+
+    <!-- 根据挂号单ID更新预约记录 -->
     <update id="updateById" parameterType="com.example.vitalis.entity.Registration">
-        update registration
+        UPDATE Registration
         <set>
-            <if test="userId != null">
-                user_id = #{userId},
-            </if>
-            <if test="room != null">
-                room = #{room},
-            </if>
-            <if test="price != null">
-                price = #{price},
-            </if>
-            <if test="status != null">
-                status = #{status},
-            </if>
-            <if test="medicine != null">
-                medicine = #{medicine},
-            </if>
-            <if test="hosStatus != null">
-                hos_status = #{hosStatus},
-            </if>
+            <if test="departmentId != null">departmentId = #{departmentId},</if>
+            <if test="doctorId != null">doctorId = #{doctorId},</if>
+            <if test="patientId != null">patientId = #{patientId},</if>
+            <if test="appointDate != null">appointDate = #{appointDate},</if>
+            <if test="appointAddress != null">appointAddress = #{appointAddress},</if>
         </set>
-        where id = #{id} 
+        WHERE registrationId = #{registrationId}
     </update>
 
 </mapper>

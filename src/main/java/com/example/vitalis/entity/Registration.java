@@ -1,85 +1,66 @@
 package com.example.vitalis.entity;
 
-import java.io.Serializable;
-
 /**
- * 公告信息表
-*/
-public class Registration implements Serializable {
-    private static final long serialVersionUID = 1L;
+ * 预约挂号实体类
+ */
+public class Registration {
+    private  Integer registrationId;
+    /** 预约科室ID */
+    private Integer departmentId;
+    /** 预约医生身份证号 */
+    private String doctorId;
+    /** 病人身份证号 */
+    private String patientId;
+    /** 就诊日期 */
+    private String appointDate;
+    /** 就诊地址 */
+    private String appointAddress;
 
-    /** ID */
-    private Integer id;
-    private Integer userId;
-    private String room;
-    private Double price;
-    private String status;
-    private String medicine;
-    private String hosStatus;
-
-    private String userName;
-
-    public Integer getId() {
-        return id;
+    public Integer getRegistrationId() {
+        return registrationId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setRegistrationId(Integer registrationId) {
+        this.registrationId = registrationId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public String getRoom() {
-        return room;
+    public String getDoctorId() {
+        return doctorId;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
     }
 
-    public Double getPrice() {
-        return price;
+    public String getPatientId() {
+        return patientId;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getAppointDate() {
+        return appointDate;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setAppointDate(String appointDate) {
+        this.appointDate = appointDate;
     }
 
-    public String getMedicine() {
-        return medicine;
+    public String getAppointAddress() {
+        return appointAddress;
     }
 
-    public void setMedicine(String medicine) {
-        this.medicine = medicine;
-    }
-
-    public String getHosStatus() {
-        return hosStatus;
-    }
-
-    public void setHosStatus(String hosStatus) {
-        this.hosStatus = hosStatus;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAppointAddress(String appointAddress) {
+        this.appointAddress = appointAddress;
     }
 }

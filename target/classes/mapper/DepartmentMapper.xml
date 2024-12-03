@@ -4,59 +4,49 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.vitalis.mapper.DepartmentMapper">
 
+    <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        id,name,description
+        departId, type, directorId, deputyId, docNum, floor
     </sql>
 
+    <!-- 查询所有记录 -->
     <select id="selectAll" resultType="com.example.vitalis.entity.Department">
-        select
-        <include refid="Base_Column_List" />
-        from department
-        <where>
-            <if test="id != null"> and id= #{id}</if>
-            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
-            <if test="description != null"> and description= #{description}</if>
-        </where>
-        order by id desc
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Department
     </select>
 
+    <!-- 根据ID查询 -->
     <select id="selectById" resultType="com.example.vitalis.entity.Department">
-        select
-        <include refid="Base_Column_List" />
-        from department
-        where id = #{id}
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Department
+        WHERE departId = #{departId}
     </select>
 
-    <delete id="deleteById">
-        delete from department
-        where  id = #{id}
-    </delete>
-
-    <insert id="insert" parameterType="com.example.vitalis.entity.Department" useGeneratedKeys="true">
-        insert into department
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="id != null">id,</if>
-                <if test="name != null">name,</if>
-                <if test="description != null">description,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">#{id},</if>
-                <if test="name != null">#{name},</if>
-                <if test="description != null">#{description},</if>
-        </trim>
+    <!-- 插入新记录 -->
+    <insert id="insert" parameterType="com.example.vitalis.entity.Department" useGeneratedKeys="true" keyProperty="departId">
+        INSERT INTO Department (departId, type, directorId, deputyId, docNum, floor)
+        VALUES (#{departId}, #{type}, #{directorId}, #{deputyId}, #{docNum}, #{floor})
     </insert>
 
+    <!-- 根据ID删除记录 -->
+    <delete id="deleteById">
+        DELETE FROM Department
+        WHERE departId = #{departId}
+    </delete>
+
+    <!-- 根据ID更新记录 -->
     <update id="updateById" parameterType="com.example.vitalis.entity.Department">
-        update department
+        UPDATE Department
         <set>
-            <if test="name != null">
-                name = #{name},
-            </if>
-            <if test="description != null">
-                description = #{description},
-            </if>
+            <if test="type != null">type = #{type},</if>
+            <if test="directorId != null">directorId = #{directorId},</if>
+            <if test="deputyId != null">deputyId = #{deputyId},</if>
+            <if test="docNum != null">docNum = #{docNum},</if>
+            <if test="floor != null">floor = #{floor},</if>
         </set>
-        where id = #{id} 
+        WHERE departId = #{departId}
     </update>
 
 </mapper>

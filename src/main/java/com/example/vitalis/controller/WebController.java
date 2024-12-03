@@ -6,9 +6,7 @@ import com.example.vitalis.common.Result;
 import com.example.vitalis.common.enums.ResultCodeEnum;
 import com.example.vitalis.common.enums.RoleEnum;
 import com.example.vitalis.entity.Account;
-import com.example.vitalis.service.AdminService;
-import com.example.vitalis.service.DoctorService;
-import com.example.vitalis.service.UserService;
+import com.example.vitalis.service.AccountService;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class WebController {
 
     @Resource
-    private AdminService adminService;
-    @Resource
-    private DoctorService doctorService;
-    @Resource
-    private UserService userService;
+    private AccountService accountService;
 
     @GetMapping("/")
     public Result hello() {
@@ -36,20 +30,12 @@ public class WebController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody Account account) {
-        if (ObjectUtil.isEmpty(account.getUsername()) || ObjectUtil.isEmpty(account.getPassword())
+        if (ObjectUtil.isEmpty(account.getId()) || ObjectUtil.isEmpty(account.getPassword())
                 || ObjectUtil.isEmpty(account.getRole())) {
             return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
         }
-        if (RoleEnum.ADMIN.name().equals(account.getRole())) {
-            return Result.success(adminService.login(account));
-        }
-        if (RoleEnum.DOCTOR.name().equals(account.getRole())) {
-            return Result.success(doctorService.login(account));
-        }
-        if (RoleEnum.USER.name().equals(account.getRole())) {
-            return Result.success(userService.login(account));
-        }
-        return Result.success();
+
+        return Result.success(accountService.login(account));
     }
 
     /**
@@ -57,12 +43,12 @@ public class WebController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody Account account) {
-        if (StrUtil.isBlank(account.getUsername()) || StrUtil.isBlank(account.getPassword())
+        if (StrUtil.isBlank(account.getId()) || StrUtil.isBlank(account.getPassword())
                 || ObjectUtil.isEmpty(account.getRole())) {
             return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
         }
-        if (RoleEnum.USER.name().equals(account.getRole())) {
-            userService.register(account);
+        if (RoleEnum.PATIENT.name().equals(account.getRole())) {
+            accountService.register(account);
         }
         return Result.success();
     }
@@ -72,19 +58,11 @@ public class WebController {
      */
     @PutMapping("/updatePassword")
     public Result updatePassword(@RequestBody Account account) {
-        if (StrUtil.isBlank(account.getUsername()) || StrUtil.isBlank(account.getPassword())
+        if (StrUtil.isBlank(account.getId()) || StrUtil.isBlank(account.getPassword())
                 || ObjectUtil.isEmpty(account.getNewPassword())) {
             return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
         }
-        if (RoleEnum.ADMIN.name().equals(account.getRole())) {
-            adminService.updatePassword(account);
-        }
-        if (RoleEnum.DOCTOR.name().equals(account.getRole())) {
-            doctorService.updatePassword(account);
-        }
-        if (RoleEnum.USER.name().equals(account.getRole())) {
-            userService.updatePassword(account);
-        }
+        accountService.updatePassword(account);
         return Result.success();
     }
 

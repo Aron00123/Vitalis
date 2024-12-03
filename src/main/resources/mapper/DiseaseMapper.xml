@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vitalis.mapper.DiseaseMapper">
+
+    <!-- 基本字段列表 -->
+    <sql id="Base_Column_List">
+        id, name, symptoms, sequelae, incubationPeriod
+    </sql>
+
+    <!-- 查询所有记录 -->
+    <select id="selectAll" resultType="com.example.vitalis.entity.Disease">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Disease
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="selectById" resultType="com.example.vitalis.entity.Disease">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Disease
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入新记录 -->
+    <insert id="insert" parameterType="com.example.vitalis.entity.Disease" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Disease (id, name, symptoms, sequelae, incubationPeriod)
+        VALUES (#{id}, #{name}, #{symptoms}, #{sequelae}, #{incubationPeriod})
+    </insert>
+
+    <!-- 根据ID删除记录 -->
+    <delete id="deleteById">
+        DELETE FROM Disease
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID更新记录 -->
+    <update id="updateById" parameterType="com.example.vitalis.entity.Disease">
+        UPDATE Disease
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="symptoms != null">symptoms = #{symptoms},</if>
+            <if test="sequelae != null">sequelae = #{sequelae},</if>
+            <if test="incubationPeriod != null">incubationPeriod = #{incubationPeriod},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

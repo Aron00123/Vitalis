@@ -1,45 +1,24 @@
 package com.example.vitalis.entity;
 
-// 定义一个账户类，属于三种用户的父类
+/**
+ * 账户实体类
+ */
 public class Account {
-    private Integer id;
-    /** 用户名 */
-    private String username;
-    /** 名称 */
-    private String name;
+    /** 身份证号，作为账号 */
+    private String id;
     /** 密码 */
     private String password;
-    /** 角色标识 */
-    private String role;
     /** 新密码 */
     private String newPassword;
-    /** 头像 */
-    private String avatar;
+    /** 角色 */
+    private String role;
 
-    private String token;
-
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {
@@ -50,35 +29,19 @@ public class Account {
         this.password = password;
     }
 
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String password) {
+        this.newPassword = password;
+    }
+
     public String getRole() {
         return role;
     }
 
     public void setRole(String role) {
         this.role = role;
-    }
-
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

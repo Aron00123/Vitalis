@@ -4,116 +4,53 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.vitalis.mapper.DoctorMapper">
 
+    <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        id,username,password,name,phone,email,avatar,role,description,price,time,position,department_id
+        id, name, gender, title, specialty, departId, consultLimit, consultDays, phone, photo
     </sql>
 
+    <!-- 查询所有记录 -->
     <select id="selectAll" resultType="com.example.vitalis.entity.Doctor">
-        select doctor.*, department.name as departmentName
-        from doctor
-        left join department on doctor.department_id = department.id
-        left join plan on plan.doctor_id = doctor.id
-        <where>
-            <if test="id != null"> and id= #{id}</if>
-            <if test="username != null"> and username like concat('%', #{username}, '%')</if>
-            <if test="password != null"> and password= #{password}</if>
-            <if test="name != null"> and name= #{name}</if>
-            <if test="phone != null"> and phone= #{phone}</if>
-            <if test="email != null"> and email= #{email}</if>
-            <if test="avatar != null"> and avatar= #{avatar}</if>
-            <if test="role != null"> and role= #{role}</if>
-            <if test="departmentId != null"> and department_id = #{departmentId}</if>
-            <if test="week != null"> and plan.week = #{week}</if>
-        </where>
-        group by doctor.id
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Doctor
     </select>
 
+    <!-- 根据ID查询 -->
     <select id="selectById" resultType="com.example.vitalis.entity.Doctor">
-        select
-        <include refid="Base_Column_List" />
-        from doctor
-        where id = #{id}
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Doctor
+        WHERE id = #{id}
     </select>
 
-    <delete id="deleteById">
-        delete from doctor
-        where  id = #{id}
-    </delete>
-
-    <insert id="insert" parameterType="com.example.vitalis.entity.Doctor" useGeneratedKeys="true">
-        insert into doctor
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="id != null">id,</if>
-                <if test="username != null">username,</if>
-                <if test="password != null">password,</if>
-                <if test="name != null">name,</if>
-                <if test="phone != null">phone,</if>
-                <if test="email != null">email,</if>
-                <if test="avatar != null">avatar,</if>
-                <if test="role != null">role,</if>
-                <if test="description != null">description,</if>
-                <if test="price != null">price,</if>
-                <if test="time != null">time,</if>
-                <if test="position != null">position,</if>
-                <if test="departmentId != null">department_id,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">#{id},</if>
-                <if test="username != null">#{username},</if>
-                <if test="password != null">#{password},</if>
-                <if test="name != null">#{name},</if>
-                <if test="phone != null">#{phone},</if>
-                <if test="email != null">#{email},</if>
-                <if test="avatar != null">#{avatar},</if>
-                <if test="role != null">#{role},</if>
-                <if test="description != null">#{description},</if>
-                <if test="price != null">#{price},</if>
-                <if test="time != null">#{time},</if>
-                <if test="position != null">#{position},</if>
-                <if test="departmentId != null">#{departmentId},</if>
-        </trim>
+    <!-- 插入新记录 -->
+    <insert id="insert" parameterType="com.example.vitalis.entity.Doctor" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Doctor (id, name, gender, title, specialty, departId, consultLimit, consultDays, phone, photo)
+        VALUES (#{id}, #{name}, #{gender}, #{title}, #{specialty}, #{departId}, #{consultLimit}, #{consultDays}, #{phone}, #{photo})
     </insert>
 
+    <!-- 根据ID删除记录 -->
+    <delete id="deleteById">
+        DELETE FROM Doctor
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID更新记录 -->
     <update id="updateById" parameterType="com.example.vitalis.entity.Doctor">
-        update doctor
+        UPDATE Doctor
         <set>
-            <if test="username != null">
-                username = #{username},
-            </if>
-            <if test="password != null">
-                password = #{password},
-            </if>
-            <if test="name != null">
-                name = #{name},
-            </if>
-            <if test="phone != null">
-                phone = #{phone},
-            </if>
-            <if test="email != null">
-                email = #{email},
-            </if>
-            <if test="avatar != null">
-                avatar = #{avatar},
-            </if>
-            <if test="role != null">
-                role = #{role},
-            </if>
-            <if test="description != null">
-                description = #{description},
-            </if>
-            <if test="price != null">
-                price = #{price},
-            </if>
-            <if test="time != null">
-                time = #{time},
-            </if>
-            <if test="position != null">
-                position = #{position},
-            </if>
-            <if test="departmentId != null">
-                department_id = #{departmentId},
-            </if>
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="specialty != null">specialty = #{specialty},</if>
+            <if test="departId != null">departId = #{departId},</if>
+            <if test="consultLimit != null">consultLimit = #{consultLimit},</if>
+            <if test="consultDays != null">consultDays = #{consultDays},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="photo != null">photo = #{photo},</if>
         </set>
-        where id = #{id} 
+        WHERE id = #{id}
     </update>
+
 </mapper>
