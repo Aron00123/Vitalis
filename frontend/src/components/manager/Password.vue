@@ -9,7 +9,7 @@
           <el-input show-password v-model="user.newPassword" placeholder="新密码"></el-input>
         </el-form-item>
         <el-form-item label="确认新密码" prop="confirmPassword">
-          <el-input show-password v-model="user.confirmPassword" placeholder="确认密码"></el-input>
+          <el-input show-password v-model="user.confirmPassword" placeholder="确认新密码"></el-input>
         </el-form-item>
         <div style="text-align: center; margin-bottom: 20px">
           <el-button type="primary" @click="update">确认修改</el-button>
@@ -43,7 +43,7 @@ const isCorrectPassword = (rule, value, callback) => {
 
 // 验证确认密码的自定义规则
 const validatePassword = (rule, value, callback) => {
-  if (value === '') {
+  if (value === null) {
     callback(new Error('请确认密码'))
   } else if (value !== user.value.newPassword) {
     callback(new Error('确认密码错误'))
@@ -62,7 +62,7 @@ const rules = {
     { required: true, message: '请输入新密码', trigger: 'blur' },
   ],
   confirmPassword: [
-    { validator: validatePassword, required: true, trigger: 'blur' },
+    { validator: validatePassword, required: true,trigger: 'blur' },
   ],
 }
 

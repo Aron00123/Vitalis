@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card style="width: 60%; ; margin: 0 auto;"  >
+    <el-card style="width: 60%; ; margin: 0 auto;">
       <el-form :model="user" label-width="130px" style="padding-right: 50px">
         <div style="margin: 15px; text-align: center">
           <el-upload
@@ -9,8 +9,10 @@
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
           >
-            <img v-if="user.avatar" :src="user.avatar" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <img v-if="user.avatar" :src="user.avatar" class="avatar"/>
+            <el-icon v-else class="avatar-uploader-icon">
+              <Plus/>
+            </el-icon>
           </el-upload>
         </div>
         <el-form-item label="身份证号" prop="id">
@@ -47,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import {ref, reactive, onMounted} from 'vue';
 import request from "../../utils/request.js";
 import {ElMessage} from "element-plus";
 
@@ -75,16 +77,20 @@ const getPerson = () => {
 
 // Update user info on the server
 const update = () => {
-  this.$request.put('/user/update', user).then(res => {
-    if (res.code === '200') {
-      fromVisible.value = false;
-      this.$message.success('保存成功');
-      localStorage.setItem('xm-user', JSON.stringify(user));
-      this.$emit('update:user');
-    } else {
-      this.$message.error(res.msg);
-    }
-  });
+  request
+      .post("/user/update", user)
+      .then((res) => {
+        if (res.code === "200") {
+          fromVisible.value = false;
+          ElMessage.success('保存成功');
+          localStorage.setItem('xm-user', JSON.stringify(user));
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
 };
 
 // Handle avatar upload success
@@ -98,36 +104,35 @@ onMounted(() => {
 });
 </script>
 
+
 <style scoped>
-/deep/.el-form-item__label {
-  font-weight: bold;
-}
-/deep/.el-upload {
-        border-radius: 50%;
-      }
-.avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        border-radius: 50%;
-      }
-.avatar-uploader .el-upload:hover {
-        border-color: #409EFF;
-      }
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  line-height: 120px;
-  text-align: center;
-  border-radius: 50%;
-}
-.avatar {
-  width: 120px;
-  height: 120px;
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
   display: block;
   border-radius: 50%;
+}
+</style>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
 }
 </style>

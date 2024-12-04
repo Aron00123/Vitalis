@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div class="login-box">
-      <div class="title">欢迎登录医院预约挂号系统</div>
+      <div class="title">欢迎登录Vitalis医疗服务系统</div>
       <el-form :model="form" :rules="rules" ref="formRef">
-        <el-form-item prop="username">
+        <el-form-item prop="id">
           <el-input
               prefix-icon="el-icon-user"
-              placeholder="请输入账号"
+              placeholder="请输入身份证号"
               v-model="form.id"
           ></el-input>
         </el-form-item>
@@ -18,24 +18,17 @@
               v-model="form.password"
           ></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%;">
-            <el-option label="管理员" value="ADMIN"></el-option>
-            <el-option label="医生" value="DOCTOR"></el-option>
-            <el-option label="患者" value="USER"></el-option>
-          </el-select>
-        </el-form-item>
+
         <el-form-item>
           <el-button
-              style="width: 100%; background-color: #7eb488; border-color: #7eb488; color: white"
+              style="width: 100%; background-color: #4f66d5; border-color: #4f66d5; color: white"
               @click="onLogin"
           >
             登 录
           </el-button>
         </el-form-item>
         <div class="register-link">
-          <span>还没有账号？点此</span>
-          <router-link to="/register">注册</router-link>
+          <router-link to="/register" style="text-decoration: none;">注册</router-link>
         </div>
       </el-form>
     </div>
@@ -52,11 +45,10 @@ import request from "../utils/request.js";
 const form = reactive({
   id: "",
   password: "",
-  role: "",
 });
 
 const rules = {
-  username: [{required: true, message: "请输入账号", trigger: "blur"}],
+  id: [{required: true, message: "请输入身份证号", trigger: "blur"}],
   password: [{required: true, message: "请输入密码", trigger: "blur"}],
 };
 
@@ -65,27 +57,37 @@ const router = useRouter();
 
 // 登录方法
 const onLogin = () => {
-  console.log(form)
-
-  // if (form.username === 'admin' && form.password === '123456' && form.role === 'ADMIN') {
-  //   localStorage.setItem("xm-user", JSON.stringify({
-  //     id: 1,
-  //     username: 'admin',
-  //     password: '123456',
-  //     name: 'admin',
-  //     role: 'ADMIN'
-  //   }));
-  //   router.push("/");
-  //   ElMessage.success("登录成功");
-  //   return
-  // }
-  if (form.id === 'zhangsan' && form.password === '123456' && form.role === 'USER') {
+  if (form.id === 'zhangsan' && form.password === '123456') {
     localStorage.setItem("xm-user", JSON.stringify({
       id: 1,
       username: 'zhangsan',
       password: '123456',
       name: 'zhangsan',
       role: 'USER'
+    }));
+    router.push("/");
+    ElMessage.success("登录成功");
+    return
+  }
+  if (form.id === 'admin' && form.password === '123456') {
+    localStorage.setItem("xm-user", JSON.stringify({
+      id: 2,
+      username: 'admin',
+      password: '123456',
+      name: 'admin',
+      role: 'ADMIN'
+    }));
+    router.push("/");
+    ElMessage.success("登录成功");
+    return
+  }
+  if (form.id === 'doctor' && form.password === '123456') {
+    localStorage.setItem("xm-user", JSON.stringify({
+      id: 2,
+      username: 'doctor',
+      password: '123456',
+      name: 'doctor',
+      role: 'DOCTOR'
     }));
     router.push("/");
     ElMessage.success("登录成功");

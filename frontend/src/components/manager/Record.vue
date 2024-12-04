@@ -18,22 +18,22 @@
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column
             prop="id"
-            label="序号"
+            label="挂号单"
             width="80"
             align="center"
             sortable
         ></el-table-column>
         <el-table-column
-            prop="userName"
+            prop="name"
             label="患者姓名"
             show-overflow-tooltip
         ></el-table-column>
         <el-table-column
-            prop="doctorName"
+            prop="doctor"
             label="医生姓名"
             show-overflow-tooltip
         ></el-table-column>
-        <el-table-column prop="time" label="就诊时间"></el-table-column>
+        <el-table-column prop="date" label="就诊时间"></el-table-column>
         <el-table-column prop="medicalRecord" label="医嘱病历">
           <template #default="{ row }">
             <el-button
@@ -132,9 +132,21 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
 import E from 'wangeditor';
+import request from "../../utils/request.js";
+import {ElMessage} from "element-plus";
 
 const editor = ref(null);
-const tableData = ref([]);
+//const tableData = ref([]);
+const tableData = ref([
+  {
+    id: "15306",
+    name: "zhangsan",
+    doctor: "doctorWang",
+    date: "2024-12-4 16:31",
+    medicalRecord: "medicalRecord",
+    prescription: "prescription"
+  }
+])
 const pageNum = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
@@ -166,6 +178,25 @@ function load(pageNumVal = 1) {
   pageNum.value = pageNumVal;
   // Replace this with your actual API call logic
   // e.g., this.$request.get('/record/selectPage', { params: { pageNum, pageSize, userName } })
+  request
+      .post("/record/selectPage", {
+        params: {
+          pageNum: pageNum.value,
+          pageSize: pageSize.value,
+          id: user.value.id
+        }
+      })
+      .then((res) => {
+        if (res.code === "200") {
+          tableData.value = res.data?.list
+          total.value = res.data?.total
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
   console.log('Load data for page', pageNum.value);
 }
 
@@ -205,9 +236,12 @@ function registration(row) {
 }
 
 onMounted(() => {
-  load(1);
+  //load(1);
 });
 </script>
 
 <style scoped>
+.pagination {
+  padding-top: 20px;
+}
 </style>

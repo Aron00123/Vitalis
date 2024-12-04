@@ -7,7 +7,6 @@ import Register from '../components/Register.vue';
 import NotFound from '../components/404.vue';
 
 import NoAuth from '../components/manager/NoAuth.vue';
-import Home from '../components/manager/Home.vue';
 import Admin from '../components/manager/Admin.vue';
 import Doctor from '../components/manager/Doctor.vue';
 import User from '../components/manager/User.vue';
@@ -17,7 +16,7 @@ import UserPerson from '../components/manager/UserPerson.vue';
 import Password from '../components/manager/Password.vue';
 import Notice from '../components/manager/Notice.vue';
 import Department from '../components/manager/Department.vue';
-import Plan from '../components/manager/Plan.vue';
+import Welcome from '../components/manager/Welcome.vue';
 import DoctorCard from '../components/manager/DoctorCard.vue';
 import Reserve from '../components/manager/Reserve.vue';
 import Record from '../components/manager/Record.vue';
@@ -34,7 +33,7 @@ const router = createRouter({
             path: '/',
             name: 'Manager',
             component: Manager,
-
+            redirect: 'welcome',
             children: [
                 {
                     path: '403',
@@ -43,11 +42,17 @@ const router = createRouter({
                     component: NoAuth,
                 },
                 {
-                    path: 'home',
-                    name: 'Home',
-                    meta: {name: '系统首页'},
-                    component: Home,
+                    path: 'welcome',
+                    name: 'Welcome',
+                    meta: {name: '欢迎页'},
+                    component: Welcome,
                 },
+                // {
+                //     path: 'home',
+                //     name: 'Home',
+                //     meta: {name: '系统首页'},
+                //     component: Home,
+                // },
                 {
                     path: 'admin',
                     name: 'Admin',
@@ -101,12 +106,6 @@ const router = createRouter({
                     name: 'Department',
                     meta: {name: '科室信息'},
                     component: Department,
-                },
-                {
-                    path: 'plan',
-                    name: 'Plan',
-                    meta: {name: '医生排班'},
-                    component: Plan,
                 },
                 {
                     path: 'doctorCard',
