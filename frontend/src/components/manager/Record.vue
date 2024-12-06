@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="search" v-if="user.role !== 'USER'">
+    <div class="search" v-if="user.role !== 'PATIENT'">
       <el-input
           placeholder="请输入患者姓名查询"
           style="width: 200px"
@@ -59,7 +59,7 @@
         </el-table-column>
 
 
-        <el-table-column label="操作" width="180" align="center" v-if="user.role !== 'USER'">
+        <el-table-column label="操作" width="180" align="center" v-if="user.role !== 'PATIENT'">
           <template #default="{ row }">
             <el-button
                 plain

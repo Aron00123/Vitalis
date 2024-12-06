@@ -71,7 +71,7 @@ const form = reactive({
   emergencyPhone: "",
   email: "",
   address: "",
-  role: "USER",
+  role: "PATIENT",
 });
 
 const rules = {
@@ -119,8 +119,7 @@ const router = useRouter();
 
 // 注册方法
 const register = () => {
-  console.log(form.id + form.password)
-  if (form.id === 'zhangsan' && form.password === '123456' && form.role === 'USER') {
+  if (form.id === 'zhangsan' && form.password === '123456' && form.role === 'PATIENT') {
     router.push("/login"); // 跳转登录页面
     ElMessage.success("注册成功");
     return
@@ -129,7 +128,18 @@ const register = () => {
   formRef.value.validate((valid) => {
     if (valid) {
       request
-          .post("/register", form)
+          .post("/register", {
+            id: form.id,
+            password: form.password,
+            newPassword: form.confirmPass,
+            role: form.role,
+            gender: form.sex,
+            name: form.name,
+            age: form.age,
+            address: form.address,
+            phone: form.phone,
+            emergencyPhone: form.emergencyPhone
+          })
           .then((res) => {
             if (res.code === "200") {
               router.push("/login"); // 跳转登录页面

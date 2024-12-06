@@ -50,7 +50,7 @@
           </el-menu-item>
 
           <!--  病人   -->
-          <el-sub-menu index="reserve" v-if="user.role === 'USER'">
+          <el-sub-menu index="reserve" v-if="user.role === 'PATIENT'">
             <template #title>
               <el-icon></el-icon>
               <span>预约就诊</span>
@@ -81,7 +81,7 @@
               <i class="el-icon-menu"></i><span>用户信息管理</span>
             </template>
             <el-menu-item index="/doctor">医生管理</el-menu-item>
-            <el-menu-item index="/user">患者管理</el-menu-item>
+            <el-menu-item index="/patient">患者管理</el-menu-item>
             <el-menu-item index="/admin">管理员管理</el-menu-item>
           </el-sub-menu>
 
@@ -153,7 +153,7 @@ function goToPerson() {
     router.push('/adminPerson');
   } else if (user.value.role === 'DOCTOR') {
     router.push('/doctorPerson');
-  } else if (user.value.role === 'USER') {
+  } else if (user.value.role === 'PATIENT') {
     router.push('/userPerson');
   }
 }

@@ -9,7 +9,7 @@ import Plan from '../components/manager/Plan.vue'
 import NoAuth from '../components/manager/NoAuth.vue';
 import Admin from '../components/manager/Admin.vue';
 import Doctor from '../components/manager/Doctor.vue';
-import User from '../components/manager/User.vue';
+import Patient from '../components/manager/Patient.vue';
 import AdminPerson from '../components/manager/AdminPerson.vue';
 import DoctorPerson from '../components/manager/DoctorPerson.vue';
 import UserPerson from '../components/manager/UserPerson.vue';
@@ -65,10 +65,10 @@ const router = createRouter({
                     component: Doctor,
                 },
                 {
-                    path: 'user',
-                    name: 'User',
+                    path: 'patient',
+                    name: 'Patient',
                     meta: {name: '患者信息'},
-                    component: User,
+                    component: Patient,
                 },
                 {
                     path: 'adminPerson',

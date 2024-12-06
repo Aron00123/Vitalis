@@ -19,11 +19,11 @@
 
         <el-table-column label="操作" width="180" align="center">
           <template v-slot="scope">
-            <el-button plain type="danger" size="mini" v-if="scope.row.status === '未就诊' && user.role === 'USER'"
+            <el-button plain type="danger" size="mini" v-if="scope.row.status === '未就诊' && user.role === 'PATIENT'"
                        @click="del(scope.row.id)">取消挂号
             </el-button>
             <el-button plain type="primary" size="mini"
-                       v-else-if="scope.row.status === '已就诊' && user.role === 'USER'"
+                       v-else-if="scope.row.status === '已就诊' && user.role === 'PATIENT'"
                        @click="">查看就诊信息
             </el-button>
             <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR'" @click="call(scope.row)">叫号
@@ -51,7 +51,7 @@
 <script setup>
 import {ref, onMounted} from 'vue'
 import request from "../../utils/request.js";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 // 定义响应式数据
 //const tableData = ref([])  // 所有的数据
@@ -116,8 +116,9 @@ const record = (row) => {
 
 // 取消挂号操作
 const del = (id) => {
-  let result = window.confirm("是否取消本次预约？");
-  if (result) {
+  ElMessageBox.confirm("您确定取消挂号吗？", "取消挂号", {
+    type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
+  }).then(() => {
     request
         .post("/reserve/delete", id)
         .then((res) => {
@@ -131,7 +132,7 @@ const del = (id) => {
         .catch((err) => {
           ElMessage.error("请求失败，请稍后重试");
         });
-  }
+  });
 }
 
 // 加载数据

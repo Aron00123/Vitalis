@@ -63,7 +63,7 @@ const onLogin = () => {
       username: 'zhangsan',
       password: '123456',
       name: 'zhangsan',
-      role: 'USER'
+      role: 'PATIENT'
     }));
     router.push("/");
     ElMessage.success("登录成功");

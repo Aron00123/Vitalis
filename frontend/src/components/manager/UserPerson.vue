@@ -33,9 +33,6 @@
         <el-form-item label="紧急联系人电话" prop="emergencyPhone">
           <el-input v-model="user.emergencyPhone" placeholder="紧急联系人电话"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="user.email" placeholder="邮箱"></el-input>
-        </el-form-item>
         <el-form-item label="家庭住址" prop="address">
           <el-input v-model="user.address" placeholder="家庭住址"></el-input>
         </el-form-item>
