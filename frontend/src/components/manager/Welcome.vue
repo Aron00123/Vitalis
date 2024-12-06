@@ -79,7 +79,7 @@ const fetchNotices = async () => {
 
 // 在组件挂载时调用公告数据获取方法
 onMounted(() => {
-  fetchNotices();
+  //fetchNotices();
 });
 </script>
 

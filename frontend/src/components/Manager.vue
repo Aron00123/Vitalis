@@ -140,6 +140,7 @@ onMounted(() => {
   if (!user.value.id) {
     router.push('/login');
   }
+  console.log(user.value.role)
 });
 
 // 更新用户信息

@@ -24,8 +24,8 @@
         <el-form-item label="年龄" prop="age">
           <el-input v-model="user.age" placeholder="年龄" disabled></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="sex">
-          <el-input v-model="user.sex" placeholder="性别" disabled></el-input>
+        <el-form-item label="性别" prop="gender">
+          <el-input v-model="user.gender" placeholder="性别" disabled></el-input>
         </el-form-item>
         <el-form-item label="电话" prop="phone">
           <el-input v-model="user.phone" placeholder="电话"></el-input>
@@ -57,7 +57,7 @@ const fromVisible = ref(false);
 // Fetch user data
 const getPerson = () => {
   request
-      .post("/user/selectById", user)
+      .post("/patient/selectById", user)
       .then((res) => {
         if (res.code === "200") {
           Object.assign(user, res.data);
@@ -75,7 +75,7 @@ const getPerson = () => {
 // Update user info on the server
 const update = () => {
   request
-      .post("/user/update", user)
+      .post("/patient/update", user)
       .then((res) => {
         if (res.code === "200") {
           fromVisible.value = false;
@@ -97,7 +97,7 @@ const handleAvatarSuccess = (response, file, fileList) => {
 
 // On mounted lifecycle hook
 onMounted(() => {
-  getPerson();
+  //getPerson();
 });
 </script>
 
