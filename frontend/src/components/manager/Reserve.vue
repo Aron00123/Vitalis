@@ -22,7 +22,7 @@
             <el-button plain type="danger" size="mini" v-if="scope.row.status === '未就诊' && user.role === 'USER'"
                        @click="del(scope.row.id)">取消挂号
             </el-button>
-            <el-button id='button01' plain type="danger" size="mini"
+            <el-button plain type="primary" size="mini"
                        v-else-if="scope.row.status === '已就诊' && user.role === 'USER'"
                        @click="">查看就诊信息
             </el-button>
@@ -177,11 +177,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-#button01 {
-  background: #E6F7FF;
-  color: #273baf;
-  border: 1px solid #273baf
-}
 
 .search {
   padding-bottom: 20px;

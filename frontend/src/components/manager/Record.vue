@@ -39,6 +39,7 @@
             <el-button
                 type="primary"
                 size="mini"
+                plain
                 @click="viewEditor(row.medicalRecord)"
             >查看病历</el-button
             >
@@ -50,6 +51,7 @@
             <el-button
                 type="primary"
                 size="mini"
+                plain
                 @click="viewEditor(row.prescription)"
             >查看处方</el-button
             >
@@ -241,6 +243,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+.search {
+  padding-bottom: 20px;
+}
+
 .pagination {
   padding-top: 20px;
 }

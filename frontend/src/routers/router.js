@@ -1,11 +1,11 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
 
 import Front from '../components/Front.vue';
- import Login from '../components/Login.vue';
+import Login from '../components/Login.vue';
 import Manager from "../components/Manager.vue";
 import Register from '../components/Register.vue';
 import NotFound from '../components/404.vue';
-
+import Plan from '../components/manager/Plan.vue'
 import NoAuth from '../components/manager/NoAuth.vue';
 import Admin from '../components/manager/Admin.vue';
 import Doctor from '../components/manager/Doctor.vue';
@@ -20,7 +20,6 @@ import Welcome from '../components/manager/Welcome.vue';
 import DoctorCard from '../components/manager/DoctorCard.vue';
 import Reserve from '../components/manager/Reserve.vue';
 import Record from '../components/manager/Record.vue';
-
 import FrontHome from '../components/front/Home.vue';
 import Person from '../components/front/Person.vue';
 
@@ -47,12 +46,12 @@ const router = createRouter({
                     meta: {name: '欢迎页'},
                     component: Welcome,
                 },
-                // {
-                //     path: 'home',
-                //     name: 'Home',
-                //     meta: {name: '系统首页'},
-                //     component: Home,
-                // },
+                {
+                    path: 'plan',
+                    name: 'Plan',
+                    meta: {name: '医生排班管理'},
+                    component: Plan,
+                },
                 {
                     path: 'admin',
                     name: 'Admin',

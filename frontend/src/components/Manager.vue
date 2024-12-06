@@ -63,6 +63,28 @@
           </el-sub-menu>
 
           <!--  医生   -->
+          <el-sub-menu index="reserve" v-if="user.role === 'DOCTOR'">
+            <template #title>
+              <el-icon></el-icon>
+              <span>诊断治疗</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="/reserve">待处理挂号</el-menu-item>
+              <el-menu-item index="/record">诊断记录</el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
+
+          <!-- 管理员   -->
+          <el-sub-menu index="user" v-if="user.role === 'ADMIN'">
+            <template #title>
+              <el-icon></el-icon>
+              <i class="el-icon-menu"></i><span>用户信息管理</span>
+            </template>
+            <el-menu-item index="/doctor">医生管理</el-menu-item>
+            <el-menu-item index="/user">患者管理</el-menu-item>
+            <el-menu-item index="/admin">管理员管理</el-menu-item>
+          </el-sub-menu>
+
           <el-sub-menu index="info" v-if="user.role === 'ADMIN'">
             <template #title>
               <el-icon></el-icon>
@@ -73,17 +95,6 @@
             <el-menu-item index="/plan">医生排班</el-menu-item>
           </el-sub-menu>
 
-
-          <el-sub-menu index="user" v-if="user.role === 'ADMIN'">
-            <template #title>
-              <el-icon></el-icon>
-              <i class="el-icon-menu"></i><span>用户管理</span>
-            </template>
-
-            <el-menu-item index="/admin">管理员信息</el-menu-item>
-            <el-menu-item index="/doctor">医生信息</el-menu-item>
-            <el-menu-item index="/user">患者信息</el-menu-item>
-          </el-sub-menu>
 
         </el-menu>
       </div>
