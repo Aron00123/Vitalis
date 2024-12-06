@@ -45,7 +45,7 @@
                   <div style="padding: 10px"><strong>预约挂号：</strong></div>
                   <div style="padding: 10px;">
                     <span><strong>{{ item.name }} {{item.title}}</strong></span>
-                    <span style="padding-left: 50px"><strong>{{ item.departmentName }}</strong></span>
+<!--                    <span style="padding-left: 50px"><strong>{{ item.departmentName }}</strong></span>-->
                   </div>
                   <div style="padding: 10px;">
                     <span><strong>预约时间：{{item.date}}</strong></span>
@@ -167,7 +167,8 @@ const load = (pageNum1) => {
 
   // 默认选择当天
   if (!date.value) {
-    date = new Date()
+    date.value = new Date()
+    console.log(date.value)
   }
   let year = date.value.getFullYear()
   let month = date.value.getMonth() + 1
@@ -181,7 +182,7 @@ const load = (pageNum1) => {
           pageNum: pageNum.value,
           pageSize: pageSize.value,
           departmentId: departmentId.value,
-          date: formatDate
+          dateStr: formatDate
         }
       })
       .then((res) => {
@@ -201,13 +202,13 @@ const load = (pageNum1) => {
 const open = (item) => {
   ElMessageBox.alert(
       `<div><strong>坐诊日：${item.consultDays}</strong></div>
-<div><strong>联系电话：${item.phone}</strong></div>
-<div style="margin-top: 20px; color: #353523; padding: 0 10px; text-align: left; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 4;">
-              简介：${item.description}</div>`,
-      item.name,
-      {
-        dangerouslyUseHTMLString: true,
-      }
+// <div><strong>联系电话：${item.phone}</strong></div>
+// <div style="margin-top: 20px; color: #353523; padding: 0 10px; text-align: left; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 4;">
+//               简介：${item.description}</div>`,
+//       item.name,
+//       {
+//         dangerouslyUseHTMLString: true,
+//       }
   )
 }
 
@@ -225,8 +226,8 @@ const handleCurrentChange = (pageNum) => {
 
 // 加载页面数据
 onMounted(() => {
-  // load(1)
-  // loadDepartment()
+  load(1)
+  loadDepartment()
 })
 </script>
 

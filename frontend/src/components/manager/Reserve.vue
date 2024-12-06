@@ -90,7 +90,7 @@ const user = JSON.parse(localStorage.getItem('xm-user') || '{}')
 const call = (row) => {
   let reserveData = JSON.parse(JSON.stringify(row))
   reserveData.status = '已叫号'
-  $request.put('/reserve/update', reserveData).then(res => {
+  $request.put('/registration/update', reserveData).then(res => {
     if (res.code === '200') {
       $message.success('叫号成功')
       load(1)
@@ -120,7 +120,7 @@ const del = (id) => {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/reserve/delete", id)
+        .post("/registration/delete", id)
         .then((res) => {
           if (res.code === "200") {
             ElMessage.error('取消成功');
@@ -139,7 +139,7 @@ const del = (id) => {
 const load = (pageNum1) => {
   if (pageNum1) pageNum.value = pageNum1
   request
-      .post("/reserve/selectPage", {
+      .post("/registration/selectPage", {
         params: {
           pageNum,
           pageSize: pageSize.value,
@@ -173,7 +173,7 @@ const handleCurrentChange = (pageNum) => {
 
 // 初始加载
 onMounted(() => {
-  //load(1)
+  load(1)
 })
 </script>
 
