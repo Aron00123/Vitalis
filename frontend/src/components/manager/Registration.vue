@@ -120,10 +120,10 @@ const del = (id) => {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/registration/delete", id)
+        .post("/registration/delete", {id : id})
         .then((res) => {
           if (res.code === "200") {
-            ElMessage.error('取消成功');
+            ElMessage.success('取消成功');
             load(1);
           } else {
             ElMessage.error(res.msg);
@@ -140,11 +140,10 @@ const load = (pageNum1) => {
   if (pageNum1) pageNum.value = pageNum1
   request
       .post("/registration/selectPage", {
-        params: {
-          pageNum,
-          pageSize: pageSize.value,
-          status: status.value
-        }
+        patientId: user.id,
+        pageNum: pageNum.value,
+        pageSize: pageSize.value,
+        status: status.value
       })
       .then((res) => {
         if (res.code === "200") {

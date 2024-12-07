@@ -181,7 +181,7 @@ function load(pageNumVal = 1) {
   // Replace this with your actual API call logic
   // e.g., this.$request.get('/record/selectPage', { params: { pageNum, pageSize, userName } })
   request
-      .post("/record/selectPage", {
+      .post("/registration/selectPage", {
         params: {
           pageNum: pageNum.value,
           pageSize: pageSize.value,

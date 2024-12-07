@@ -35,17 +35,17 @@
 
             <div style="margin-top: 15px">
               <el-button type="primary" size="mini" plain @click="open(item)">查看医生简介</el-button>
-              <el-button type="primary" size="mini" @click="centerDialogVisible = true"
+              <el-button type="primary" size="mini" @click="item.centerDialogVisible = true"
                          :disabled="item.consultLimit === 0">
                 挂号
               </el-button>
 
-              <el-dialog v-model="centerDialogVisible" title="确认挂号" width="500" center>
+              <el-dialog v-model="item.centerDialogVisible" title="确认挂号" width="500" center>
                 <div style="height: 200px ;padding-left: 20px">
                   <div style="padding: 10px"><strong>预约挂号：</strong></div>
                   <div style="padding: 10px;">
                     <span><strong>{{ item.name }} {{item.title}}</strong></span>
-<!--                    <span style="padding-left: 50px"><strong>{{ item.departmentName }}</strong></span>-->
+                    <!--                    <span style="padding-left: 50px"><strong>{{ item.departmentName }}</strong></span>-->
                   </div>
                   <div style="padding: 10px;">
                     <span><strong>预约时间：{{item.date}}</strong></span>
@@ -58,8 +58,8 @@
 
                 <template #footer>
                   <div class="dialog-footer">
-                    <el-button @click="centerDialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="reserve(item.id)">
+                    <el-button @click="item.centerDialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="reserve(item.id, item.centerDialogVisible)">
                       确认
                     </el-button>
                   </div>
@@ -93,7 +93,35 @@ import {ElMessage, ElMessageBox} from "element-plus";
 
 const centerDialogVisible = ref(false)
 
-const tableData = ref([])  // 所有的数据
+const tableData = ref([
+  {
+    id: 1,
+    name: 'zhangsan',
+    departmentName: '111',
+    title: '222',
+    specialty: '333',
+    consultLimit: '444',
+    centerDialogVisible: 'false'
+  },
+  {
+    id: 2,
+    name: 'lisi',
+    departmentName: 'aaa',
+    title: 'aaa',
+    specialty: 'aaa',
+    consultLimit: 'bbb',
+    centerDialogVisible: 'false'
+  },
+  {
+    id: 3,
+    name: 'wangwu',
+    departmentName: 'aaa',
+    title: 'aaa',
+    specialty: 'aaa',
+    consultLimit: 'bbb',
+    centerDialogVisible: 'false'
+  }
+])  // 所有的数据
 const pageNum = ref(1)   // 当前的页码
 const pageSize = ref(10)  // 每页显示的个数
 const total = ref(0)
@@ -105,7 +133,8 @@ let formatDate = ''
 const user = JSON.parse(localStorage.getItem('xm-user') || '{}')
 
 // 挂号
-const reserve = (doctorId) => {
+const reserve = (doctorId, centerDialogVisible) => {
+  console.log(centerDialogVisible)
   if (user.role !== 'PATIENT') {
     ElMessage.error('您的角色不支持挂号操作')
     return
@@ -121,6 +150,8 @@ const reserve = (doctorId) => {
         if (res.code === "200") {
           ElMessage.success('挂号成功');
           load(1)
+        } else if (res.code === "5019") {
+          ElMessage.error('您今天已挂过该医生的号')
         } else {
           ElMessage.error(res.msg);
         }
@@ -155,29 +186,27 @@ const load = (pageNum1) => {
   // 默认选择当天
   if (!date.value) {
     date.value = new Date()
-    console.log(date.value)
   }
   let year = date.value.getFullYear()
   let month = date.value.getMonth() + 1
   let day = date.value.getDate()
   formatDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
 
-  console.log(pageNum.value)
-  console.log(pageSize.value)
-  console.log(departmentId.value)
-  console.log(formatDate)
   request
       .post("/doctor/selectPage2", {
-          pageNum: pageNum.value,
-          pageSize: pageSize.value,
-          departmentId: departmentId.value,
-          dateStr: formatDate
+        pageNum: pageNum.value,
+        pageSize: pageSize.value,
+        departmentId: departmentId.value,
+        dateStr: formatDate
       })
       .then((res) => {
         if (res.code === "200") {
           tableData.value = res.data.list
+          // for(let obj in tableData.value) {
+          //   obj.centerDialogVisible = 'false';
+          // }
           total.value = res.data.total
-          console.log(tableData.value)
+
         } else {
           ElMessage.error(res.msg);
         }
