@@ -12,8 +12,9 @@
     <div class="table">
       <el-table :data="tableData" stripe>
         <el-table-column prop="id" label="挂号单" width="80" align="center" sortable></el-table-column>
-        <el-table-column prop="name" label="患者姓名" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="doctor" label="医生姓名" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="name" label="患者姓名" width="130" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="doctor" label="医生姓名" width="130" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="departmentName" label="科室" show-overflow-tooltip></el-table-column>
         <el-table-column prop="date" label="挂号时间"></el-table-column>
         <el-table-column prop="status" label="挂号状态"></el-table-column>
 
@@ -24,7 +25,7 @@
             </el-button>
             <el-button plain type="primary" size="mini"
                        v-else-if="scope.row.status === '已就诊' && user.role === 'PATIENT'"
-                       @click="">查看就诊信息
+                       @click="searchByRegistrationId(scope.row.id)">查看就诊信息
             </el-button>
             <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR'" @click="call(scope.row)">叫号
             </el-button>
@@ -52,6 +53,9 @@
 import {ref, onMounted} from 'vue'
 import request from "../../utils/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
+import {useRouter} from 'vue-router'
+
+const router = useRouter();
 
 // 定义响应式数据
 //const tableData = ref([])  // 所有的数据
@@ -90,13 +94,20 @@ const user = JSON.parse(localStorage.getItem('xm-user') || '{}')
 const call = (row) => {
   let reserveData = JSON.parse(JSON.stringify(row))
   reserveData.status = '已叫号'
-  $request.put('/registration/update', reserveData).then(res => {
-    if (res.code === '200') {
-      $message.success('叫号成功')
-      load(1)
-      record(row)
-    }
-  })
+  request
+      .post("/registration/update", reserveData)
+      .then((res) => {
+        if (res.code === "200") {
+          ElMessage.success('叫号成功');
+          load(1);
+          record(row)
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
 }
 
 // 同步就诊记录
@@ -105,13 +116,26 @@ const record = (row) => {
     userId: row.userId,
     doctorId: row.doctorId,
   }
-  $request.post('/record/add', data).then(res => {
-    if (res.code === '200') {
-      $message.success('数据同步成功')
-    } else {
-      $message.error(res.msg)
-    }
-  })
+  request
+      .post("/record/add", data)
+      .then((res) => {
+        if (res.code === "200") {
+          ElMessage.success('数据同步成功');
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
+}
+
+// 查看就诊信息
+const searchByRegistrationId = (registrationId) => {
+  router.push({
+    path: '/record',
+    query: {registrationId}, // 使用 query 方式传递参数
+  });
 }
 
 // 取消挂号操作
@@ -120,7 +144,7 @@ const del = (id) => {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/registration/delete", {id : id})
+        .post("/registration/delete", {id: id})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success('取消成功');

@@ -16,23 +16,10 @@
 
     <div class="table">
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
-        <el-table-column
-            prop="id"
-            label="挂号单"
-            width="80"
-            align="center"
-            sortable
-        ></el-table-column>
-        <el-table-column
-            prop="name"
-            label="患者姓名"
-            show-overflow-tooltip
-        ></el-table-column>
-        <el-table-column
-            prop="doctor"
-            label="医生姓名"
-            show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column prop="id" label="挂号单" width="80" align="center" sortable></el-table-column>
+        <el-table-column prop="name" label="患者姓名" width="130" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="doctor" label="医生姓名" width="130" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="departmentName" label="科室" show-overflow-tooltip></el-table-column>
         <el-table-column prop="date" label="就诊时间"></el-table-column>
         <el-table-column prop="medicalRecord" label="医嘱病历">
           <template #default="{ row }">
@@ -41,7 +28,8 @@
                 size="mini"
                 plain
                 @click="viewEditor(row.medicalRecord)"
-            >查看病历</el-button
+            >查看病历
+            </el-button
             >
           </template>
         </el-table-column>
@@ -52,8 +40,9 @@
                 type="primary"
                 size="mini"
                 plain
-                @click="viewEditor(row.prescription)"
-            >查看处方</el-button
+                @click="viewPrescription(row.prescription)"
+            >查看处方
+            </el-button
             >
           </template>
         </el-table-column>
@@ -67,7 +56,8 @@
                 v-if="user.role === 'DOCTOR'"
                 @click="handleEdit(row)"
                 size="mini"
-            >填写医嘱病历</el-button
+            >填写医嘱病历
+            </el-button
             >
           </template>
         </el-table-column>
@@ -89,7 +79,7 @@
 
     <el-dialog
         title="医嘱病历填写"
-        v-model:visible="fromVisible"
+        v-model="fromVisible"
         width="60%"
         :close-on-click-modal="false"
         destroy-on-close
@@ -120,7 +110,17 @@
 
     <el-dialog
         title="医嘱病历"
-        v-model:visible="editorVisible"
+        v-model="editorVisible"
+        width="50%"
+        :close-on-click-modal="false"
+        destroy-on-close
+    >
+      <div v-html="viewContent" class="w-e-text"></div>
+    </el-dialog>
+
+    <el-dialog
+        title="处方"
+        v-model="prescriptionVisible"
         width="50%"
         :close-on-click-modal="false"
         destroy-on-close
@@ -132,10 +132,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import {ref, reactive, onMounted} from 'vue';
 import E from 'wangeditor';
 import request from "../../utils/request.js";
 import {ElMessage} from "element-plus";
+import {useRoute} from 'vue-router'
+
+const route = useRoute()
 
 const editor = ref(null);
 //const tableData = ref([]);
@@ -155,10 +158,11 @@ const total = ref(0);
 const userName = ref(null);
 const fromVisible = ref(false);
 const editorVisible = ref(false);
+const prescriptionVisible = ref(false);
 const form = reactive({});
 const user = JSON.parse(localStorage.getItem('xm-user') || '{}');
 const rules = reactive({
-  inhospital: [{ required: true, message: '请选择是否住院', trigger: 'blur' }],
+  inhospital: [{required: true, message: '请选择是否住院', trigger: 'blur'}],
 });
 const ids = ref([]);
 const viewContent = ref(null);
@@ -176,17 +180,29 @@ function initWangEditor(content) {
   }, 0);
 }
 
+function loadByRegistrationId(registrationId) {
+  request
+      .post("/record/selectByRegistrationId", {registrationId: registrationId})
+      .then((res) => {
+        if (res.code === "200") {
+          tableData.value = res.data?.list
+          total.value = res.data?.total
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
+}
+
 function load(pageNumVal = 1) {
   pageNum.value = pageNumVal;
-  // Replace this with your actual API call logic
-  // e.g., this.$request.get('/record/selectPage', { params: { pageNum, pageSize, userName } })
   request
-      .post("/registration/selectPage", {
-        params: {
-          pageNum: pageNum.value,
-          pageSize: pageSize.value,
-          id: user.value.id
-        }
+      .post("/record/selectPage", {
+        pageNum: pageNum.value,
+        pageSize: pageSize.value,
+        id: user.id
       })
       .then((res) => {
         if (res.code === "200") {
@@ -199,7 +215,6 @@ function load(pageNumVal = 1) {
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");
       });
-  console.log('Load data for page', pageNum.value);
 }
 
 function reset() {
@@ -216,6 +231,11 @@ function handleEdit(row) {
 function viewEditor(content) {
   viewContent.value = content;
   editorVisible.value = true;
+}
+
+function viewPrescription(content) {
+  viewContent.value = content;
+  prescriptionVisible.value = true;
 }
 
 function save() {
@@ -238,7 +258,13 @@ function registration(row) {
 }
 
 onMounted(() => {
-  //load(1);
+  const registrationId = route.query.registrationId; // 获取传递的 registrationId
+  if (registrationId) {
+    // console.log('Received registrationId:', registrationId);
+    loadByRegistrationId(registrationId)
+  } else {
+    load(1);
+  }
 });
 </script>
 

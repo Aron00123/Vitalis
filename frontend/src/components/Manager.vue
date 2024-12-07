@@ -51,14 +51,14 @@
                  @open="handleOpen" @close="handleClose">
           <el-menu-item index="/welcome">
             <i class="el-icon-s-home"></i>
-            <span slot="title">系统首页</span>
+            <span slot="title"><strong>系统首页</strong></span>
           </el-menu-item>
 
           <!--  病人   -->
           <el-sub-menu index="reserve" v-if="user.role === 'PATIENT'">
             <template #title>
               <el-icon></el-icon>
-              <span>预约就诊</span>
+              <span><strong>预约就诊</strong></span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="/doctorCard">预约挂号</el-menu-item>
@@ -71,7 +71,7 @@
           <el-sub-menu index="reserve" v-if="user.role === 'DOCTOR'">
             <template #title>
               <el-icon></el-icon>
-              <span>诊断治疗</span>
+              <span><strong>诊断治疗</strong></span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="/registration">待处理挂号</el-menu-item>
@@ -83,17 +83,28 @@
           <el-sub-menu index="user" v-if="user.role === 'ADMIN'">
             <template #title>
               <el-icon></el-icon>
-              <i class="el-icon-menu"></i><span>用户信息管理</span>
+              <i class="el-icon-menu"></i><span><strong>用户信息管理</strong></span>
             </template>
             <el-menu-item index="/doctor">医生管理</el-menu-item>
             <el-menu-item index="/patient">患者管理</el-menu-item>
             <el-menu-item index="/admin">管理员管理</el-menu-item>
           </el-sub-menu>
 
+          <el-sub-menu index="reserve" v-if="user.role === 'ADMIN'">
+            <template #title>
+              <el-icon></el-icon>
+              <i class="el-icon-menu"></i><span><strong>就诊管理</strong></span>
+            </template>
+            <el-menu-item index="/notice">挂号单管理</el-menu-item>
+            <el-menu-item index="/department">处方管理</el-menu-item>
+            <el-menu-item index="/plan">药品管理</el-menu-item>
+            <el-menu-item index="/plan">疾病管理</el-menu-item>
+          </el-sub-menu>
+
           <el-sub-menu index="info" v-if="user.role === 'ADMIN'">
             <template #title>
               <el-icon></el-icon>
-              <i class="el-icon-menu"></i><span>其他管理</span>
+              <i class="el-icon-menu"></i><span><strong>其他管理</strong></span>
             </template>
             <el-menu-item index="/notice">公告信息</el-menu-item>
             <el-menu-item index="/department">科室信息</el-menu-item>
