@@ -8,14 +8,10 @@ public class Medicine {
     private Integer id;
     /** 药品名称 */
     private String name;
-    /** 制药厂家 */
-    private String manufacturer;
     /** 有效日期 */
     private String expiryDate;
-    /** 使用计量 */
+    /** 使用方法 */
     private String dosage;
-    /** 注意事项 */
-    private String precautions;
     /** 药品作用 */
     private String effects;
     /** 库存量 */
@@ -39,14 +35,6 @@ public class Medicine {
         this.name = name;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
     public String getExpiryDate() {
         return expiryDate;
     }
@@ -61,14 +49,6 @@ public class Medicine {
 
     public void setDosage(String dosage) {
         this.dosage = dosage;
-    }
-
-    public String getPrecautions() {
-        return precautions;
-    }
-
-    public void setPrecautions(String precautions) {
-        this.precautions = precautions;
     }
 
     public String getEffects() {
