@@ -59,7 +59,7 @@ const router = useRouter();
 const onLogin = () => {
   if (form.id === 'zhangsan' && form.password === '123456') {
     localStorage.setItem("xm-user", JSON.stringify({
-      id: 1,
+      id: 'zhangsan',
       username: 'zhangsan',
       password: '123456',
       name: 'zhangsan',
@@ -71,7 +71,7 @@ const onLogin = () => {
   }
   if (form.id === 'admin' && form.password === '123456') {
     localStorage.setItem("xm-user", JSON.stringify({
-      id: 2,
+      id: 'admin',
       username: 'admin',
       password: '123456',
       name: 'admin',
@@ -83,7 +83,7 @@ const onLogin = () => {
   }
   if (form.id === 'doctor' && form.password === '123456') {
     localStorage.setItem("xm-user", JSON.stringify({
-      id: 2,
+      id: 'doctor',
       username: 'doctor',
       password: '123456',
       name: 'doctor',

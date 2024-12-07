@@ -9,35 +9,38 @@
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
           >
-            <img v-if="user.avatar" :src="user.avatar" class="avatar"/>
+            <img v-if="user.photo" :src="user.photo" class="avatar"/>
             <el-icon v-else class="avatar-uploader-icon">
               <Plus/>
             </el-icon>
           </el-upload>
         </div>
-        <el-form-item label="身份证号" prop="id">
-          <el-input v-model="user.id" placeholder="身份证号" disabled></el-input>
+        <el-form-item label="账号" prop="id">
+          <el-input v-model="user.id" placeholder="账号" disabled/>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
-          <el-input v-model="user.name" placeholder="姓名" disabled></el-input>
+          <el-input v-model="user.name" placeholder="姓名" disabled/>
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
-          <el-input v-model="user.age" placeholder="年龄" disabled></el-input>
+        <el-form-item label="性别" prop="gender">
+          <el-input v-model="user.gender" placeholder="性别" disabled/>
         </el-form-item>
-        <el-form-item label="性别" prop="sex">
-          <el-input v-model="user.sex" placeholder="性别" disabled></el-input>
+        <el-form-item label="职称" prop="title">
+          <el-input v-model="user.title" placeholder="职称" disabled/>
         </el-form-item>
-        <el-form-item label="电话" prop="phone">
-          <el-input v-model="user.phone" placeholder="电话"></el-input>
+        <el-form-item label="主治疾病" prop="specialty">
+          <el-input type="textarea" :rows="2" v-model="user.specialty" placeholder="主治疾病"/>
         </el-form-item>
-        <el-form-item label="紧急联系人电话" prop="emergencyPhone">
-          <el-input v-model="user.emergencyPhone" placeholder="紧急联系人电话"></el-input>
+        <el-form-item label="科室" prop="departmentName">
+          <el-input v-model="user.departmentId" placeholder="科室" disabled/>
         </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="user.email" placeholder="邮箱"></el-input>
+        <el-form-item label="就诊限额" prop="consultLimit">
+          <el-input v-model="user.consultLimit" placeholder="就诊限额" disabled/>
         </el-form-item>
-        <el-form-item label="家庭住址" prop="address">
-          <el-input v-model="user.address" placeholder="家庭住址"></el-input>
+        <el-form-item label="坐诊日" prop="consultDays">
+          <el-input v-model="user.consultLimit" placeholder="坐诊日" disabled/>
+        </el-form-item>
+        <el-form-item label="简介" prop="description">
+          <el-input type="textarea" :rows="4" v-model="user.description" placeholder="简介"/>
         </el-form-item>
         <div style="text-align: center; margin-bottom: 20px">
           <el-button type="primary" @click="update">保 存</el-button>

@@ -13,8 +13,8 @@
         <el-form-item label="年龄" prop="age">
           <el-input v-model="form.age" placeholder="年龄"></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="sex">
-          <el-input v-model="form.sex" placeholder="性别"></el-input>
+        <el-form-item label="性别" prop="gender">
+          <el-input v-model="form.gender" placeholder="性别"></el-input>
         </el-form-item>
         <el-form-item label="电话" prop="phone">
           <el-input v-model="form.phone" placeholder="电话"></el-input>
@@ -66,7 +66,7 @@ const form = reactive({
   confirmPass: "",
   name: "",
   age: "",
-  sex: "",
+  gender: "",
   phone: "",
   emergencyPhone: "",
   email: "",
@@ -128,18 +128,7 @@ const register = () => {
   formRef.value.validate((valid) => {
     if (valid) {
       request
-          .post("/register", {
-            id: form.id,
-            password: form.password,
-            newPassword: form.confirmPass,
-            role: form.role,
-            gender: form.sex,
-            name: form.name,
-            age: form.age,
-            address: form.address,
-            phone: form.phone,
-            emergencyPhone: form.emergencyPhone
-          })
+          .post("/register", form)
           .then((res) => {
             if (res.code === "200") {
               router.push("/login"); // 跳转登录页面

@@ -22,9 +22,14 @@
         <el-dropdown placement="bottom">
           <div class="avatar">
             <!--            <img :src="user.avatar" || />-->
-            <el-avatar :size="40" :src="user.avatar" v-if="user.avatar"/>
-            <el-avatar :size="40" :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" v-else/>
-            <el-button> {{ user.name || '管理员' }}</el-button>
+            <span>
+              <el-avatar :size="40" :src="user.avatar" v-if="user.avatar"/>
+              <el-avatar :size="40" :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'" v-else/>
+            </span>
+            <span style="padding: 7px">
+              <el-button> {{ user.name || '管理员' }}</el-button>
+            </span>
+
           </div>
           <template #dropdown>
             <el-dropdown-menu>
@@ -57,7 +62,7 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="/doctorCard">预约挂号</el-menu-item>
-              <el-menu-item index="/reserve">我的挂号</el-menu-item>
+              <el-menu-item index="/registration">我的挂号</el-menu-item>
               <el-menu-item index="/record">我的就诊</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
@@ -69,7 +74,7 @@
               <span>诊断治疗</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="/reserve">待处理挂号</el-menu-item>
+              <el-menu-item index="/registration">待处理挂号</el-menu-item>
               <el-menu-item index="/record">诊断记录</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
@@ -155,7 +160,7 @@ function goToPerson() {
   } else if (user.value.role === 'DOCTOR') {
     router.push('/doctorPerson');
   } else if (user.value.role === 'PATIENT') {
-    router.push('/userPerson');
+    router.push('/patientPerson');
   }
 }
 

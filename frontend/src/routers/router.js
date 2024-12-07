@@ -12,13 +12,13 @@ import Doctor from '../components/manager/Doctor.vue';
 import Patient from '../components/manager/Patient.vue';
 import AdminPerson from '../components/manager/AdminPerson.vue';
 import DoctorPerson from '../components/manager/DoctorPerson.vue';
-import UserPerson from '../components/manager/UserPerson.vue';
+import PatientPerson from '../components/manager/PatientPerson.vue';
 import Password from '../components/manager/Password.vue';
 import Notice from '../components/manager/Notice.vue';
 import Department from '../components/manager/Department.vue';
 import Welcome from '../components/manager/Welcome.vue';
 import DoctorCard from '../components/manager/DoctorCard.vue';
-import Reserve from '../components/manager/Reserve.vue';
+import Registration from '../components/manager/Registration.vue';
 import Record from '../components/manager/Record.vue';
 import FrontHome from '../components/front/Home.vue';
 import Person from '../components/front/Person.vue';
@@ -83,10 +83,10 @@ const router = createRouter({
                     component: DoctorPerson,
                 },
                 {
-                    path: 'userPerson',
-                    name: 'UserPerson',
+                    path: 'patientPerson',
+                    name: 'PatientPerson',
                     meta: {name: '个人信息'},
-                    component: UserPerson,
+                    component: PatientPerson,
                 },
                 {
                     path: 'password',
@@ -113,10 +113,10 @@ const router = createRouter({
                     component: DoctorCard,
                 },
                 {
-                    path: 'reserve',
-                    name: 'Reserve',
+                    path: 'registration',
+                    name: 'Registration',
                     meta: {name: '我的挂号'},
-                    component: Reserve,
+                    component: Registration,
                 },
                 {
                     path: 'record',

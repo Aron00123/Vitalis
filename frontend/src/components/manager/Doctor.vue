@@ -15,7 +15,7 @@
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column prop="id" label="账号" width="70" align="center" sortable/>
-        <el-table-column label="头像">
+        <el-table-column label="照片">
           <template #default="{ row }">
             <el-image
                 v-if="row.photo"
@@ -31,8 +31,6 @@
         <el-table-column prop="title" label="职称"/>
         <el-table-column prop="specialty" label="主治疾病" show-overflow-tooltip/>
         <el-table-column prop="departmentName" label="科室"/>
-        <el-table-column prop="consultLimit" label="就诊限额"/>
-        <el-table-column prop="consultDays" label="坐诊日" show-overflow-tooltip/>
         <el-table-column prop="phone" label="电话"/>
         <el-table-column prop="description" label="简介" show-overflow-tooltip/>
         <el-table-column label="操作" align="center" width="180">
@@ -88,12 +86,6 @@
             <el-option v-for="item in departmentData" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="就诊限额" prop="consultLimit">
-          <el-input v-model="form.consultLimit" placeholder="就诊限额"/>
-        </el-form-item>
-        <el-form-item label="坐诊日" prop="consultDays">
-          <el-input v-model="form.consultLimit" placeholder="坐诊日"/>
-        </el-form-item>
         <el-form-item label="简介" prop="description">
           <el-input type="textarea" :rows="4" v-model="form.description" placeholder="简介"/>
         </el-form-item>
@@ -132,8 +124,6 @@ const tableData = ref([
     title: '',
     specialty: '',
     departmentName: '',
-    consultLimit: '',
-    consultDays: '',
     description: ''
 
   }
@@ -146,6 +136,7 @@ const total = ref(1)
 const id = ref("");
 
 const formVisible = ref(false);
+const isHandleAdd = ref(false);
 const form = reactive({});
 const rules = reactive({
   id: [{required: true, message: "请输入账号", trigger: "blur"}],
@@ -154,30 +145,39 @@ const ids = ref([]);
 const departmentData = ref([]);
 
 const loadDepartment = () => {
-  request.post("/department/selectAll").then((res) => {
-    if (res.code === "200") {
-      departmentData.value = res.data;
-    } else {
-      ElMessage.error(res.msg);
-    }
-  });
+  request
+      .post("/department/selectAll")
+      .then((res) => {
+        if (res.code === "200") {
+          departmentData.value = res.data;
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
 };
 
 const load = (page = 1) => {
   pageNum.value = page;
-  // request
-  //     .post("/doctor/selectPage", {
-  //       params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
-  //     })
-  //     .then((res) => {
-  //       tableData.value = res.data?.list || [];
-  //       total.value = res.data?.total || 0;
-  //     });
+  request
+      .post("/doctor/selectPage", {
+        params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
+      })
+      .then((res) => {
+        tableData.value = res.data?.list || [];
+        total.value = res.data?.total || 0;
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
 };
 
 const handleAdd = () => {
   Object.assign(form, {});
   formVisible.value = true;
+  isHandleAdd.value = true;
 };
 
 const handleEdit = (row) => {
@@ -187,7 +187,7 @@ const handleEdit = (row) => {
 
 const save = () => {
   request
-      .post(form.value.id ? "/doctor/update" : "/doctor/add", form)
+      .post(isHandleAdd.value ? "/doctor/add" : "/doctor/update", form)
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success("保存成功");
@@ -196,7 +196,11 @@ const save = () => {
         } else {
           ElMessage.error(res.msg);
         }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
       });
+  isHandleAdd.value = false;
 };
 
 const del = (id) => {
@@ -231,14 +235,19 @@ const delBatch = () => {
   }
   ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
       {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
-    request.delete("/doctor/delete/batch", {data: ids.value}).then((res) => {
-      if (res.code === "200") {
-        ElMessage.success("操作成功");
-        load(1);
-      } else {
-        ElMessage.error(res.msg);
-      }
-    });
+    request
+        .post("/doctor/delete/batch", {data: ids.value})
+        .then((res) => {
+          if (res.code === "200") {
+            ElMessage.success("操作成功");
+            load(1);
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          ElMessage.error("请求失败，请稍后重试");
+        });
   });
 };
 
@@ -252,8 +261,8 @@ const handleCurrentChange = (page) => {
 };
 
 onMounted(() => {
-  // load(1);
-  // loadDepartment();
+  load(1);
+  loadDepartment();
 });
 </script>
 
