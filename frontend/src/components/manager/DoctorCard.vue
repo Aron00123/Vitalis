@@ -2,7 +2,7 @@
   <div>
     <div class="search">
       <el-select v-model="departmentId" placeholder="请选择科室" style="width: 200px">
-        <el-option v-for="item in departmentData" :key="item.id" :label="item.name" :value="item.id">
+        <el-option v-for="item in departmentData" :key="item.departId" :label="item.type" :value="item.departId">
         </el-option>
       </el-select>
       <el-date-picker
@@ -93,43 +93,30 @@ import {ElMessage, ElMessageBox} from "element-plus";
 
 const centerDialogVisible = ref(false)
 
-// const tableData = ref([])  // 所有的数据
-const tableData = [
-  {
-    photo: "",    // 照片
-    id: "",   // 医生id
-    name: "谢晓红",
-    departmentName: "呼吸内科",   // 科室
-    title: "副主任医师",  // 职称
-    specialty: "矽肺，慢性支气管炎，阻塞性肺气肿，支气管哮喘，支气管扩张症，过敏性哮喘，肺结核，流行性感冒，肺炎支原体肺炎，葡萄球菌肺炎，肺炎，肺炎链球菌肺炎，慢性肺源性心脏病，急性气管-支气管炎，急性上呼吸道感染",  // 主治疾病
-    description: "上海市徐汇区新乐社区卫生服务中心 1975年毕业于贵阳医学院医疗系，长期以来一直在病房工作。擅长治疗消化系统呼吸系统。",    // 医生简介
-    phone: "18620988651", // 联系电话
-    consultDays: "星期五上午", // 坐诊日
-    consultLimit: 10,
-    date: "2024-12-5"
-  }
-]
+const tableData = ref([])  // 所有的数据
 const pageNum = ref(1)   // 当前的页码
 const pageSize = ref(10)  // 每页显示的个数
 const total = ref(0)
 const departmentId = ref(null)
 const departmentData = ref([])
 let date = ref(null)
+let formatDate = ''
 
 const user = JSON.parse(localStorage.getItem('xm-user') || '{}')
 
 // 挂号
 const reserve = (doctorId) => {
-  if (user.role !== 'USER') {
+  if (user.role !== 'PATIENT') {
     ElMessage.error('您的角色不支持挂号操作')
     return
   }
   let data = {
-    userId: user.id,
-    doctorId: doctorId
+    patientId: user.id,
+    doctorId: doctorId,
+    appointDate: formatDate
   }
   request
-      .post("/reserve/add", data)
+      .post("/registration/add", data)
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success('挂号成功');
@@ -173,22 +160,24 @@ const load = (pageNum1) => {
   let year = date.value.getFullYear()
   let month = date.value.getMonth() + 1
   let day = date.value.getDate()
-  let formatDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
+  formatDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
 
-
+  console.log(pageNum.value)
+  console.log(pageSize.value)
+  console.log(departmentId.value)
+  console.log(formatDate)
   request
       .post("/doctor/selectPage2", {
-        params: {
           pageNum: pageNum.value,
           pageSize: pageSize.value,
           departmentId: departmentId.value,
           dateStr: formatDate
-        }
       })
       .then((res) => {
         if (res.code === "200") {
-          tableData.value = res.data?.list
-          total.value = res.data?.total
+          tableData.value = res.data.list
+          total.value = res.data.total
+          console.log(tableData.value)
         } else {
           ElMessage.error(res.msg);
         }

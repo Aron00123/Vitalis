@@ -70,12 +70,13 @@ const rules = {
 const update = () => {
   formRef.value.validate((valid) => {
     if (valid) {
+      console.log(user.value)
       request
-          .post("/updatePassword", user)
+          .post("/updatePassword", user.value)
           .then((res) => {
             if (res.code === "200") {
               localStorage.removeItem('xm-user')  // 清除缓存的用户信息
-              ElMessage.success("注册成功");
+              ElMessage.success("修改成功");
               router.push("/login"); // 跳转登录页面
             } else {
               ElMessage.error(res.msg);

@@ -63,7 +63,6 @@ import request from "../utils/request";
 const form = reactive({
   id: "",
   password: "",
-  confirmPass: "",
   name: "",
   age: "",
   gender: "",

@@ -107,28 +107,12 @@ const rules = reactive({
   content: [{required: true, message: "请输入公告内容", trigger: "blur"}],
 });
 const ids = ref([]);
-const departmentData = ref([]);
-
-const loadDepartment = () => {
-  request
-      .post("/notice/selectAll")
-      .then((res) => {
-        if (res.code === "200") {
-          departmentData.value = res.data;
-        } else {
-          ElMessage.error(res.msg);
-        }
-      })
-      .catch((err) => {
-        ElMessage.error("请求失败，请稍后重试");
-      });
-};
 
 const load = (page = 1) => {
   pageNum.value = page;
   request
       .post("/notice/selectPage", {
-        params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
+        pageNum: pageNum.value, pageSize: pageSize.value, username: id.value
       })
       .then((res) => {
         tableData.value = res.data?.list || [];
@@ -229,7 +213,6 @@ const handleCurrentChange = (page) => {
 
 onMounted(() => {
   load(1);
-  loadDepartment();
 });
 </script>
 

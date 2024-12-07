@@ -143,8 +143,7 @@ const load = (pageNum1) => {
         params: {
           pageNum,
           pageSize: pageSize.value,
-          status: status.value,
-          id: user.value.id
+          status: status.value
         }
       })
       .then((res) => {

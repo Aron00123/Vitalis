@@ -15,8 +15,8 @@
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column prop="id" label="序号" width="70" align="center" sortable/>
-        <el-table-column prop="type" label="科室类型" />
-        <el-table-column prop="directorId" label="科室主任身份证号" />
+        <el-table-column prop="type" label="科室类型"/>
+        <el-table-column prop="directorId" label="科室主任身份证号"/>
         <el-table-column prop="deputyId" label="科室副主任身份证号"/>
         <el-table-column prop="docNum" label="医生数量"/>
         <el-table-column prop="floor" label="所属楼层"/>
@@ -99,28 +99,12 @@ const rules = reactive({
   floor: [{required: true, message: "请输入所处楼层", trigger: "blur"}],
 });
 const ids = ref([]);
-const departmentData = ref([]);
-
-const loadDepartment = () => {
-  request
-      .post("/department/selectAll")
-      .then((res) => {
-        if (res.code === "200") {
-          departmentData.value = res.data;
-        } else {
-          ElMessage.error(res.msg);
-        }
-      })
-      .catch((err) => {
-        ElMessage.error("请求失败，请稍后重试");
-      });
-};
 
 const load = (page = 1) => {
   pageNum.value = page;
   request
       .post("/department/selectPage", {
-        params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
+        pageNum: pageNum.value, pageSize: pageSize.value, username: id.value
       })
       .then((res) => {
         tableData.value = res.data?.list || [];
@@ -221,7 +205,6 @@ const handleCurrentChange = (page) => {
 
 onMounted(() => {
   load(1);
-  loadDepartment();
 });
 </script>
 

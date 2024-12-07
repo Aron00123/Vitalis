@@ -49,13 +49,37 @@
     >
 
       <el-form :model="form" label-width="100px" style="padding-right: 50px" :rules="rules" ref="formRef">
-        <el-form-item label="标题" prop="title">
-          <el-input v-model="form.title" placeholder="标题"></el-input>
-        </el-form-item>
-        <el-form-item label="科室" prop="departmentName">
-          <el-select v-model="form.departmentId" placeholder="请选择科室" style="width: 100%">
-            <el-option v-for="item in departmentData" :key="item.id" :label="item.name" :value="item.id"/>
+        <el-form-item label="选择医生" prop="doctor">
+          <el-select v-model="form.id" placeholder="请选择医生" style="width: 100%">
+            <el-option
+                v-for="item in doctorData"
+                :key="item.id"
+                :label="`${item.name} - ${item.departmentName}`"
+                :value="item.id"
+            ></el-option>
           </el-select>
+
+        </el-form-item>
+        <el-form-item label="就诊限额" prop="consultLimit">
+          <el-input v-model="form.consultLimit" placeholder="就诊限额"></el-input>
+        </el-form-item>
+
+        <el-form-item label="坐诊日" prop="consultDays">
+          <el-checkbox
+              v-model="checkAll"
+              :indeterminate="isIndeterminate"
+              @change="handleCheckAllChange"
+          >
+            全选
+          </el-checkbox>
+          <el-checkbox-group
+              v-model="checkedDays"
+              @change="handleCheckedCitiesChange"
+          >
+            <el-checkbox v-for="day in weeks" :key="day" :label="day" :value="day">
+              {{ day }}
+            </el-checkbox>
+          </el-checkbox-group>
         </el-form-item>
 
       </el-form>
@@ -79,33 +103,42 @@ const tableData = ref([{
 }])
 const pageNum = ref(1);
 const pageSize = ref(10);
-// const total = ref(0);
-const total = ref(1)
-
+const total = ref(0);
+const doctorData = ref([]);
 const id = ref("");
 
 const formVisible = ref(false);
 const isHandleAdd = ref(false);
 const form = reactive({});
 const rules = reactive({
-  title: [{required: true, message: "请输入公告标题", trigger: "blur"}],
-  content: [{required: true, message: "请输入公告内容", trigger: "blur"}],
+  doctor: [{required: true, message: "请选择医生", trigger: "blur"}],
+  consultLimit: [{required: true, message: "请输入就诊限额", trigger: "blur"}],
+});
 
-<el-table-column prop="name" label="医生姓名"/>
-<el-table-column prop="department" label="科室"/>
-<el-table-column prop="consultLimit" label="就诊限额"/>
-<el-table-column prop="consultDays" label="坐诊日"/>
-})
-;
 const ids = ref([]);
-const departmentData = ref([]);
+const checkAll = ref(false)
+const isIndeterminate = ref(true)
+const checkedDays = ref([])
+const weeks = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
 
-const loadDepartment = () => {
+const handleCheckAllChange = (val) => {
+  checkedDays.value = val ? weeks : []
+  isIndeterminate.value = false
+}
+const handleCheckedCitiesChange = (value) => {
+  const checkedCount = value.length
+  checkAll.value = checkedCount === weeks.length
+  isIndeterminate.value = checkedCount > 0 && checkedCount < weeks.length
+}
+
+const loadDoctor = () => {
   request
-      .post("/plan/selectAll")
+      .post("/doctor/selectAll", {
+        pageNum: pageNum.value, pageSize: pageSize.value, username: id.value
+      })
       .then((res) => {
         if (res.code === "200") {
-          departmentData.value = res.data;
+          doctorData.value = res.data;
         } else {
           ElMessage.error(res.msg);
         }
@@ -122,8 +155,12 @@ const load = (page = 1) => {
         params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
       })
       .then((res) => {
-        tableData.value = res.data?.list || [];
-        total.value = res.data?.total || 0;
+        if (res.code === "200") {
+          tableData.value = res.data?.list || [];
+          total.value = res.data?.total || 0;
+        } else {
+          ElMessage.error(res.msg);
+        }
       })
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");
@@ -143,7 +180,11 @@ const handleEdit = (row) => {
 
 const save = () => {
   request
-      .post(isHandleAdd.value ? "/plan/add" : "/plan/update", form)
+      .post(isHandleAdd.value ? "/plan/add" : "/plan/update", {
+        id: form.id.value,
+        consultLimit: form.consultLimit.value,
+        dateStr: checkedDays.value.join(',')
+      })
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success("保存成功");
@@ -220,7 +261,7 @@ const handleCurrentChange = (page) => {
 
 onMounted(() => {
   load(1);
-  loadDepartment();
+  loadDoctor();
 });
 </script>
 
