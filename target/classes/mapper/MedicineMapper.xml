@@ -5,8 +5,7 @@
 <mapper namespace="com.example.vitalis.mapper.MedicineMapper">
 
     <!-- 基本字段列表 -->
-    <sql id="Base_Column
-      
+    <sql id="Base_Column_List">
         id, name, expiryDate, dosage, effects, stock, price
     </sql>
 
@@ -27,8 +26,8 @@
 
     <!-- 插入新记录 -->
     <insert id="insert" parameterType="com.example.vitalis.entity.Medicine" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO Medicine (name, expiryDate, dosage, effects, stock, price)
-        VALUES (#{name}, #{expiryDate}, #{dosage}, #{effects}, #{stock}, #{price})
+        INSERT INTO Medicine (id, name, expiryDate, dosage,  effects, stock, price)
+        VALUES (#{id}, #{name}, #{expiryDate}, #{dosage}, #{effects}, #{stock}, #{price})
     </insert>
 
     <!-- 根据ID删除记录 -->
@@ -49,12 +48,6 @@
             <if test="price != null">price = #{price},</if>
         </set>
         WHERE id = #{id}
-    </update>
-
-</mapper>  WHERE id = #{id}
-    </update>
-
-</mapper> WHERE id = #{id}
     </update>
 
 </mapper>

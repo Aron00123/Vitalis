@@ -16,6 +16,8 @@ public class Registration {
     /** 就诊地址 */
     private String appointAddress;
 
+    private String status;
+
     public Integer getRegistrationId() {
         return registrationId;
     }
@@ -54,6 +56,14 @@ public class Registration {
 
     public void setAppointDate(String appointDate) {
         this.appointDate = appointDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getAppointAddress() {

@@ -5,12 +5,12 @@ package com.example.vitalis.entity;
  */
 public class Medicine {
     /** 药品ID */
-    private Integer id;
+    private String id;
     /** 药品名称 */
     private String name;
     /** 有效日期 */
     private String expiryDate;
-    /** 使用方法 */
+    /** 使用计量 */
     private String dosage;
     /** 药品作用 */
     private String effects;
@@ -19,11 +19,11 @@ public class Medicine {
     /** 价格 */
     private Double price;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

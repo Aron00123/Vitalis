@@ -40,8 +40,8 @@
     <update id="updateById" parameterType="com.example.vitalis.entity.Account">
         UPDATE Account
         <set>
-            <if test="password != null">password = #{password},</if>
-            <if test="newPassword != null">newPassword = #{newPassword}. </if>if>
+            <if test="password != null">password = #{newPassword},</if>
+            <if test="newPassword != null">newPassword = #{password},</if>
             <if test="role != null">role = #{role},</if>
         </set>
         WHERE id = #{id}

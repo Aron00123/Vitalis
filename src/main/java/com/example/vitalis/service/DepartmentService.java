@@ -37,6 +37,10 @@ public class DepartmentService {
     }
 
     public void updateById(Department department) {
+        Department department2 = departmentMapper.selectById(department.getDepartId());
+        if (ObjectUtil.isNull(department2)) {
+            throw new CustomException(ResultCodeEnum.DEPARTMENT_NOT_EXIST_ERROR);
+        }
         departmentMapper.updateById(department);
     }
 

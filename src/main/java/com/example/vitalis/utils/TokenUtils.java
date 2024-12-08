@@ -6,12 +6,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.vitalis.common.Constants;
 import com.example.vitalis.common.enums.RoleEnum;
-import com.example.vitalis.service.old.AdminService;
-import com.example.vitalis.service.old.DoctorService;
-import com.example.vitalis.service.old.UserService;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import com.example.vitalis.entity.Account;
+import com.example.vitalis.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -28,22 +28,14 @@ public class TokenUtils {
 
     private static final Logger log = LoggerFactory.getLogger(TokenUtils.class);
 
-    private static AdminService staticAdminService;
-    private static DoctorService staticDoctorService;
-    private static UserService staticUserService;
+    private static AccountService staticAccountService;
 
     @Resource
-    AdminService adminService;
-    @Resource
-    DoctorService doctorService;
-    @Resource
-    UserService userService;
+    AccountService accountService;
 
     @PostConstruct
     public void setUserService() {
-        staticAdminService = adminService;
-        staticDoctorService = doctorService;
-        staticUserService = userService;
+        staticAccountService = accountService;
     }
 
     /**
@@ -65,16 +57,7 @@ public class TokenUtils {
             if (ObjectUtil.isNotEmpty(token)) {
                 String userRole = JWT.decode(token).getAudience().get(0);
                 String userId = userRole.split("-")[0];  // 获取用户id
-                String role = userRole.split("-")[1];    // 获取角色
-                if (RoleEnum.ADMIN.name().equals(role)) {
-                    return staticAdminService.selectById(Integer.valueOf(userId));
-                }
-                if (RoleEnum.DOCTOR.name().equals(role)) {
-                    return staticDoctorService.selectById(Integer.valueOf(userId));
-                }
-                if (RoleEnum.USER.name().equals(role)) {
-                    return staticUserService.selectById(Integer.valueOf(userId));
-                }
+                return staticAccountService.selectById(userId);
             }
         } catch (Exception e) {
             log.error("获取当前用户信息出错", e);

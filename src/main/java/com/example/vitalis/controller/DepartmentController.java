@@ -23,37 +23,37 @@ public class DepartmentController {
         return Result.success();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public Result deleteById(@PathVariable Integer id) {
         departmentService.deleteById(id);
         return Result.success();
     }
 
-    @DeleteMapping("/delete/batch")
+    @PostMapping("/delete/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
         departmentService.deleteBatch(ids);
         return Result.success();
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public Result updateById(@RequestBody Department department) {
         departmentService.updateById(department);
         return Result.success();
     }
 
-    @GetMapping("/selectById/{id}")
+    @PostMapping("/selectById/{id}")
     public Result selectById(@PathVariable Integer id) {
         departmentService.selectById(id);
         return Result.success();
     }
 
-    @GetMapping("/selectAll")
+    @PostMapping("/selectAll")
     public Result selectAll(Department department ) {
         List<Department> list = departmentService.selectAll(department);
         return Result.success(list);
     }
 
-    @GetMapping("/selectPage")
+    @PostMapping("/selectPage")
     public Result selectPage(Department department,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {

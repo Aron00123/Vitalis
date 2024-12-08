@@ -6,6 +6,9 @@ import com.example.vitalis.common.Result;
 import com.example.vitalis.common.enums.ResultCodeEnum;
 import com.example.vitalis.common.enums.RoleEnum;
 import com.example.vitalis.entity.Account;
+import com.example.vitalis.entity.Doctor;
+import com.example.vitalis.entity.Patient;
+import com.example.vitalis.entity.PatientAccount;
 import com.example.vitalis.service.AccountService;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +33,7 @@ public class WebController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody Account account) {
-        if (ObjectUtil.isEmpty(account.getId()) || ObjectUtil.isEmpty(account.getPassword())
-                || ObjectUtil.isEmpty(account.getRole())) {
+        if (ObjectUtil.isEmpty(account.getId()) || ObjectUtil.isEmpty(account.getPassword())) {
             return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
         }
 
@@ -42,27 +44,28 @@ public class WebController {
      * 注册
      */
     @PostMapping("/register")
-    public Result register(@RequestBody Account account) {
-        if (StrUtil.isBlank(account.getId()) || StrUtil.isBlank(account.getPassword())
-                || ObjectUtil.isEmpty(account.getRole())) {
+    public Result register(@RequestBody PatientAccount patient) {
+        if (StrUtil.isBlank(patient.getId()) || StrUtil.isBlank(patient.getPassword())
+                || ObjectUtil.isEmpty(patient.getRole())) {
             return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
         }
-        if (RoleEnum.PATIENT.name().equals(account.getRole())) {
-            accountService.register(account);
-        }
+        Account account = new Account();
+        account.setId(patient.getId());account.setPassword(patient.getPassword());account.setNewPassword("");account.setRole(patient.getRole());
+        Patient patient1 = new Patient(patient.getId(), patient.getGender(), patient.getName(), patient.getAge(), patient.getAddress(), patient.getPhone(), patient.getEmergencyPhone());
+        accountService.register(account, patient1);
         return Result.success();
     }
 
     /**
      * 修改密码
      */
-    @PutMapping("/updatePassword")
-    public Result updatePassword(@RequestBody Account account) {
+    @PostMapping("/updatePassword")
+    public Result updatePassword(@RequestBody PatientAccount account) {
         if (StrUtil.isBlank(account.getId()) || StrUtil.isBlank(account.getPassword())
                 || ObjectUtil.isEmpty(account.getNewPassword())) {
             return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
         }
-        accountService.updatePassword(account);
+        accountService.updatePassword(account.getAccount());
         return Result.success();
     }
 

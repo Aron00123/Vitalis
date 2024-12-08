@@ -3,7 +3,7 @@ package com.example.vitalis.entity;
 /**
  * 医生实体类
  */
-public class Doctor {
+public class Doctor implements Cloneable{
     /** 身份证号 */
     private String id;
     /** 姓名 */
@@ -24,6 +24,12 @@ public class Doctor {
     private String phone;
     /** 照片 */
     private String photo;
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone(); // 浅克隆
+    }
+
 
     public String getId() {
         return id;

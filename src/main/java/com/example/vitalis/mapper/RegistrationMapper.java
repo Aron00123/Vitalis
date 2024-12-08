@@ -12,7 +12,7 @@ public interface RegistrationMapper {
 
     int updateById(Registration registration);
 
-    Registration selectById(Integer id);
+    Registration selectById(Integer registrationId);
 
     List<Registration> selectAll(Registration registration);
 }

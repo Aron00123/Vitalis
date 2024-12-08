@@ -22,37 +22,37 @@ public class PatientController {
         return Result.success();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public Result deleteById(@PathVariable String id) {
         patientService.deleteById(id);
         return Result.success();
     }
 
-    @DeleteMapping("/delete/batch")
+    @PostMapping("/delete/batch")
     public Result deleteBatch(@RequestBody List<String> ids) {
         patientService.deleteBatch(ids);
         return Result.success();
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public Result updateById(@RequestBody Patient patient) {
         patientService.updateById(patient);
         return Result.success();
     }
 
-    @GetMapping("/selectById/{id}")
+    @PostMapping("/selectById/{id}")
     public Result selectById(@PathVariable String id) {
         Patient patient = patientService.selectById(id);
         return Result.success(patient);
     }
 
-    @GetMapping("/selectAll")
+    @PostMapping("/selectAll")
     public Result selectAll(Patient patient ) {
         List<Patient> list = patientService.selectAll(patient);
         return Result.success(list);
     }
 
-    @GetMapping("/selectPage")
+    @PostMapping("/selectPage")
     public Result selectPage(Patient patient,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {

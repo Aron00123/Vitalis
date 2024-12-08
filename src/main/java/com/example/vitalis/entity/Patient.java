@@ -74,4 +74,14 @@ public class Patient {
     public void setEmergencyPhone(String emergencyPhone) {
         this.emergencyPhone = emergencyPhone;
     }
+
+    public Patient(String id, String gender, String name, Integer age, String address, String phone, String emergencyPhone) {
+        this.id = id;
+        this.gender = gender;
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.phone = phone;
+        this.emergencyPhone = emergencyPhone;
+    }
 }

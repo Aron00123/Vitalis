@@ -6,7 +6,7 @@
 
     <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        registrationId, departmentId, doctorId, patientId, appointDate, appointAddress
+        registrationId, departmentId, status, doctorId, patientId, appointDate, appointAddress
     </sql>
 
     <!-- 查询所有预约记录 -->
@@ -14,7 +14,16 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM Registration
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="patientId != null">AND patientId = #{patientId}</if>
+                <if test="doctorId != null">AND doctorId = #{doctorId}</if>
+                <if test="appointDate != null">AND appointDate = #{appointDate}</if>
+                <if test="status != null">AND status = #{status}</if>
+            </trim>
+        </where>
     </select>
+
 
     <!-- 根据挂号单ID查询预约记录 -->
     <select id="selectById" resultType="com.example.vitalis.entity.Registration">
@@ -26,8 +35,8 @@
 
     <!-- 插入预约记录 -->
     <insert id="insert" parameterType="com.example.vitalis.entity.Registration" useGeneratedKeys="true" keyProperty="registrationId">
-        INSERT INTO Registration (registrationId, departmentId, doctorId, patientId, appointDate, appointAddress)
-        VALUES (#{registrationId}, #{departmentId}, #{doctorId}, #{patientId}, #{appointDate}, #{appointAddress})
+        INSERT INTO Registration (registrationId, departmentId, doctorId, patientId, appointDate, appointAddress, status)
+        VALUES (#{registrationId}, #{departmentId}, #{doctorId}, #{patientId}, #{appointDate}, #{appointAddress}, #{status})
     </insert>
 
     <!-- 根据挂号单ID删除预约记录 -->
@@ -45,6 +54,7 @@
             <if test="patientId != null">patientId = #{patientId},</if>
             <if test="appointDate != null">appointDate = #{appointDate},</if>
             <if test="appointAddress != null">appointAddress = #{appointAddress},</if>
+            <if test="status != null">status = #{status},</if>
         </set>
         WHERE registrationId = #{registrationId}
     </update>

@@ -38,10 +38,14 @@ public class MedicineService {
     }
 
     public void updateById(Medicine medicine) {
+        Medicine medicine1 = medicineMapper.selectById(medicine.getId());
+        if (ObjectUtil.isNull(medicine1)) {
+            throw new CustomException(ResultCodeEnum.MEDICINE_NOT_EXIST_ERROR);
+        }
         medicineMapper.updateById(medicine);
     }
 
-    public Medicine selectById(Integer id ) {
+    public Medicine selectById(String id ) {
         return medicineMapper.selectById(id);
     }
 

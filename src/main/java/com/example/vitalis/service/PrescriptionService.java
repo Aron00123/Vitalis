@@ -37,6 +37,10 @@ public class PrescriptionService {
     }
 
     public void updateById(Prescription prescription) {
+        Prescription prescription1 = prescriptionMapper.selectById(prescription.getPrescriptionId());
+        if (ObjectUtil.isNull(prescription1)) {
+            throw new CustomException(ResultCodeEnum.PRESCRIPTION_NOT_EXIST_ERROR);
+        }
         prescriptionMapper.updateById(prescription);
     }
 

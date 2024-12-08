@@ -12,7 +12,7 @@ public interface MedicineMapper {
 
     int updateById(Medicine medicine);
 
-    Medicine selectById(Integer id);
+    Medicine selectById(String id);
 
     List<Medicine> selectAll(Medicine medicine);
 }

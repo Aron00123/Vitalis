@@ -4,23 +4,16 @@ package com.example.vitalis.entity;
  * 疾病实体类
  */
 public class Disease {
-
     /** 疾病ID */
     private Integer id;
     /** 疾病名称 */
     private String name;
     /** 症状 */
     private String symptoms;
-    /** 描述 */
-    private String description;
-    /** 预防方法 */
-    private String prevent;
-    /** 病因 */
-    private String cause;
-    /** 传染性 */
-    private String epidemic;
-    /** 推荐检查 */
-    private String check;
+    /** 后遗症 */
+    private String sequelae;
+    /** 潜伏期 */
+    private String incubationPeriod;
 
     public Integer getId() {
         return id;
@@ -46,46 +39,19 @@ public class Disease {
         this.symptoms = symptoms;
     }
 
-    public String getDescription() {
-        return description;
+    public String getSequelae() {
+        return sequelae;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSequelae(String sequelae) {
+        this.sequelae = sequelae;
     }
 
-    public String getPrevent() {
-        return prevent;
+    public String getIncubationPeriod() {
+        return incubationPeriod;
     }
 
-    public void setPrevent(String prevent) {
-        this.prevent = prevent;
+    public void setIncubationPeriod(String incubationPeriod) {
+        this.incubationPeriod = incubationPeriod;
     }
-
-    public String getCause() {
-        return cause;
-    }
-
-    public void setCause(String cause) {
-        this.cause = cause;
-    }
-
-    public String getEpidemic() {
-        return epidemic;
-    }
-
-    public void setEpidemic(String epidemic) {
-        this.epidemic = epidemic;
-    }
-
-    public String getCheck() {
-        return check;
-    }
-
-    public void setCheck(String check) {
-        this.check = check;
-    }
-
-
-
 }

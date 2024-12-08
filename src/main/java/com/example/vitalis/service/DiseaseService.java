@@ -38,6 +38,10 @@ public class DiseaseService {
     }
 
     public void updateById(Disease disease) {
+        Disease disease1 = diseaseMapper.selectById(disease.getId());
+        if (ObjectUtil.isNull(disease1)) {
+            throw new CustomException(ResultCodeEnum.DISEASE_EXIST_ERROR);
+        }
         diseaseMapper.updateById(disease);
     }
 
