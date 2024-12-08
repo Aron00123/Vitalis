@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search" style="padding-bottom: 20px">
-      <el-input placeholder="请输入科室类型查询" style="width: 200px" v-model="id"/>
+      <el-input placeholder="请输入处方id查询" style="width: 200px" v-model="id"/>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
@@ -42,7 +42,7 @@
       </div>
     </div>
     <el-dialog
-        title="科室信息"
+        title="处方信息"
         v-model="formVisible"
         width="40%"
         :close-on-click-modal="false"
@@ -51,7 +51,7 @@
 
       <el-form :model="form" label-width="150px" style="padding-right: 50px" :rules="rules" ref="formRef">
         <el-form-item label="挂号单号" prop="registrationId">
-          <el-input v-model="form.registrationId" placeholder="id"></el-input>
+          <el-input v-model="form.registrationId" placeholder="挂号单号"></el-input>
         </el-form-item>
         <el-form-item label="病人姓名" prop="patientName">
           <el-input v-model="form.patientName" placeholder="病人姓名"></el-input>
@@ -93,10 +93,8 @@ const id = ref("");
 const formVisible = ref(false);
 const isHandleAdd = ref(false);
 const form = reactive({});
-const rules = reactive({})
-;
+const rules = reactive({});
 const ids = ref([]);
-const inputPlaceholder = ref({})
 
 const load = (page = 1) => {
   pageNum.value = page;

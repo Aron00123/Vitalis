@@ -112,7 +112,9 @@ const onLogin = () => {
             if (res.code === "200") {
               // 存储用户数据到本地
               let user = res.data.roleInfo;
-              user.password = res.data.account;
+              user.password = res.data.account.password;
+              user.role = res.data.account.role;
+              console.log(user)
               localStorage.setItem("xm-user", JSON.stringify(user));
               // 跳转主页
               router.push("/");

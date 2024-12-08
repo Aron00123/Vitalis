@@ -11,7 +11,7 @@
 
     <div class="table">
       <el-table :data="tableData" stripe>
-        <el-table-column prop="id" label="挂号单" width="80" align="center" sortable></el-table-column>
+        <el-table-column prop="registrationId" label="挂号单" width="80" align="center" sortable></el-table-column>
         <el-table-column prop="name" label="患者姓名" width="130" show-overflow-tooltip></el-table-column>
         <el-table-column prop="doctor" label="医生姓名" width="130" show-overflow-tooltip></el-table-column>
         <el-table-column prop="departmentName" label="科室" show-overflow-tooltip></el-table-column>
@@ -21,17 +21,13 @@
         <el-table-column label="操作" width="180" align="center">
           <template v-slot="scope">
             <el-button plain type="danger" size="mini" v-if="scope.row.status === '未就诊' && user.role === 'PATIENT'"
-                       @click="del(scope.row.id)">取消挂号
+                       @click="del(scope.row.registrationId)">取消挂号
             </el-button>
             <el-button plain type="primary" size="mini"
                        v-else-if="scope.row.status === '已就诊' && user.role === 'PATIENT'"
-                       @click="searchByRegistrationId(scope.row.id)">查看就诊信息
+                       @click="searchByRegistrationId(scope.row.registrationId)">查看就诊信息
             </el-button>
-            <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR' && scope.row.status === '未就诊'"
-                       @click="call(scope.row)">叫号
-            </el-button>
-            <el-button plain type="primary" size="mini" v-if="user.role === 'DOCTOR' && scope.row.status === '已就诊'"
-                       @click="call(scope.row)">修改处方
+            <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR'" @click="call(scope.row)">叫号
             </el-button>
           </template>
         </el-table-column>
@@ -64,19 +60,6 @@ const router = useRouter();
 // 定义响应式数据
 //const tableData = ref([])  // 所有的数据
 const tableData = ref([
-  // {
-  //   id: 12062,
-  //   name: 'zhangsan',
-  //   doctor: 'doctorWang',
-  //   date: "2024-12-3 15:23",
-  //   status: "已就诊"
-  // }, {
-  //   id: 14197,
-  //   name: 'zhangsan',
-  //   doctor: 'doctorLi',
-  //   date: "2024-12-4 10:52",
-  //   status: "未就诊"
-  // }
 ])
 const pageNum = ref(1)     // 当前的页码
 const pageSize = ref(10)   // 每页显示的个数
@@ -98,13 +81,15 @@ const user = JSON.parse(localStorage.getItem('xm-user') || '{}')
 const call = (row) => {
   let reserveData = JSON.parse(JSON.stringify(row))
   reserveData.status = '已叫号'
+  reserveData.registrationId = reserveData.id;
   request
       .post("/registration/update", reserveData)
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success('叫号成功');
           load(1);
-          record(row)
+          //record(row)
+          searchByRegistrationId(reserveData.registrationId);
         } else {
           ElMessage.error(res.msg);
         }
@@ -125,7 +110,6 @@ const record = (row) => {
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success('数据同步成功');
-          searchByRegistrationId(row.id);
         } else {
           ElMessage.error(res.msg);
         }
@@ -169,7 +153,7 @@ const load = (pageNum1) => {
   if (pageNum1) pageNum.value = pageNum1
   request
       .post("/registration/selectPage", {
-        UserId: user.id,
+        patientId: user.id,
         pageNum: pageNum.value,
         pageSize: pageSize.value,
         status: status.value

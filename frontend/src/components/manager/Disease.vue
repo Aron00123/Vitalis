@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search" style="padding-bottom: 20px">
-      <el-input placeholder="请输入科室类型查询" style="width: 200px" v-model="id"/>
+      <el-input placeholder="请输入疾病名称查询" style="width: 200px" v-model="id"/>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
@@ -15,11 +15,11 @@
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column prop="id" label="序号" width="70" align="center" sortable/>
-        <el-table-column prop="type" label="科室类型"/>
-        <el-table-column prop="directorId" label="科室主任身份证号"/>
-        <el-table-column prop="deputyId" label="科室副主任身份证号"/>
-        <el-table-column prop="docNum" label="医生数量"/>
-        <el-table-column prop="floor" label="所属楼层"/>
+        <el-table-column prop="diseaseName" label="疾病名称"/>
+        <el-table-column prop="symptoms" label="症状"/>
+        <el-table-column prop="sequelae" label="后遗症" show-overflow-tooltip/>
+        <el-table-column prop="incubationPeriod" label="潜伏期"/>
+
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
             <el-button size="mini" type="primary" plain @click="handleEdit(row)">编辑</el-button>
@@ -40,9 +40,8 @@
         />
       </div>
     </div>
-
     <el-dialog
-        title="科室信息"
+        title="疾病信息"
         v-model="formVisible"
         width="40%"
         :close-on-click-modal="false"
@@ -50,20 +49,17 @@
     >
 
       <el-form :model="form" label-width="150px" style="padding-right: 50px" :rules="rules" ref="formRef">
-        <el-form-item label="科室类型" prop="type">
-          <el-input v-model="form.type" placeholder="科室类型"></el-input>
+        <el-form-item label="疾病名称" prop="diseaseName">
+          <el-input v-model="form.diseaseName" placeholder="疾病名称"></el-input>
         </el-form-item>
-        <el-form-item label="科室主任身份证号" prop="directorId">
-          <el-input v-model="form.directorId" placeholder="科室主任身份证号"></el-input>
+        <el-form-item label="症状" prop="symptoms">
+          <el-input type="textarea" rows="5" v-model="form.symptoms" placeholder="症状"></el-input>
         </el-form-item>
-        <el-form-item label="科室副主任身份证号" prop="deputyId">
-          <el-input v-model="form.deputyId" placeholder="科室副主任身份证号"></el-input>
+        <el-form-item label="后遗症" prop="sequelae">
+          <el-input type="textarea" rows="5" v-model="form.sequelae" placeholder="后遗症"></el-input>
         </el-form-item>
-        <el-form-item label="医生数量" prop="docNum">
-          <el-input v-model="form.docNum" placeholder="医生数量"></el-input>
-        </el-form-item>
-        <el-form-item label="所属楼层" prop="floor">
-          <el-input v-model="form.floor" placeholder="所属楼层"></el-input>
+        <el-form-item label="潜伏期" prop="incubationPeriod">
+          <el-input v-model="form.incubationPeriod" placeholder="潜伏期"></el-input>
         </el-form-item>
       </el-form>
 
@@ -72,6 +68,7 @@
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>
+
   </div>
 </template>
 
@@ -92,18 +89,13 @@ const id = ref("");
 const formVisible = ref(false);
 const isHandleAdd = ref(false);
 const form = reactive({});
-const rules = reactive({
-  type: [{required: true, message: "科室类型", trigger: "blur"}],
-  directorId: [{required: true, message: "请输入科室主任身份证号", trigger: "blur"}],
-  docNum: [{required: true, message: "请输入医生数量", trigger: "blur"}],
-  floor: [{required: true, message: "请输入所处楼层", trigger: "blur"}],
-});
+const rules = reactive({});
 const ids = ref([]);
 
 const load = (page = 1) => {
   pageNum.value = page;
   request
-      .post("/department/selectPage", {
+      .post("/disease/selectPage", {
         pageNum: pageNum.value, pageSize: pageSize.value, username: id.value
       })
       .then((res) => {
@@ -128,7 +120,7 @@ const handleEdit = (row) => {
 
 const save = () => {
   request
-      .post(isHandleAdd.value ? "/department/add" : "/department/update", form)
+      .post(isHandleAdd.value ? "/disease/add" : "/disease/update", form)
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success("保存成功");
@@ -151,7 +143,7 @@ const del = (id) => {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/department/delete", {data: id})
+        .post("/disease/delete", {data: id})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
@@ -179,7 +171,7 @@ const delBatch = () => {
   ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
       {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
     request
-        .post("/department/delete/batch", {data: ids.value})
+        .post("/disease/delete/batch", {data: ids.value})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
