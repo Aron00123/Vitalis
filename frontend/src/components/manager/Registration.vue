@@ -27,7 +27,11 @@
                        v-else-if="scope.row.status === '已就诊' && user.role === 'PATIENT'"
                        @click="searchByRegistrationId(scope.row.id)">查看就诊信息
             </el-button>
-            <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR'" @click="call(scope.row)">叫号
+            <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR' && scope.row.status === '未就诊'"
+                       @click="call(scope.row)">叫号
+            </el-button>
+            <el-button plain type="primary" size="mini" v-if="user.role === 'DOCTOR' && scope.row.status === '已就诊'"
+                       @click="call(scope.row)">修改处方
             </el-button>
           </template>
         </el-table-column>
@@ -60,19 +64,19 @@ const router = useRouter();
 // 定义响应式数据
 //const tableData = ref([])  // 所有的数据
 const tableData = ref([
-  {
-    id: 12062,
-    name: 'zhangsan',
-    doctor: 'doctorWang',
-    date: "2024-12-3 15:23",
-    status: "已就诊"
-  }, {
-    id: 14197,
-    name: 'zhangsan',
-    doctor: 'doctorLi',
-    date: "2024-12-4 10:52",
-    status: "未就诊"
-  }
+  // {
+  //   id: 12062,
+  //   name: 'zhangsan',
+  //   doctor: 'doctorWang',
+  //   date: "2024-12-3 15:23",
+  //   status: "已就诊"
+  // }, {
+  //   id: 14197,
+  //   name: 'zhangsan',
+  //   doctor: 'doctorLi',
+  //   date: "2024-12-4 10:52",
+  //   status: "未就诊"
+  // }
 ])
 const pageNum = ref(1)     // 当前的页码
 const pageSize = ref(10)   // 每页显示的个数
@@ -121,6 +125,7 @@ const record = (row) => {
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success('数据同步成功');
+          searchByRegistrationId(row.id);
         } else {
           ElMessage.error(res.msg);
         }
@@ -164,7 +169,7 @@ const load = (pageNum1) => {
   if (pageNum1) pageNum.value = pageNum1
   request
       .post("/registration/selectPage", {
-        patientId: user.id,
+        UserId: user.id,
         pageNum: pageNum.value,
         pageSize: pageSize.value,
         status: status.value

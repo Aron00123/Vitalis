@@ -143,14 +143,14 @@ const route = useRoute()
 const editor = ref(null);
 //const tableData = ref([]);
 const tableData = ref([
-  {
-    id: "15306",
-    name: "zhangsan",
-    doctor: "doctorWang",
-    date: "2024-12-4 16:31",
-    medicalRecord: "medicalRecord",
-    prescription: "prescription"
-  }
+  // {
+  //   id: "15306",
+  //   name: "zhangsan",
+  //   doctor: "doctorWang",
+  //   date: "2024-12-4 16:31",
+  //   medicalRecord: "medicalRecord",
+  //   prescription: "prescription"
+  // }
 ])
 const pageNum = ref(1);
 const pageSize = ref(10);

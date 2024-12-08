@@ -20,10 +20,12 @@ import Welcome from '../components/manager/Welcome.vue';
 import DoctorCard from '../components/manager/DoctorCard.vue';
 import Registration from '../components/manager/Registration.vue';
 import Record from '../components/manager/Record.vue';
+import Prescription from '../components/manager/Prescription.vue'
+import Medicine from '../components/manager/Medicine.vue'
+import Disease from '../components/manager/Disease.vue'
+
 import FrontHome from '../components/front/Home.vue';
 import Person from '../components/front/Person.vue';
-
-
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -123,6 +125,24 @@ const router = createRouter({
                     name: 'Record',
                     meta: {name: '我的就诊'},
                     component: Record,
+                },
+                {
+                    path: 'prescription',
+                    name: 'Prescription',
+                    meta: {name: '处方管理'},
+                    component: Prescription,
+                },
+                {
+                    path: 'medicine',
+                    name: 'Medicine',
+                    meta: {name: '药品管理'},
+                    component: Medicine,
+                },
+                {
+                    path: 'disease',
+                    name: 'Disease',
+                    meta: {name: '疾病管理'},
+                    component: Disease,
                 },
             ],
         },

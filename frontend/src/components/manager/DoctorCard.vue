@@ -44,14 +44,14 @@
                 <div style="height: 200px ;padding-left: 20px">
                   <div style="padding: 10px"><strong>预约挂号：</strong></div>
                   <div style="padding: 10px;">
-                    <span><strong>{{ item.name }} {{item.title}}</strong></span>
+                    <span><strong>{{ item.name }} {{ item.title }}</strong></span>
                     <!--                    <span style="padding-left: 50px"><strong>{{ item.departmentName }}</strong></span>-->
                   </div>
                   <div style="padding: 10px;">
-                    <span><strong>预约时间：{{item.date}}</strong></span>
+                    <span><strong>预约时间：{{ item.date }}</strong></span>
                   </div>
                   <div style="padding: 10px;">
-                    <span><strong>剩余号数：{{item.consultLimit}}</strong></span>
+                    <span><strong>剩余号数：{{ item.consultLimit }}</strong></span>
                   </div>
 
                 </div>
@@ -94,33 +94,33 @@ import {ElMessage, ElMessageBox} from "element-plus";
 const centerDialogVisible = ref(false)
 
 const tableData = ref([
-  {
-    id: 1,
-    name: 'zhangsan',
-    departmentName: '111',
-    title: '222',
-    specialty: '333',
-    consultLimit: '444',
-    centerDialogVisible: 'false'
-  },
-  {
-    id: 2,
-    name: 'lisi',
-    departmentName: 'aaa',
-    title: 'aaa',
-    specialty: 'aaa',
-    consultLimit: 'bbb',
-    centerDialogVisible: 'false'
-  },
-  {
-    id: 3,
-    name: 'wangwu',
-    departmentName: 'aaa',
-    title: 'aaa',
-    specialty: 'aaa',
-    consultLimit: 'bbb',
-    centerDialogVisible: 'false'
-  }
+  // {
+  //   id: 1,
+  //   name: 'zhangsan',
+  //   departmentName: '111',
+  //   title: '222',
+  //   specialty: '333',
+  //   consultLimit: '444',
+  //   centerDialogVisible: 'false'
+  // },
+  // {
+  //   id: 2,
+  //   name: 'lisi',
+  //   departmentName: 'aaa',
+  //   title: 'aaa',
+  //   specialty: 'aaa',
+  //   consultLimit: 'bbb',
+  //   centerDialogVisible: 'false'
+  // },
+  // {
+  //   id: 3,
+  //   name: 'wangwu',
+  //   departmentName: 'aaa',
+  //   title: 'aaa',
+  //   specialty: 'aaa',
+  //   consultLimit: 'bbb',
+  //   centerDialogVisible: 'false'
+  // }
 ])  // 所有的数据
 const pageNum = ref(1)   // 当前的页码
 const pageSize = ref(10)  // 每页显示的个数
@@ -148,10 +148,12 @@ const reserve = (doctorId, centerDialogVisible) => {
       .post("/registration/add", data)
       .then((res) => {
         if (res.code === "200") {
-          ElMessage.success('挂号成功');
+          if (res.data === 1) {
+            ElMessage.error('当天您已经预约过该医生');
+          } else {
+            ElMessage.success('挂号成功');
+          }
           load(1)
-        } else if (res.code === "5019") {
-          ElMessage.error('您今天已挂过该医生的号')
         } else {
           ElMessage.error(res.msg);
         }

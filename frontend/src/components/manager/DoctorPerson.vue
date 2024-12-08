@@ -63,7 +63,7 @@ const fromVisible = ref(false);
 // Fetch user data
 const getPerson = () => {
   request
-      .post("/user/selectById", user)
+      .post("/doctor/selectById", user)
       .then((res) => {
         if (res.code === "200") {
           Object.assign(user, res.data);
@@ -81,7 +81,7 @@ const getPerson = () => {
 // Update user info on the server
 const update = () => {
   request
-      .post("/user/update", user)
+      .post("/doctor/update", user)
       .then((res) => {
         if (res.code === "200") {
           fromVisible.value = false;
