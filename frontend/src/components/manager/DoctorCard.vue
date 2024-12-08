@@ -44,14 +44,14 @@
                 <div style="height: 200px ;padding-left: 20px">
                   <div style="padding: 10px"><strong>预约挂号：</strong></div>
                   <div style="padding: 10px;">
-                    <span><strong>{{ item.name }} {{item.title}}</strong></span>
+                    <span><strong>{{ item.name }} {{ item.title }}</strong></span>
                     <!--                    <span style="padding-left: 50px"><strong>{{ item.departmentName }}</strong></span>-->
                   </div>
                   <div style="padding: 10px;">
-                    <span><strong>预约时间：{{item.date}}</strong></span>
+                    <span><strong>预约时间：{{ item.date }}</strong></span>
                   </div>
                   <div style="padding: 10px;">
-                    <span><strong>剩余号数：{{item.consultLimit}}</strong></span>
+                    <span><strong>剩余号数：{{ item.consultLimit }}</strong></span>
                   </div>
 
                 </div>

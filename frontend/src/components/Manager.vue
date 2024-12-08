@@ -95,10 +95,10 @@
               <el-icon></el-icon>
               <i class="el-icon-menu"></i><span><strong>就诊管理</strong></span>
             </template>
-            <el-menu-item index="/notice">挂号单管理</el-menu-item>
-            <el-menu-item index="/department">处方管理</el-menu-item>
-            <el-menu-item index="/plan">药品管理</el-menu-item>
-            <el-menu-item index="/plan">疾病管理</el-menu-item>
+            <el-menu-item index="/registration">挂号单管理</el-menu-item>
+            <el-menu-item index="/prescription">处方管理</el-menu-item>
+            <el-menu-item index="/medicine">药品管理</el-menu-item>
+            <el-menu-item index="/disease">疾病管理</el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="info" v-if="user.role === 'ADMIN'">
