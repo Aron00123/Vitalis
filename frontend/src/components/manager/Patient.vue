@@ -149,7 +149,6 @@ const save = () => {
   form.role = 'PATIENT';
   form.password = user.password
 
-
   request
       .post(isHandleAdd.value ? "/register" : "/updatePassword", form)
       .then()
