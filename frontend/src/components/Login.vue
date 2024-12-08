@@ -19,6 +19,13 @@
           ></el-input>
         </el-form-item>
 
+<!--        <el-form-item prop="role">-->
+<!--          <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%;">-->
+<!--            <el-option label="医生" value="DOCTOR"></el-option>-->
+<!--            <el-option label="患者" value="PATIENT"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+
         <el-form-item>
           <el-button
               style="width: 100%; background-color: #4f66d5; border-color: #4f66d5; color: white"
@@ -45,11 +52,13 @@ import request from "../utils/request.js";
 const form = reactive({
   id: "",
   password: "",
+  // role: ""
 });
 
 const rules = {
   id: [{required: true, message: "请输入身份证号", trigger: "blur"}],
   password: [{required: true, message: "请输入密码", trigger: "blur"}],
+  // role: [{required: true, message: "请选择角色", trigger: "blur"}],
 };
 
 const formRef = ref(null);
@@ -102,7 +111,11 @@ const onLogin = () => {
           .then((res) => {
             if (res.code === "200") {
               // 存储用户数据到本地
-              localStorage.setItem("xm-user", JSON.stringify(res.data));
+              let user = res.data.roleInfo;
+              user.password = res.data.account.password;
+              user.role = res.data.account.role;
+              console.log(user)
+              localStorage.setItem("xm-user", JSON.stringify(user));
               // 跳转主页
               router.push("/");
               ElMessage.success("登录成功");

@@ -25,7 +25,6 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="password" label="密码"/>
         <el-table-column prop="name" label="姓名"/>
         <el-table-column prop="gender" label="性别"/>
         <el-table-column prop="title" label="职称"/>
@@ -82,9 +81,12 @@
           <el-input type="textarea" :rows="2" v-model="form.specialty" placeholder="主治疾病"/>
         </el-form-item>
         <el-form-item label="科室" prop="departmentName">
-          <el-select v-model="form.departmentId" placeholder="请选择科室" style="width: 100%">
-            <el-option v-for="item in departmentData" :key="item.id" :label="item.name" :value="item.id"/>
+          <el-select v-model="form.departId" placeholder="请选择科室" style="width: 100%">
+            <el-option v-for="item in departmentData" :key="item.departId" :label="item.type" :value="item.departId"/>
           </el-select>
+        </el-form-item>
+        <el-form-item label="电话" prop="phone">
+          <el-input v-model="form.phone" placeholder="电话"/>
         </el-form-item>
         <el-form-item label="简介" prop="description">
           <el-input type="textarea" :rows="4" v-model="form.description" placeholder="简介"/>
@@ -115,19 +117,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import request from "../../utils/request"; // 替换为实际的请求工具
 
 // const tableData = ref([]);
-const tableData = ref([
-  {
-    id: 'doctorWang',
-    password: '123456',
-    name: "",
-    gender: '',
-    title: '',
-    specialty: '',
-    departmentName: '',
-    description: ''
-
-  }
-])
+const tableData = ref([])
 const pageNum = ref(1);
 const pageSize = ref(10);
 // const total = ref(0);
@@ -186,6 +176,13 @@ const handleEdit = (row) => {
 };
 
 const save = () => {
+  form.role = 'DOCTOR';
+  request
+      .post(isHandleAdd.value ? "/register" : "/account/update", form)
+      .then()
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
   request
       .post(isHandleAdd.value ? "/doctor/add" : "/doctor/update", form)
       .then((res) => {

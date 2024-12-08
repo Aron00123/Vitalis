@@ -37,7 +37,7 @@
           <el-input v-model="user.consultLimit" placeholder="就诊限额" disabled/>
         </el-form-item>
         <el-form-item label="坐诊日" prop="consultDays">
-          <el-input v-model="user.consultLimit" placeholder="坐诊日" disabled/>
+          <el-input v-model="user.consultDays" placeholder="坐诊日" disabled/>
         </el-form-item>
         <el-form-item label="简介" prop="description">
           <el-input type="textarea" :rows="4" v-model="user.description" placeholder="简介"/>
@@ -63,7 +63,7 @@ const fromVisible = ref(false);
 // Fetch user data
 const getPerson = () => {
   request
-      .post("/user/selectById", user)
+      .post("/doctor/selectById", user)
       .then((res) => {
         if (res.code === "200") {
           Object.assign(user, res.data);
@@ -81,7 +81,7 @@ const getPerson = () => {
 // Update user info on the server
 const update = () => {
   request
-      .post("/user/update", user)
+      .post("/doctor/update", user)
       .then((res) => {
         if (res.code === "200") {
           fromVisible.value = false;

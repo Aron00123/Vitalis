@@ -25,7 +25,6 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="password" label="密码"/>
         <el-table-column prop="name" label="姓名"/>
         <el-table-column prop="age" label="年龄"/>
         <el-table-column prop="gender" label="性别"/>
@@ -67,7 +66,7 @@
           <el-input v-model="form.id" placeholder="身份证号"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="密码"></el-input>
+          <el-input v-model="form.newPassword" placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input v-model="form.name" placeholder="姓名"></el-input>
@@ -103,26 +102,11 @@ import {ref, reactive, onMounted} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import request from "../../utils/request"; // 替换为实际的请求工具
 
-// const tableData = ref([]);
-const tableData = ref([
-  {
-    id: 'doctorWang',
-    password: '123456',
-    name: "",
-    gender: '',
-    title: '',
-    specialty: '',
-    departmentName: '',
-    consultLimit: '',
-    consultDays: '',
-    description: ''
-
-  }
-])
+const tableData = ref([]);
 const pageNum = ref(1);
 const pageSize = ref(10);
-// const total = ref(0);
-const total = ref(1)
+const total = ref(0);
+const user = JSON.parse(localStorage.getItem('xm-user') || '{}');
 
 const id = ref("");
 
@@ -133,27 +117,11 @@ const rules = reactive({
   id: [{required: true, message: "请输入账号", trigger: "blur"}],
 });
 const ids = ref([]);
-const departmentData = ref([]);
-
-const loadDepartment = () => {
-  request
-      .post("/department/selectAll")
-      .then((res) => {
-        if (res.code === "200") {
-          departmentData.value = res.data;
-        } else {
-          ElMessage.error(res.msg);
-        }
-      })
-      .catch((err) => {
-        ElMessage.error("请求失败，请稍后重试");
-      });
-};
 
 const load = (page = 1) => {
   pageNum.value = page;
   request
-      .post("/doctor/selectPage", {
+      .post("/patient/selectPage", {
         params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
       })
       .then((res) => {
@@ -177,21 +145,33 @@ const handleEdit = (row) => {
 };
 
 const save = () => {
+  console.log(isHandleAdd.value)
+  form.role = 'PATIENT';
+  form.password = user.password
+
+
   request
-      .post(isHandleAdd.value ? "/doctor/add" : "/doctor/update", form)
-      .then((res) => {
-        if (res.code === "200") {
-          ElMessage.success("保存成功");
-          load(1);
-          formVisible.value = false;
-        } else {
-          ElMessage.error(res.msg);
-        }
-      })
+      .post(isHandleAdd.value ? "/register" : "/updatePassword", form)
+      .then()
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");
       });
-
+  if (!isHandleAdd.value) {
+    request
+        .post("/patient/update", form)
+        .then((res) => {
+          if (res.code === "200") {
+            ElMessage.success("保存成功");
+            load(1);
+            formVisible.value = false;
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          ElMessage.error("请求失败，请稍后重试");
+        });
+  }
   isHandleAdd.value = false;
 };
 
@@ -201,7 +181,7 @@ const del = (id) => {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/doctor/delete", {data: id})
+        .post("/patient/delete", {data: id})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
@@ -229,7 +209,7 @@ const delBatch = () => {
   ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
       {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
     request
-        .post("/doctor/delete/batch", {data: ids.value})
+        .post("/patient/delete/batch", {data: ids.value})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
@@ -255,7 +235,6 @@ const handleCurrentChange = (page) => {
 
 onMounted(() => {
   load(1);
-  loadDepartment();
 });
 </script>
 
