@@ -104,6 +104,7 @@ public class DoctorService {
                 List<Registration> registrationList = registrationMapper.selectAll(registration);
                 if (dbDoctor.getConsultLimit() - registrationList.size() > -1) {
                     Doctor doctor = (Doctor) dbDoctor.clone();
+                    doctor.setConsultLimit(dbDoctor.getConsultLimit() - registrationList.size());
                     finalDoctorList.add(doctor);
                 }
             }
