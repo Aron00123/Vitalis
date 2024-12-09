@@ -25,9 +25,14 @@
             </el-button>
             <el-button plain type="primary" size="mini"
                        v-else-if="scope.row.status === '已就诊' && user.role === 'PATIENT'"
-                       @click="searchByRegistrationId(scope.row.registrationId)">查看就诊信息
+                       @click="searchByRegistrationId(scope.row.registrationId)">就诊记录
             </el-button>
-            <el-button plain type="warning" size="mini" v-if="user.role === 'DOCTOR'" @click="call(scope.row)">叫号
+
+            <el-button plain type="warning" size="mini" v-if="scope.row.status === '未就诊' && user.role === 'DOCTOR'"
+                       @click="call(scope.row)">叫号
+            </el-button>
+            <el-button plain type="primary" size="mini" v-else-if="scope.row.status === '已就诊' && user.role === 'DOCTOR'"
+                       @click="searchByRegistrationId(scope.row.registrationId)">就诊记录
             </el-button>
           </template>
         </el-table-column>
@@ -60,6 +65,12 @@ const router = useRouter();
 // 定义响应式数据
 //const tableData = ref([])  // 所有的数据
 const tableData = ref([
+  {
+    status: '已就诊'
+  },
+  {
+    status: '未就诊'
+  }
 ])
 const pageNum = ref(1)     // 当前的页码
 const pageSize = ref(10)   // 每页显示的个数

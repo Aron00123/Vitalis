@@ -24,9 +24,6 @@ import Prescription from '../components/manager/Prescription.vue'
 import Medicine from '../components/manager/Medicine.vue'
 import Disease from '../components/manager/Disease.vue'
 
-import FrontHome from '../components/front/Home.vue';
-import Person from '../components/front/Person.vue';
-
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -143,25 +140,6 @@ const router = createRouter({
                     name: 'Disease',
                     meta: {name: '疾病管理'},
                     component: Disease,
-                },
-            ],
-        },
-        {
-            path: '/front',
-            name: 'Front',
-            component: Front,
-            children: [
-                {
-                    path: 'home',
-                    name: 'Home',
-                    meta: {name: '系统首页'},
-                    component: FrontHome,
-                },
-                {
-                    path: 'person',
-                    name: 'Person',
-                    meta: {name: '个人信息'},
-                    component: Person,
                 },
             ],
         },

@@ -21,18 +21,6 @@
         <el-table-column prop="doctor" label="医生姓名" width="130" show-overflow-tooltip></el-table-column>
         <el-table-column prop="departmentName" label="科室" show-overflow-tooltip></el-table-column>
         <el-table-column prop="date" label="就诊时间"></el-table-column>
-        <el-table-column prop="medicalRecord" label="医嘱病历">
-          <template #default="{ row }">
-            <el-button
-                type="primary"
-                size="mini"
-                plain
-                @click="viewEditor(row.medicalRecord)"
-            >查看病历
-            </el-button
-            >
-          </template>
-        </el-table-column>
 
         <el-table-column prop="prescription" label="处方">
           <template #default="{ row }">
@@ -40,7 +28,7 @@
                 type="primary"
                 size="mini"
                 plain
-                @click="viewPrescription(row.prescription)"
+                @click="viewPrescription(row)"
             >查看处方
             </el-button
             >
@@ -52,11 +40,11 @@
           <template #default="{ row }">
             <el-button
                 plain
-                type="primary"
+                type="warning"
                 v-if="user.role === 'DOCTOR'"
                 @click="handleEdit(row)"
                 size="mini"
-            >填写医嘱病历
+            >填写处方
             </el-button
             >
           </template>
@@ -78,62 +66,98 @@
     </div>
 
     <el-dialog
-        title="医嘱病历填写"
-        v-model="fromVisible"
-        width="60%"
-        :close-on-click-modal="false"
-        destroy-on-close
-        @close="cancel"
-    >
-      <el-form
-          label-width="100px"
-          style="padding-right: 50px"
-          :model="form"
-          :rules="rules"
-          ref="formRef"
-      >
-        <el-form-item prop="medicalRecord" label="医嘱病历">
-          <div id="editor"></div>
-        </el-form-item>
-        <el-form-item prop="inhospital" label="是否住院">
-          <el-select v-model="form.inhospital" placeholder="请选择" style="width: 100%;">
-            <el-option label="是" value="是"></el-option>
-            <el-option label="否" value="否"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button @click="fromVisible = false">取 消</el-button>
-        <el-button type="primary" @click="save">确 定</el-button>
-      </template>
-    </el-dialog>
-
-    <el-dialog
-        title="医嘱病历"
-        v-model="editorVisible"
-        width="50%"
-        :close-on-click-modal="false"
-        destroy-on-close
-    >
-      <div v-html="viewContent" class="w-e-text"></div>
-    </el-dialog>
-
-    <el-dialog
         title="处方"
         v-model="prescriptionVisible"
-        width="50%"
+        width="40%"
         :close-on-click-modal="false"
         destroy-on-close
     >
-      <div v-html="viewContent" class="w-e-text"></div>
+      <el-form
+          label-width="150px"
+          style="padding-right: 50px"
+          :model="viewContent"
+          ref="formRef"
+      >
+        <el-form-item label="挂号单号：">
+          <el-input v-model="viewContent.registrationId" placeholder="无" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="姓名：">
+          <el-input v-model="viewContent.patientName" placeholder="无" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="年龄：">
+          <el-input v-model="viewContent.age" placeholder="无" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="性别：">
+          <el-input v-model="viewContent.gender" placeholder="无" disabled></el-input>
+        </el-form-item>
+        <div style="padding: 10px"></div>
+        <el-form-item label="处方编号：">
+          <el-input v-model="viewContent.prescriptionId" placeholder="无" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="医生姓名：">
+          <el-input v-model="viewContent.doctorName" placeholder="无" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="所诊疾病：">
+          <el-input v-model="viewContent.disease" placeholder="无" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="所开药品：">
+          <el-input v-model="viewContent.medicine" placeholder="无" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="医嘱：">
+          <el-input type="textarea" :rows="3" v-model="viewContent.medicalRecord" placeholder="无" disabled></el-input>
+        </el-form-item>
+      </el-form>
     </el-dialog>
   </div>
+
+  <el-dialog
+      title="填写处方"
+      v-model="fromVisible"
+      width="40%"
+      :close-on-click-modal="false"
+      destroy-on-close
+  >
+    <el-form
+        label-width="100px"
+        style="padding-right: 50px"
+        :model="form"
+        ref="formRef"
+    >
+      <el-form-item prop="disease" label="所诊疾病">
+        <el-autocomplete
+            v-model="form.disease"
+            :fetch-suggestions="querySearchDisease"
+            clearable
+            class="inline-input w-50"
+            placeholder="输入疾病"
+            @select="handleSelect"
+        />
+      </el-form-item>
+
+      <el-form-item prop="medicine" label="所开药品">
+        <el-autocomplete
+            v-model="form.medicine"
+            :fetch-suggestions="querySearchMedicine"
+            clearable
+            class="inline-input w-50"
+            placeholder="输入药品"
+            @select="handleSelect"
+        />
+      </el-form-item>
+      <el-form-item prop="medicalRecord" label="医嘱">
+        <el-input type="textarea" :rows="4" v-model="form.medicalRecord" placeholder="填写医嘱"></el-input>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="fromVisible = false">取 消</el-button>
+      <el-button type="primary" @click="save">确 定</el-button>
+    </template>
+  </el-dialog>
 
 </template>
 
 <script setup>
 import {ref, reactive, onMounted} from 'vue';
-import E from 'wangeditor';
 import request from "../../utils/request.js";
 import {ElMessage} from "element-plus";
 import {useRoute} from 'vue-router'
@@ -143,42 +167,46 @@ const route = useRoute()
 const editor = ref(null);
 //const tableData = ref([]);
 const tableData = ref([
-  // {
-  //   id: "15306",
-  //   name: "zhangsan",
-  //   doctor: "doctorWang",
-  //   date: "2024-12-4 16:31",
-  //   medicalRecord: "medicalRecord",
-  //   prescription: "prescription"
-  // }
+  {
+    id: "15306",
+    name: "zhangsan",
+    doctor: "doctorWang",
+    date: "2024-12-4 16:31",
+    departmentName: "中医科",
+    medicalRecord: "医嘱",
+    prescription: "处方"
+  }
 ])
+const diseaseData = ref([
+  {
+    id: 1,
+    name: '感冒'
+  },
+  {
+    id: 2,
+    name: '发烧'
+  }
+]);
+const medicineData = ref([
+  {
+    id: 1,
+    name: '布洛芬'
+  },
+  {
+    id: 2,
+    name: '口服液'
+  }
+]);
 const pageNum = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 const userName = ref(null);
 const fromVisible = ref(false);
-const editorVisible = ref(false);
 const prescriptionVisible = ref(false);
 const form = reactive({});
 const user = JSON.parse(localStorage.getItem('xm-user') || '{}');
-const rules = reactive({
-  inhospital: [{required: true, message: '请选择是否住院', trigger: 'blur'}],
-});
 const ids = ref([]);
 const viewContent = ref(null);
-
-function initWangEditor(content) {
-  setTimeout(() => {
-    if (!editor.value) {
-      editor.value = new E('#editor');
-      editor.value.config.placeholder = '请输入内容';
-      editor.value.config.uploadFileName = 'file';
-      editor.value.config.uploadImgServer = 'http://localhost:9090/files/wang/upload';
-      editor.value.create();
-    }
-    editor.value.txt.html(content);
-  }, 0);
-}
 
 function loadByRegistrationId(registrationId) {
   request
@@ -224,29 +252,68 @@ function reset() {
 
 function handleEdit(row) {
   Object.assign(form, row);
-  initWangEditor(row.medicalRecord || '');
   fromVisible.value = true;
 }
 
-function viewEditor(content) {
-  viewContent.value = content;
-  editorVisible.value = true;
-}
-
-function viewPrescription(content) {
-  viewContent.value = content;
+function viewPrescription(row) {
+  viewContent.value = row;
   prescriptionVisible.value = true;
 }
 
 function save() {
   form.medicalRecord = editor.value.txt.html();
-  // Replace this with actual save logic
-  console.log('Save form', form);
+  request
+      .post("/patient/update", form)
+      .then((res) => {
+        if (res.code === "200") {
+          ElMessage.success("保存成功");
+          load(1);
+          formVisible.value = false;
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
 }
 
-function cancel() {
-  fromVisible.value = false;
-  location.href = '/record';
+const querySearchDisease = (queryString, cb) => {
+  let results = [];
+  if (!queryString) {
+    request
+        .post("/disease/querySearch", {queryString: queryString})
+        .then((res) => {
+          if (res.code === "200") {
+            results = res.data;
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          ElMessage.error("请求失败，请稍后重试");
+        });
+  }
+  cb(results)
+}
+
+const querySearchMedicine = (queryString, cb) => {
+  let results = [];
+  if (!queryString) {
+    request
+        .post("/medicine/querySearch", {queryString: queryString})
+        .then((res) => {
+          if (res.code === "200") {
+            results = res.data;
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          ElMessage.error("请求失败，请稍后重试");
+        });
+  }
+  cb(results)
 }
 
 function handleSelectionChange(rows) {
@@ -260,8 +327,10 @@ function registration(row) {
 onMounted(() => {
   const registrationId = route.query.registrationId; // 获取传递的 registrationId
   if (registrationId) {
-    // console.log('Received registrationId:', registrationId);
     loadByRegistrationId(registrationId)
+
+    Object.assign(form, tableData[0]);
+    fromVisible.value = true;
   } else {
     load(1);
   }
