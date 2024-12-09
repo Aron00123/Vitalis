@@ -11,7 +11,7 @@
 
     <div class="table">
       <el-table :data="tableData" stripe>
-        <el-table-column prop="registrationId" label="挂号单" width="80" align="center" sortable></el-table-column>
+        <el-table-column prop="id" label="挂号单" width="80" align="center" sortable></el-table-column>
         <el-table-column prop="name" label="患者姓名" width="130" show-overflow-tooltip></el-table-column>
         <el-table-column prop="doctor" label="医生姓名" width="130" show-overflow-tooltip></el-table-column>
         <el-table-column prop="departmentName" label="科室" show-overflow-tooltip></el-table-column>
@@ -21,18 +21,18 @@
         <el-table-column label="操作" width="180" align="center">
           <template v-slot="scope">
             <el-button plain type="danger" size="mini" v-if="scope.row.status === '未就诊' && user.role === 'PATIENT'"
-                       @click="del(scope.row.registrationId)">取消挂号
+                       @click="del(scope.row.id)">取消挂号
             </el-button>
             <el-button plain type="primary" size="mini"
                        v-else-if="scope.row.status === '已就诊' && user.role === 'PATIENT'"
-                       @click="searchByRegistrationId(scope.row.registrationId)">就诊记录
+                       @click="searchByRegistrationId(scope.row.id)">就诊记录
             </el-button>
 
             <el-button plain type="warning" size="mini" v-if="scope.row.status === '未就诊' && user.role === 'DOCTOR'"
                        @click="call(scope.row)">叫号
             </el-button>
             <el-button plain type="primary" size="mini" v-else-if="scope.row.status === '已就诊' && user.role === 'DOCTOR'"
-                       @click="searchByRegistrationId(scope.row.registrationId)">就诊记录
+                       @click="searchByRegistrationId(scope.row.id)">就诊记录
             </el-button>
           </template>
         </el-table-column>
@@ -91,7 +91,7 @@ const user = JSON.parse(localStorage.getItem('xm-user') || '{}')
 // 处理“叫号”操作
 const call = (row) => {
   let reserveData = JSON.parse(JSON.stringify(row))
-  reserveData.status = '已叫号'
+  reserveData.status = '已就诊'
   reserveData.registrationId = reserveData.id;
   request
       .post("/registration/update", reserveData)
@@ -162,13 +162,23 @@ const del = (id) => {
 // 加载数据
 const load = (pageNum1) => {
   if (pageNum1) pageNum.value = pageNum1
+  let data = null
+  if (user.role === 'PATIENT' || user.role === 'DOCTOR') {
+    data ={
+      userId: user.id,
+      pageNum: pageNum.value,
+      pageSize: pageSize.value,
+      status: status.value
+    }
+  } else {
+    data ={
+      pageNum: pageNum.value,
+      pageSize: pageSize.value,
+      status: status.value
+    }
+  }
   request
-      .post("/registration/selectPage", {
-        patientId: user.id,
-        pageNum: pageNum.value,
-        pageSize: pageSize.value,
-        status: status.value
-      })
+      .post("/registration/selectPage", data)
       .then((res) => {
         if (res.code === "200") {
           tableData.value = res.data?.list

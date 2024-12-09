@@ -127,6 +127,7 @@
         <el-autocomplete
             v-model="form.disease"
             :fetch-suggestions="querySearchDisease"
+            :trigger-on-focus="false"
             clearable
             class="inline-input w-50"
             placeholder="输入疾病"
@@ -138,6 +139,7 @@
         <el-autocomplete
             v-model="form.medicine"
             :fetch-suggestions="querySearchMedicine"
+            :trigger-on-focus="false"
             clearable
             class="inline-input w-50"
             placeholder="输入药品"
@@ -177,6 +179,7 @@ const tableData = ref([
     prescription: "处方"
   }
 ])
+
 const diseaseData = ref([
   {
     id: 1,
@@ -210,7 +213,12 @@ const viewContent = ref(null);
 
 function loadByRegistrationId(registrationId) {
   request
-      .post("/record/selectByRegistrationId", {registrationId: registrationId})
+      .post("/registration/selectByIdWithPage", {
+        pageNum: pageNum.value,
+        pageSize: pageSize.value,
+        registrationId: registrationId,
+        status: '已就诊'
+      })
       .then((res) => {
         if (res.code === "200") {
           tableData.value = res.data?.list
@@ -227,10 +235,11 @@ function loadByRegistrationId(registrationId) {
 function load(pageNumVal = 1) {
   pageNum.value = pageNumVal;
   request
-      .post("/record/selectPage", {
+      .post("/registration/selectPage", {
         pageNum: pageNum.value,
         pageSize: pageSize.value,
-        id: user.id
+        userId: user.id,
+        status: '已就诊'
       })
       .then((res) => {
         if (res.code === "200") {
@@ -299,12 +308,13 @@ const querySearchDisease = (queryString, cb) => {
 
 const querySearchMedicine = (queryString, cb) => {
   let results = [];
-  if (!queryString) {
+  if (queryString.value !== "") {
     request
         .post("/medicine/querySearch", {queryString: queryString})
         .then((res) => {
           if (res.code === "200") {
             results = res.data;
+            console.log(results)
           } else {
             ElMessage.error(res.msg);
           }
@@ -314,6 +324,10 @@ const querySearchMedicine = (queryString, cb) => {
         });
   }
   cb(results)
+}
+
+const handleSelect = (item) => {
+  console.log(item)
 }
 
 function handleSelectionChange(rows) {
@@ -329,8 +343,8 @@ onMounted(() => {
   if (registrationId) {
     loadByRegistrationId(registrationId)
 
-    Object.assign(form, tableData[0]);
-    fromVisible.value = true;
+    // Object.assign(form, tableData);
+    // fromVisible.value = true;
   } else {
     load(1);
   }

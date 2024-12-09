@@ -166,6 +166,9 @@ const load = (page = 1) => {
 
 const handleAdd = () => {
   Object.assign(form, {});
+  Object.keys(form).forEach((key) => {
+    form[key] = null;
+  })
   formVisible.value = true;
   isHandleAdd.value = true;
 };
@@ -177,8 +180,16 @@ const handleEdit = (row) => {
 
 const save = () => {
   form.role = 'DOCTOR';
+  if (form.password === "") {
+    form.password = null;
+  }
   request
-      .post(isHandleAdd.value ? "/register" : "/account/update", form)
+      .post(isHandleAdd.value ? "/register" : "/updatePassword", {
+        id: form.id,
+        role: form.role,
+        password: form.password,
+        newPassword: form.password
+      })
       .then()
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");

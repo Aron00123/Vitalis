@@ -87,7 +87,6 @@
             </template>
             <el-menu-item index="/doctor">医生管理</el-menu-item>
             <el-menu-item index="/patient">患者管理</el-menu-item>
-            <el-menu-item index="/admin">管理员管理</el-menu-item>
           </el-sub-menu>
 
           <el-sub-menu index="reserve" v-if="user.role === 'ADMIN'">
