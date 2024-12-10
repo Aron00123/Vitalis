@@ -15,7 +15,7 @@
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column prop="id" label="序号" width="70" align="center" sortable/>
-        <el-table-column prop="title" label="标题" />
+        <el-table-column prop="title" label="标题"/>
         <el-table-column prop="content" label="内容" width="400"/>
         <el-table-column prop="time" label="创建时间"/>
         <el-table-column prop="user" label="创建人" width="150"/>
@@ -59,7 +59,7 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="addFormVisible = false">取消</el-button>
+        <el-button @click="closeDialog">取消</el-button>
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>
@@ -135,6 +135,11 @@ const handleEdit = (row) => {
 };
 
 const save = () => {
+  const date = new Date()
+  let year = date.getFullYear()
+  let month = date.getMonth() + 1
+  let day = date.getDate()
+  form.time = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
   request
       .post(isHandleAdd.value ? "/notice/add" : "/notice/update", form)
       .then((res) => {
@@ -153,13 +158,17 @@ const save = () => {
   isHandleAdd.value = false;
 };
 
+const closeDialog = () => {
+  formVisible.value = false;
+  isHandleAdd.value = false;
+}
 
 const del = (id) => {
   ElMessageBox.confirm("您确定删除吗？", "确认删除", {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/notice/delete", {data: id})
+        .post("/notice/delete", {id: id})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
@@ -187,7 +196,7 @@ const delBatch = () => {
   ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
       {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
     request
-        .post("/notice/delete/batch", {data: ids.value})
+        .post("/notice/delete/batch", {ids: ids.value})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");

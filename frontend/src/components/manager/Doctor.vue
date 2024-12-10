@@ -14,7 +14,7 @@
     <div class="table">
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
-        <el-table-column prop="id" label="账号" width="70" align="center" sortable/>
+        <el-table-column prop="id" label="账号" width="180" align="center" sortable/>
         <el-table-column label="照片">
           <template #default="{ row }">
             <el-image
@@ -104,7 +104,7 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="formVisible = false">取消</el-button>
+        <el-button @click="closeDialog">取消</el-button>
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>
@@ -153,7 +153,7 @@ const load = (page = 1) => {
   pageNum.value = page;
   request
       .post("/doctor/selectPage", {
-        params: {pageNum: pageNum.value, pageSize: pageSize.value, userId: id.value},
+        pageNum: pageNum.value, pageSize: pageSize.value, userId: id.value
       })
       .then((res) => {
         tableData.value = res.data?.list || [];
@@ -210,6 +210,11 @@ const save = () => {
       });
   isHandleAdd.value = false;
 };
+
+const closeDialog = () => {
+  formVisible.value = false;
+  isHandleAdd.value = false;
+}
 
 const del = (id) => {
   ElMessageBox.confirm("您确定删除吗？", "确认删除", {

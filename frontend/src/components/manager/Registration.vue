@@ -2,7 +2,7 @@
   <div>
     <div class="search">
       <el-select v-model="status" placeholder="挂号状态查询" style="width: 200px">
-        <el-option v-for="item in statusData" :key="item.id" :label="item.name" :value="item.id">
+        <el-option v-for="item in statusData" :key="item.id" :label="item.name" :value="item.name">
         </el-option>
       </el-select>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>

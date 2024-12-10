@@ -14,7 +14,7 @@
     <div class="table">
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
-        <el-table-column prop="id" label="序号" width="70" align="center" sortable/>
+        <el-table-column prop="departId" label="序号" width="100" align="center" sortable/>
         <el-table-column prop="type" label="科室类型"/>
         <el-table-column prop="directorId" label="科室主任身份证号"/>
         <el-table-column prop="deputyId" label="科室副主任身份证号"/>
@@ -23,7 +23,7 @@
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
             <el-button size="mini" type="primary" plain @click="handleEdit(row)">编辑</el-button>
-            <el-button size="mini" type="danger" plain @click="del(row.id)">删除</el-button>
+            <el-button size="mini" type="danger" plain @click="del(row.departId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,7 +68,7 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="formVisible = false">取消</el-button>
+        <el-button @click="closeDialog">取消</el-button>
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>
@@ -145,13 +145,18 @@ const save = () => {
   isHandleAdd.value = false;
 };
 
+const closeDialog = () => {
+  formVisible.value = false;
+  isHandleAdd.value = false;
+}
+
 
 const del = (id) => {
   ElMessageBox.confirm("您确定删除吗？", "确认删除", {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/department/delete", {data: id})
+        .post("/department/delete", {id: id})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
@@ -168,7 +173,7 @@ const del = (id) => {
 };
 
 const handleSelectionChange = (rows) => {
-  ids.value = rows.map((row) => row.id);
+  ids.value = rows.map((row) => row.departId);
 };
 
 const delBatch = () => {
@@ -179,7 +184,7 @@ const delBatch = () => {
   ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
       {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
     request
-        .post("/department/delete/batch", {data: ids.value})
+        .post("/department/delete/batch", {ids: ids.value})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");

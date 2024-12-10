@@ -72,7 +72,7 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="addFormVisible = false">取消</el-button>
+        <el-button @click="closeDialog">取消</el-button>
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>
@@ -115,6 +115,27 @@ const load = (page = 1) => {
       });
 };
 
+const searchByString = (page, searchStr) => {
+  if (page) pageNum.value = page;
+  request
+      .post("/disease/searchByString", {
+        pageNum: pageNum.value,
+        pageSize: pageSize.value,
+        str: searchStr
+      })
+      .then((res) => {
+        if (res.code === "200") {
+          ElMessage.success("查询成功");
+          formVisible.value = false;
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
+}
+
 const handleAdd = () => {
   Object.assign(form, {});
   formVisible.value = true;
@@ -145,6 +166,10 @@ const save = () => {
   isHandleAdd.value = false;
 };
 
+const closeDialog = () => {
+  formVisible.value = false;
+  isHandleAdd.value = false;
+}
 
 const del = (id) => {
   ElMessageBox.confirm("您确定删除吗？", "确认删除", {

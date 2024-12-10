@@ -14,7 +14,7 @@
     <div class="table">
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
-        <el-table-column prop="id" label="序号" width="70" align="center" sortable/>
+        <el-table-column prop="id" label="序号" width="100" align="center" sortable/>
         <el-table-column prop="name" label="药品名称"/>
         <el-table-column prop="expiryDate" label="有效日期"/>
         <el-table-column prop="dosage" label="使用计量"/>
@@ -76,13 +76,13 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="addFormVisible = false">取消</el-button>
+        <el-button @click="closeDialog">取消</el-button>
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>
 
     <el-dialog
-        title="疾病信息"
+        title="药品信息"
         v-model="updateFormVisible"
         width="40%"
         :close-on-click-modal="false"
@@ -114,7 +114,7 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="updateFormVisible = false">取消</el-button>
+        <el-button @click="closeDialog">取消</el-button>
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>
@@ -205,6 +205,11 @@ const save = () => {
   isHandleAdd.value = false;
 };
 
+const closeDialog = () => {
+  addFormVisible.value = false;
+  updateFormVisible.value = false;
+  isHandleAdd.value = false;
+}
 
 const del = (id) => {
   ElMessageBox.confirm("您确定删除吗？", "确认删除", {
