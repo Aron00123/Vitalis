@@ -31,7 +31,8 @@
             <el-button plain type="warning" size="mini" v-if="scope.row.status === '未就诊' && user.role === 'DOCTOR'"
                        @click="call(scope.row)">叫号
             </el-button>
-            <el-button plain type="primary" size="mini" v-else-if="scope.row.status === '已就诊' && user.role === 'DOCTOR'"
+            <el-button plain type="primary" size="mini"
+                       v-else-if="scope.row.status === '已就诊' && user.role === 'DOCTOR'"
                        @click="searchByRegistrationId(scope.row.id)">就诊记录
             </el-button>
           </template>
@@ -98,6 +99,12 @@ const call = (row) => {
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success('叫号成功');
+
+          request.post("/prescription/add", {
+            registrationId: reserveData.id,
+            prescriptionId: reserveData.id,
+          })
+
           load(1);
           //record(row)
           searchByRegistrationId(reserveData.registrationId);
@@ -164,14 +171,14 @@ const load = (pageNum1) => {
   if (pageNum1) pageNum.value = pageNum1
   let data = null
   if (user.role === 'PATIENT' || user.role === 'DOCTOR') {
-    data ={
+    data = {
       userId: user.id,
       pageNum: pageNum.value,
       pageSize: pageSize.value,
       status: status.value
     }
   } else {
-    data ={
+    data = {
       pageNum: pageNum.value,
       pageSize: pageSize.value,
       status: status.value

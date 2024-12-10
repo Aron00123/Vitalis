@@ -104,7 +104,7 @@
           <el-input v-model="viewContent.medicine" placeholder="无" disabled></el-input>
         </el-form-item>
         <el-form-item label="医嘱：">
-          <el-input type="textarea" :rows="3" v-model="viewContent.medicalRecord" placeholder="无" disabled></el-input>
+          <el-input type="textarea" :rows="3" v-model="viewContent.medicalAdvice" placeholder="无" disabled></el-input>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -208,7 +208,7 @@ const prescriptionVisible = ref(false);
 const form = reactive({});
 const user = JSON.parse(localStorage.getItem('xm-user') || '{}');
 const ids = ref([]);
-const viewContent = ref(null);
+const viewContent = ref({});
 
 function loadByRegistrationId(registrationId) {
   request
@@ -264,9 +264,23 @@ function handleEdit(row) {
 }
 
 function viewPrescription(row) {
-  viewContent.value = row;
-  console.log(viewContent.value)
-  prescriptionVisible.value = true;
+  request
+      .post("/prescription/selectAndView", {id: row.id})
+      .then((res) => {
+        if (res.code === "200") {
+          viewContent.value = {
+            ...res.data.prescription,
+            ...res.data.patient
+          };
+          viewContent.value.doctorName = res.data.doctor.name;
+          prescriptionVisible.value = true;
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
 }
 
 function save() {
@@ -333,10 +347,6 @@ const querySearchMedicine = (queryString, cb) => {
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");
       });
-}
-
-const handleSelect = (item) => {
-  console.log(item)
 }
 
 function handleSelectionChange(rows) {

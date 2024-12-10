@@ -10,6 +10,7 @@
           type="date"
           placeholder="请选择日期"
           :size="'default'"
+          :disabled-date="disabledDate"
       />
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
@@ -131,6 +132,16 @@ let date = ref(null)
 let formatDate = ''
 
 const user = JSON.parse(localStorage.getItem('xm-user') || '{}')
+
+// 限制日期选择
+const disabledDate = (time) => {
+  const today = new Date();
+  const nextWeek = new Date();
+  nextWeek.setDate(today.getDate() + 7);
+  today.setHours(0,0,0,0);
+
+  return time < today || time > nextWeek;
+};
 
 // 挂号
 const reserve = (doctorId, centerDialogVisible) => {
