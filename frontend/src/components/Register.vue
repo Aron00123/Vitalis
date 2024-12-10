@@ -1,54 +1,60 @@
 <template>
   <div class="container">
-    <div class="register-box">
-      <div class="title">欢迎注册</div>
-      <el-form :model="form" :rules="rules" ref="formRef" label-width="130px" style="padding-right: 50px">
-        <el-form-item label="身份证号" prop="id">
-          <el-input v-model="form.id" placeholder="请输入账号"></el-input>
-        </el-form-item>
 
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="form.name" placeholder="请输入账号"></el-input>
-        </el-form-item>
-        <el-form-item label="年龄" prop="age">
-          <el-input v-model="form.age" placeholder="年龄"></el-input>
-        </el-form-item>
-        <el-form-item label="性别" prop="gender">
-          <el-input v-model="form.gender" placeholder="性别"></el-input>
-        </el-form-item>
-        <el-form-item label="电话" prop="phone">
-          <el-input v-model="form.phone" placeholder="电话"></el-input>
-        </el-form-item>
-        <el-form-item label="紧急联系人电话" prop="emergencyPhone">
-          <el-input v-model="form.emergencyPhone" placeholder="紧急联系人电话"></el-input>
-        </el-form-item>
-        <el-form-item label="家庭住址" prop="address">
-          <el-input v-model="form.address" placeholder="家庭住址"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="form.email" placeholder="邮箱"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input show-password v-model="form.password" placeholder="请输入密码"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" prop="confirmPass">
-          <el-input show-password v-model="form.confirmPass" placeholder="请确认账号"></el-input>
-        </el-form-item>
+    <div class="login-signup">
+      <div class="signin-panel">
+        <h1>Vitalis</h1>
+        <el-form :model="form" :rules="rules" ref="formRef" label-width="130px" style="padding-right: 30px">
+          <el-form-item label="身份证号" prop="id">
+            <el-input v-model="form.id" placeholder="请输入账号"></el-input>
+          </el-form-item>
 
+          <el-form-item label="姓名" prop="name">
+            <el-input v-model="form.name" placeholder="请输入账号"></el-input>
+          </el-form-item>
+          <el-form-item label="年龄" prop="age">
+            <el-input v-model="form.age" placeholder="年龄"></el-input>
+          </el-form-item>
+          <el-form-item label="性别" prop="gender">
+            <el-input v-model="form.gender" placeholder="性别"></el-input>
+          </el-form-item>
+          <el-form-item label="电话" prop="phone">
+            <el-input v-model="form.phone" placeholder="电话"></el-input>
+          </el-form-item>
+          <el-form-item label="紧急联系人电话" prop="emergencyPhone">
+            <el-input v-model="form.emergencyPhone" placeholder="紧急联系人电话"></el-input>
+          </el-form-item>
+          <el-form-item label="家庭住址" prop="address">
+            <el-input v-model="form.address" placeholder="家庭住址"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="form.email" placeholder="邮箱"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input show-password v-model="form.password" placeholder="请输入密码"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="confirmPass">
+            <el-input show-password v-model="form.confirmPass" placeholder="请确认账号"></el-input>
+          </el-form-item>
 
-        <el-form-item>
-          <el-button
-              class="register-button"
-              @click="register"
-          >
-            注 册
-          </el-button>
-        </el-form-item>
-        <div class="login-link">
-          <span>已有账号？请</span>
-          <router-link to="/login" style="text-decoration: none;">登录</router-link>
-        </div>
-      </el-form>
+          <el-form-item>
+            <el-button
+                type="primary"
+                class="signin-btn"
+                @click="onRegister"
+            >
+              注册
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="signup-panel">
+        <h2>欢迎回来！</h2>
+        <p>为了与我们保持联系，请使用您的个人信息登录系统。</p>
+        <el-button type="primary" class="signup-btn" @click="goToSignin">
+          去登录
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -143,49 +149,66 @@ const register = () => {
     }
   });
 };
+
+const goToSignin = () => {
+  router.push("/login");
+};
 </script>
 
 <style scoped>
 .container {
   height: 100vh;
-  overflow: hidden;
-
-  background-size: cover;
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: #666;
+  align-items: center;
+  background: url("https://bpic.588ku.com/back_pic/06/39/09/5064337d6783a0a.jpg") no-repeat center;
+  background-size: cover;
 }
 
-.register-box {
-  width: 500px;
-  padding: 30px;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.title {
-  text-align: center;
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.register-button {
-  width: 100%;
-  background-color: #4F66D5FF;
-  border-color: #4F66D5FF;
-  color: white;
-}
-
-.login-link {
+.login-signup {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
+  width: 950px;
+  height: 700px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-a {
-  color: #2a60c9;
+.signin-panel,
+.signup-panel {
+  width: 50%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
+.signin-panel {
+  background: #fff;
+}
+
+.signup-panel {
+  background: linear-gradient(to right, #4284db, #29eac4);
+  color: white;
+  text-align: center;
+}
+
+.signup-panel h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.signup-panel p {
+  margin-bottom: 20px;
+}
+
+.signin-btn,
+.signup-btn {
+  background-color: #4284db;
+  color: white;
+  width: 100%;
+}
+
 </style>

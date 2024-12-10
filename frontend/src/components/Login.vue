@@ -1,43 +1,44 @@
 <template>
   <div class="container">
-    <div class="login-box">
-      <div class="title">欢迎登录Vitalis医疗服务系统</div>
-      <el-form :model="form" :rules="rules" ref="formRef">
-        <el-form-item prop="id">
-          <el-input
-              prefix-icon="User"
-              placeholder="请输入身份证号"
-              v-model="form.id"
-          ></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input
-              prefix-icon="Lock"
-              placeholder="请输入密码"
-              show-password
-              v-model="form.password"
-          ></el-input>
-        </el-form-item>
 
-        <!--        <el-form-item prop="role">-->
-        <!--          <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%;">-->
-        <!--            <el-option label="医生" value="DOCTOR"></el-option>-->
-        <!--            <el-option label="患者" value="PATIENT"></el-option>-->
-        <!--          </el-select>-->
-        <!--        </el-form-item>-->
+    <div class="login-signup">
+      <div class="signin-panel">
+        <h1>Vitalis</h1>
+        <el-form :model="form" :rules="rules" ref="formRef">
+          <el-form-item prop="id">
+            <el-input
+                prefix-icon="User"
+                placeholder="用户名"
+                v-model="form.id"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+                prefix-icon="Lock"
+                placeholder="密码"
+                show-password
+                v-model="form.password"
+            ></el-input>
+          </el-form-item>
 
-        <el-form-item>
-          <el-button
-              style="width: 100%; background-color: #4f66d5; border-color: #4f66d5; color: white"
-              @click="onLogin"
-          >
-            登 录
-          </el-button>
-        </el-form-item>
-        <div class="register-link">
-          <router-link to="/register" style="text-decoration: none;">注册</router-link>
-        </div>
-      </el-form>
+          <el-form-item>
+            <el-button
+                type="primary"
+                class="signin-btn"
+                @click="onLogin"
+            >
+              登录
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="signup-panel">
+        <h2>你好，朋友！</h2>
+        <p>填写您的信息，立即注册，开启便捷的医疗服务之旅！</p>
+        <el-button type="primary" class="signup-btn" @click="goToRegister">
+          注册
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -46,19 +47,16 @@
 import {reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {ElMessage} from "element-plus";
-import request from "../utils/request.js";
+import request from "../utils/request";
 
-// 定义响应式数据
 const form = reactive({
   id: "",
   password: "",
-  // role: ""
 });
 
 const rules = {
-  id: [{required: true, message: "请输入身份证号", trigger: "blur"}],
+  id: [{required: true, message: "请输入账号", trigger: "blur"}],
   password: [{required: true, message: "请输入密码", trigger: "blur"}],
-  // role: [{required: true, message: "请选择角色", trigger: "blur"}],
 };
 
 const formRef = ref(null);
@@ -133,41 +131,66 @@ const onLogin = () => {
     }
   });
 };
+
+const goToRegister = () => {
+  router.push("/register");
+};
 </script>
 
 <style scoped>
 .container {
   height: 100vh;
-  overflow: hidden;
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: #666;
-  background-color: #f5f5f5;
+  align-items: center;
+  background: url("https://bpic.588ku.com/back_pic/06/39/09/5064337d6783a0a.jpg") no-repeat center;
+  background-size: cover;
 }
 
-.login-box {
-  width: 400px;
-  padding: 30px;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.title {
-  text-align: center;
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.register-link {
+.login-signup {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
+  width: 850px;
+  height: 500px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-a {
-  color: #2a60c9;
+.signin-panel,
+.signup-panel {
+  width: 50%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
+
+.signin-panel {
+  background: #fff;
+}
+
+.signup-panel {
+  background: linear-gradient(to right, #4284db, #29eac4);
+  color: white;
+  text-align: center;
+}
+
+.signup-panel h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.signup-panel p {
+  margin-bottom: 20px;
+}
+
+.signin-btn,
+.signup-btn {
+  background-color: #4284db;
+  color: white;
+  width: 100%;
+}
+
 </style>
