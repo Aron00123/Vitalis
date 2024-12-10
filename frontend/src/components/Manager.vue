@@ -50,14 +50,14 @@
         <el-menu :default-openeds="['info', 'reserve', 'user']" router style="border: none" :default-active="route.path"
                  @open="handleOpen" @close="handleClose">
           <el-menu-item index="/welcome">
-            <i class="el-icon-s-home"></i>
+            <el-icon><HomeFilled /></el-icon>
             <span slot="title"><strong>系统首页</strong></span>
           </el-menu-item>
 
           <!--  病人   -->
           <el-sub-menu index="reserve" v-if="user.role === 'PATIENT'">
             <template #title>
-              <el-icon></el-icon>
+              <el-icon><Histogram /></el-icon>
               <span><strong>预约就诊</strong></span>
             </template>
             <el-menu-item-group>
@@ -70,7 +70,7 @@
           <!--  医生   -->
           <el-sub-menu index="reserve" v-if="user.role === 'DOCTOR'">
             <template #title>
-              <el-icon></el-icon>
+              <el-icon><Histogram /></el-icon>
               <span><strong>诊断治疗</strong></span>
             </template>
             <el-menu-item-group>
@@ -82,7 +82,7 @@
           <!-- 管理员   -->
           <el-sub-menu index="user" v-if="user.role === 'ADMIN'">
             <template #title>
-              <el-icon></el-icon>
+              <el-icon><UserFilled /></el-icon>
               <i class="el-icon-menu"></i><span><strong>用户信息管理</strong></span>
             </template>
             <el-menu-item index="/doctor">医生管理</el-menu-item>
@@ -91,7 +91,7 @@
 
           <el-sub-menu index="reserve" v-if="user.role === 'ADMIN'">
             <template #title>
-              <el-icon></el-icon>
+              <el-icon><Histogram /></el-icon>
               <i class="el-icon-menu"></i><span><strong>就诊管理</strong></span>
             </template>
             <el-menu-item index="/registration">挂号单管理</el-menu-item>
@@ -102,7 +102,7 @@
 
           <el-sub-menu index="info" v-if="user.role === 'ADMIN'">
             <template #title>
-              <el-icon></el-icon>
+              <el-icon><Menu /></el-icon>
               <i class="el-icon-menu"></i><span><strong>其他管理</strong></span>
             </template>
             <el-menu-item index="/notice">公告信息</el-menu-item>

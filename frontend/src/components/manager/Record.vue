@@ -295,6 +295,9 @@ const querySearchDisease = (queryString, cb) => {
         .then((res) => {
           if (res.code === "200") {
             results = res.data;
+            results.forEach(item => {
+              item.value = item.name;
+            });
           } else {
             ElMessage.error(res.msg);
           }
@@ -314,7 +317,9 @@ const querySearchMedicine = (queryString, cb) => {
         .then((res) => {
           if (res.code === "200") {
             results = res.data;
-            console.log(results)
+            results.forEach(item => {
+              item.value = item.name;
+            });
           } else {
             ElMessage.error(res.msg);
           }

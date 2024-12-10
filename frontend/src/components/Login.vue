@@ -5,26 +5,26 @@
       <el-form :model="form" :rules="rules" ref="formRef">
         <el-form-item prop="id">
           <el-input
-              prefix-icon="el-icon-user"
+              prefix-icon="User"
               placeholder="请输入身份证号"
               v-model="form.id"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input
-              prefix-icon="el-icon-lock"
+              prefix-icon="Lock"
               placeholder="请输入密码"
               show-password
               v-model="form.password"
           ></el-input>
         </el-form-item>
 
-<!--        <el-form-item prop="role">-->
-<!--          <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%;">-->
-<!--            <el-option label="医生" value="DOCTOR"></el-option>-->
-<!--            <el-option label="患者" value="PATIENT"></el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item prop="role">-->
+        <!--          <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%;">-->
+        <!--            <el-option label="医生" value="DOCTOR"></el-option>-->
+        <!--            <el-option label="患者" value="PATIENT"></el-option>-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
 
         <el-form-item>
           <el-button
