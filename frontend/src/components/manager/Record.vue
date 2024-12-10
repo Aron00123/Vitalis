@@ -82,7 +82,7 @@
           <el-input v-model="viewContent.registrationId" placeholder="无" disabled></el-input>
         </el-form-item>
         <el-form-item label="姓名：">
-          <el-input v-model="viewContent.patientName" placeholder="无" disabled></el-input>
+          <el-input v-model="viewContent.name" placeholder="无" disabled></el-input>
         </el-form-item>
         <el-form-item label="年龄：">
           <el-input v-model="viewContent.age" placeholder="无" disabled></el-input>
@@ -112,7 +112,7 @@
 
   <el-dialog
       title="填写处方"
-      v-model="fromVisible"
+      v-model="formVisible"
       width="40%"
       :close-on-click-modal="false"
       destroy-on-close
@@ -143,7 +143,6 @@
             clearable
             class="inline-input w-50"
             placeholder="输入药品"
-            @select="handleSelect"
         />
       </el-form-item>
       <el-form-item prop="medicalRecord" label="医嘱">
@@ -151,7 +150,7 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="fromVisible = false">取 消</el-button>
+      <el-button @click="formVisible = false">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
     </template>
   </el-dialog>
@@ -204,7 +203,7 @@ const pageNum = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 const userName = ref(null);
-const fromVisible = ref(false);
+const formVisible = ref(false);
 const prescriptionVisible = ref(false);
 const form = reactive({});
 const user = JSON.parse(localStorage.getItem('xm-user') || '{}');
@@ -261,23 +260,52 @@ function reset() {
 
 function handleEdit(row) {
   Object.assign(form, row);
-  fromVisible.value = true;
+  formVisible.value = true;
 }
 
 function viewPrescription(row) {
   viewContent.value = row;
+  console.log(viewContent.value)
   prescriptionVisible.value = true;
 }
 
 function save() {
-  form.medicalRecord = editor.value.txt.html();
+  // form.medicalRecord = editor.value.txt.html();
+  console.log(form)
   request
-      .post("/patient/update", form)
+      .post("/prescription/add", {
+        registrationId: form.id,
+        prescriptionId: form.id,
+        disease: form.disease,
+        medicine: form.medicine,
+        medicalAdvice: form.medicalRecord
+      })
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success("保存成功");
           load(1);
-          formVisible.value = false;
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
+  formVisible.value = false;
+
+}
+
+const querySearchDisease = (queryString, cb) => {
+  let results = [];
+  request
+      .post("/disease/querySearch", {queryString: queryString})
+      .then((res) => {
+        if (res.code === "200") {
+          results = res.data;
+          results.forEach(item => {
+            item.value = item.name;
+          });
+          cb(results)
         } else {
           ElMessage.error(res.msg);
         }
@@ -287,48 +315,24 @@ function save() {
       });
 }
 
-const querySearchDisease = (queryString, cb) => {
-  let results = [];
-  if (!queryString) {
-    request
-        .post("/disease/querySearch", {queryString: queryString})
-        .then((res) => {
-          if (res.code === "200") {
-            results = res.data;
-            results.forEach(item => {
-              item.value = item.name;
-            });
-          } else {
-            ElMessage.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          ElMessage.error("请求失败，请稍后重试");
-        });
-  }
-  cb(results)
-}
-
 const querySearchMedicine = (queryString, cb) => {
   let results = [];
-  if (queryString.value !== "") {
-    request
-        .post("/medicine/querySearch", {queryString: queryString})
-        .then((res) => {
-          if (res.code === "200") {
-            results = res.data;
-            results.forEach(item => {
-              item.value = item.name;
-            });
-          } else {
-            ElMessage.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          ElMessage.error("请求失败，请稍后重试");
-        });
-  }
-  cb(results)
+  request
+      .post("/medicine/querySearch", {queryString: queryString})
+      .then((res) => {
+        if (res.code === "200") {
+          results = res.data;
+          results.forEach(item => {
+            item.value = item.name;
+          });
+          cb(results)
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
 }
 
 const handleSelect = (item) => {
