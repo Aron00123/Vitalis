@@ -6,23 +6,16 @@
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
 
-    <div class="operation" style="padding-bottom: 20px">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
-      <el-button type="danger" plain @click="delBatch">批量删除</el-button>
-    </div>
-
     <div class="table">
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center"/>
-        <el-table-column prop="id" label="序号" width="70" align="center" sortable/>
-        <el-table-column prop="name" label="医生姓名"/>
-        <el-table-column prop="department" label="科室"/>
+        <el-table-column prop="id" label="序号" width="200" align="center" sortable/>
+        <el-table-column prop="name" label="医生姓名" width="140"/>
+        <el-table-column prop="departmentName" label="科室"/>
         <el-table-column prop="consultLimit" label="就诊限额"/>
         <el-table-column prop="consultDays" label="坐诊日"/>
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
             <el-button size="mini" type="primary" plain @click="handleEdit(row)">编辑</el-button>
-            <el-button size="mini" type="danger" plain @click="del(row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -97,10 +90,7 @@ import {ref, reactive, onMounted} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import request from "../../utils/request"; // 替换为实际的请求工具
 
-// const tableData = ref([]);
-const tableData = ref([{
-  id: 1
-}])
+const tableData = ref([]);
 const pageNum = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
@@ -108,7 +98,6 @@ const doctorData = ref([]);
 const id = ref("");
 
 const formVisible = ref(false);
-const isHandleAdd = ref(false);
 const form = reactive({});
 const rules = reactive({
   doctor: [{required: true, message: "请选择医生", trigger: "blur"}],
@@ -151,7 +140,7 @@ const loadDoctor = () => {
 const load = (page = 1) => {
   pageNum.value = page;
   request
-      .post("/plan/selectPage", {
+      .post("/doctor/selectPage", {
         params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
       })
       .then((res) => {
@@ -167,23 +156,18 @@ const load = (page = 1) => {
       });
 };
 
-const handleAdd = () => {
-  Object.assign(form, {});
-  formVisible.value = true;
-  isHandleAdd.value = true;
-};
-
 const handleEdit = (row) => {
   Object.assign(form, {...row});
   formVisible.value = true;
 };
 
 const save = () => {
+  // form.dateStr = checkedDays.value.join(',');
   request
-      .post(isHandleAdd.value ? "/plan/add" : "/plan/update", {
-        id: form.id.value,
-        consultLimit: form.consultLimit.value,
-        dateStr: checkedDays.value.join(',')
+      .post("/doctor/update", {
+        id: form.id,
+        consultLimit: form.consultLimit,
+        consultDays: checkedDays.value.join(',')
       })
       .then((res) => {
         if (res.code === "200") {
@@ -197,57 +181,10 @@ const save = () => {
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");
       });
-
-  isHandleAdd.value = false;
-};
-
-
-const del = (id) => {
-  ElMessageBox.confirm("您确定删除吗？", "确认删除", {
-    type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
-  }).then(() => {
-    request
-        .post("/plan/delete", {data: id})
-        .then((res) => {
-          if (res.code === "200") {
-            ElMessage.success("操作成功");
-            load(1);
-          } else {
-            ElMessage.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          ElMessage.error("请求失败，请稍后重试");
-        });
-
-  });
 };
 
 const handleSelectionChange = (rows) => {
   ids.value = rows.map((row) => row.id);
-};
-
-const delBatch = () => {
-  if (!ids.value.length) {
-    ElMessage.warning("请选择数据");
-    return;
-  }
-  ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
-      {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
-    request
-        .post("/plan/delete/batch", {data: ids.value})
-        .then((res) => {
-          if (res.code === "200") {
-            ElMessage.success("操作成功");
-            load(1);
-          } else {
-            ElMessage.error(res.msg);
-          }
-        })
-        .catch((err) => {
-          ElMessage.error("请求失败，请稍后重试");
-        });
-  });
 };
 
 const reset = () => {

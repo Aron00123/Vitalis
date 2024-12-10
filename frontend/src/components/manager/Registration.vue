@@ -39,7 +39,7 @@
                        v-if="user.role === 'ADMIN'"  @click="AdminEditor(scope.row)">编辑
             </el-button>
             <el-button size="mini" type="danger" plain
-                       v-if="user.role === 'ADMIN'"  @click="AdminDel(scpoe.row.id)">删除
+                       v-if="user.role === 'ADMIN'"  @click="AdminDel(scope.row.id)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -84,7 +84,7 @@
         </el-form-item>
         <el-form-item label="挂号状态" prop="status">
           <el-select v-model="form.status" placeholder="挂号状态">
-            <el-option v-for="item in statusData" :key="item.id" :label="item.name" :value="item.id">
+            <el-option v-for="item in statusData" :key="item.id" :label="item.name" :value="item.name">
             </el-option>
           </el-select>
         </el-form-item>
@@ -223,6 +223,7 @@ const AdminEditor = (row) => {
 }
 
 const AdminDel = (id) => {
+  console.log('wcnmd\n\n\n\n\n\n\n\n')
   ElMessageBox.confirm("您确定取消挂号吗？", "取消挂号", {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
@@ -245,7 +246,7 @@ const AdminDel = (id) => {
 const save = () => {
   form.isAdmin = 1;
   request
-      .post("/prescription/update", form)
+      .post("/registration/update", form)
       .then((res) => {
         if (res.code === "200") {
           ElMessage.success("保存成功");
