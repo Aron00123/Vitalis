@@ -35,6 +35,12 @@
                        v-else-if="scope.row.status === '已就诊' && user.role === 'DOCTOR'"
                        @click="searchByRegistrationId(scope.row.id)">就诊记录
             </el-button>
+            <el-button size="mini" type="primary" plain
+                       v-if="user.role === 'ADMIN'"  @click="AdminEditor(scope.row)">编辑
+            </el-button>
+            <el-button size="mini" type="danger" plain
+                       v-if="user.role === 'ADMIN'"  @click="AdminDel(scpoe.row.id)">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -51,12 +57,50 @@
         </el-pagination>
       </div>
     </div>
+
+    <el-dialog
+        title="挂号单信息"
+        v-model="formVisible"
+        width="40%"
+        :close-on-click-modal="false"
+        destroy-on-close
+    >
+
+      <el-form :model="form" label-width="150px" style="padding-right: 50px" :rules="rules" ref="formRef">
+        <el-form-item label="挂号单" prop="id">
+          <el-input v-model="form.id" placeholder="挂号单" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="患者姓名" prop="name">
+          <el-input v-model="form.name" placeholder="患者姓名" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="医生姓名" prop="doctor">
+          <el-input v-model="form.doctor" placeholder="医生姓名" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="科室" prop="departmentName">
+          <el-input v-model="form.departmentName" placeholder="科室" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="挂号时间" prop="date">
+          <el-input v-model="form.date" placeholder="挂号时间" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="挂号状态" prop="status">
+          <el-select v-model="form.status" placeholder="挂号状态">
+            <el-option v-for="item in statusData" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <el-button @click="formVisible = false">取消</el-button>
+        <el-button type="primary" @click="save">确定</el-button>
+      </template>
+    </el-dialog>
   </div>
 
 </template>
 
 <script setup>
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, reactive} from 'vue'
 import request from "../../utils/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {useRouter} from 'vue-router'
@@ -76,6 +120,11 @@ const tableData = ref([
 const pageNum = ref(1)     // 当前的页码
 const pageSize = ref(10)   // 每页显示的个数
 const total = ref(0)
+const formVisible = ref(false)
+const form = reactive({});
+const rules = {
+  status: [{required: true, message: "请选择挂号单状态", trigger: "blur"}],
+}
 const statusData = [
   {
     id: 1,
@@ -94,6 +143,7 @@ const call = (row) => {
   let reserveData = JSON.parse(JSON.stringify(row))
   reserveData.status = '已就诊'
   reserveData.registrationId = reserveData.id;
+  reserveData.isAdmin = 0;
   request
       .post("/registration/update", reserveData)
       .then((res) => {
@@ -164,6 +214,52 @@ const del = (id) => {
           ElMessage.error("请求失败，请稍后重试");
         });
   });
+}
+
+const AdminEditor = (row) => {
+  Object.assign(form, {...row});
+  formVisible.value = true;
+
+}
+
+const AdminDel = (id) => {
+  ElMessageBox.confirm("您确定取消挂号吗？", "取消挂号", {
+    type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
+  }).then(() => {
+    request
+        .post("/registration/delete", {id: id})
+        .then((res) => {
+          if (res.code === "200") {
+            ElMessage.success('取消成功');
+            load(1);
+          } else {
+            ElMessage.error(res.msg);
+          }
+        })
+        .catch((err) => {
+          ElMessage.error("请求失败，请稍后重试");
+        });
+  });
+}
+
+const save = () => {
+  form.isAdmin = 1;
+  request
+      .post("/prescription/update", form)
+      .then((res) => {
+        if (res.code === "200") {
+          ElMessage.success("保存成功");
+          load(1);
+          formVisible.value = false;
+        } else {
+          ElMessage.error(res.msg);
+        }
+      })
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
+
+  isHandleAdd.value = false;
 }
 
 // 加载数据

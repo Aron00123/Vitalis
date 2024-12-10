@@ -7,23 +7,21 @@
     </div>
 
     <div class="operation" style="padding-bottom: 20px">
-      <el-button type="primary" plain @click="handleAdd">新增</el-button>
       <el-button type="danger" plain @click="delBatch">批量删除</el-button>
     </div>
 
     <div class="table">
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
-        <el-table-column prop="prescriptionId" label="序号" width="70" align="center" sortable/>
-        <el-table-column prop="registrationId" label="挂号单号"/>
-        <el-table-column prop="patientName" label="病人"/>
-        <el-table-column prop="doctorName" label="医生"/>
-        <el-table-column prop="disease" label="疾病"/>
-        <el-table-column prop="medicalAdvice" label="医嘱"/>
+        <el-table-column prop="prescription.prescriptionId" label="挂号单号" width="100" align="center" sortable/>
+        <el-table-column prop="patient.name" label="病人"/>
+        <el-table-column prop="doctor.name" label="医生"/>
+        <el-table-column prop="prescription.disease" label="疾病"/>
+        <el-table-column prop="prescription.medicalAdvice" label="医嘱"/>
 
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
-            <el-button size="mini" type="primary" plain @click="handleEdit(row)">编辑</el-button>
+<!--            <el-button size="mini" type="primary" plain @click="handleEdit(row)">编辑</el-button>-->
             <el-button size="mini" type="danger" plain @click="del(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -41,6 +39,7 @@
         />
       </div>
     </div>
+
     <el-dialog
         title="处方信息"
         v-model="formVisible"
@@ -51,19 +50,19 @@
 
       <el-form :model="form" label-width="150px" style="padding-right: 50px" :rules="rules" ref="formRef">
         <el-form-item label="挂号单号" prop="registrationId">
-          <el-input v-model="form.registrationId" placeholder="挂号单号"></el-input>
+          <el-input v-model="form.prescription.prescriptionId" placeholder="挂号单号" disabled></el-input>
         </el-form-item>
         <el-form-item label="病人姓名" prop="patientName">
-          <el-input v-model="form.patientName" placeholder="病人姓名"></el-input>
+          <el-input v-model="form.patient.name" placeholder="病人姓名" disabled></el-input>
         </el-form-item>
         <el-form-item label="医生姓名" prop="doctorName">
-          <el-input v-model="form.doctorName" placeholder="医生姓名"></el-input>
+          <el-input v-model="form.doctor.name" placeholder="医生姓名" disabled></el-input>
         </el-form-item>
         <el-form-item label="疾病" prop="disease">
-          <el-input v-model="form.disease" placeholder="疾病"></el-input>
+          <el-input v-model="form.prescription.disease" placeholder="疾病"></el-input>
         </el-form-item>
         <el-form-item label="医嘱" prop="medicalAdvice">
-          <el-input type="textarea" rows="5" v-model="form.medicalAdvice" placeholder="医嘱"></el-input>
+          <el-input type="textarea" rows="5" v-model="form.prescription.medicalAdvice" placeholder="医嘱"></el-input>
         </el-form-item>
       </el-form>
 
@@ -99,7 +98,7 @@ const ids = ref([]);
 const load = (page = 1) => {
   pageNum.value = page;
   request
-      .post("/prescription/selectPage", {
+      .post("/prescription/selectPageForAdmin", {
         pageNum: pageNum.value, pageSize: pageSize.value, username: id.value
       })
       .then((res) => {
@@ -147,7 +146,7 @@ const del = (id) => {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/prescription/delete", {data: id})
+        .post("/prescription/delete", {id: id})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
@@ -175,7 +174,7 @@ const delBatch = () => {
   ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
       {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
     request
-        .post("/prescription/delete/batch", {data: ids.value})
+        .post("/prescription/delete/batch", {ids: ids.value})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");

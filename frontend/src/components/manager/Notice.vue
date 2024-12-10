@@ -59,7 +59,7 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="formVisible = false">取消</el-button>
+        <el-button @click="addFormVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>

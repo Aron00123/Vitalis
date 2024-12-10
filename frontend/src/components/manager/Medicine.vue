@@ -15,7 +15,7 @@
       <el-table :data="tableData" stripe @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column prop="id" label="序号" width="70" align="center" sortable/>
-        <el-table-column prop="medicineName" label="药品名称"/>
+        <el-table-column prop="name" label="药品名称"/>
         <el-table-column prop="expiryDate" label="有效日期"/>
         <el-table-column prop="dosage" label="使用计量"/>
         <el-table-column prop="effects" label="药品作用"/>
@@ -42,17 +42,21 @@
         />
       </div>
     </div>
+
     <el-dialog
         title="疾病信息"
-        v-model="formVisible"
+        v-model="addFormVisible"
         width="40%"
         :close-on-click-modal="false"
         destroy-on-close
     >
 
       <el-form :model="form" label-width="150px" style="padding-right: 50px" :rules="rules" ref="formRef">
-        <el-form-item label="药品名称" prop="medicineName">
-          <el-input v-model="form.medicineName" placeholder="药品名称"></el-input>
+        <el-form-item label="药品id" prop="id">
+          <el-input v-model="form.id" placeholder="药品id"></el-input>
+        </el-form-item>
+        <el-form-item label="药品名称" prop="name">
+          <el-input v-model="form.name" placeholder="药品名称"></el-input>
         </el-form-item>
         <el-form-item label="有效日期" prop="expiryDate">
           <el-input v-model="form.expiryDate" placeholder="有效日期"></el-input>
@@ -72,7 +76,45 @@
       </el-form>
 
       <template #footer>
-        <el-button @click="formVisible = false">取消</el-button>
+        <el-button @click="addFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="save">确定</el-button>
+      </template>
+    </el-dialog>
+
+    <el-dialog
+        title="疾病信息"
+        v-model="updateFormVisible"
+        width="40%"
+        :close-on-click-modal="false"
+        destroy-on-close
+    >
+
+      <el-form :model="form" label-width="150px" style="padding-right: 50px" :rules="rules" ref="formRef">
+        <el-form-item label="药品id" prop="id">
+          <el-input v-model="form.id" placeholder="药品id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="药品名称" prop="name">
+          <el-input v-model="form.name" placeholder="药品名称"></el-input>
+        </el-form-item>
+        <el-form-item label="有效日期" prop="expiryDate">
+          <el-input v-model="form.expiryDate" placeholder="有效日期"></el-input>
+        </el-form-item>
+        <el-form-item label="使用计量" prop="dosage">
+          <el-input v-model="form.dosage" placeholder="使用计量"></el-input>
+        </el-form-item>
+        <el-form-item label="药品作用" prop="effects">
+          <el-input type="textarea" rows="3" v-model="form.effects" placeholder="药品作用"></el-input>
+        </el-form-item>
+        <el-form-item label="库存量" prop="stock">
+          <el-input v-model="form.stock" placeholder="库存量"></el-input>
+        </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <el-input v-model="form.price" placeholder="价格"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <el-button @click="updateFormVisible = false">取消</el-button>
         <el-button type="primary" @click="save">确定</el-button>
       </template>
     </el-dialog>
@@ -94,10 +136,27 @@ const total = ref(0);
 
 const id = ref("");
 
-const formVisible = ref(false);
+const addFormVisible = ref(false);
+const updateFormVisible = ref(false);
 const isHandleAdd = ref(false);
 const form = reactive({});
-const rules = reactive({});
+const rules = {
+  id: [
+    {
+      validator: (rule, value, callback) => {
+        if (!value) {
+          callback(new Error("请确认药品id"));
+        } else if (value.length !== 7) {
+          callback(new Error("药品id不合规"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "blur",
+      required: true
+    },
+  ],
+}
 const ids = ref([]);
 
 const load = (page = 1) => {
@@ -107,8 +166,8 @@ const load = (page = 1) => {
         pageNum: pageNum.value, pageSize: pageSize.value, username: id.value
       })
       .then((res) => {
-        tableData.value = res.data?.list || [];
-        total.value = res.data?.total || 0;
+        tableData.value = res.data.list || [];
+        total.value = res.data.total || 0;
       })
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");
@@ -117,13 +176,13 @@ const load = (page = 1) => {
 
 const handleAdd = () => {
   Object.assign(form, {});
-  formVisible.value = true;
+  addFormVisible.value = true;
   isHandleAdd.value = true;
 };
 
 const handleEdit = (row) => {
   Object.assign(form, {...row});
-  formVisible.value = true;
+  updateFormVisible.value = true;
 };
 
 const save = () => {
@@ -133,7 +192,8 @@ const save = () => {
         if (res.code === "200") {
           ElMessage.success("保存成功");
           load(1);
-          formVisible.value = false;
+          addFormVisible.value = false;
+          updateFormVisible.value = false;
         } else {
           ElMessage.error(res.msg);
         }
@@ -151,7 +211,7 @@ const del = (id) => {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/medicine/delete", {data: id})
+        .post("/medicine/delete", {id: id})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
@@ -179,7 +239,7 @@ const delBatch = () => {
   ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
       {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
     request
-        .post("/medicine/delete/batch", {data: ids.value})
+        .post("/medicine/delete/batch", {ids: ids.value})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");

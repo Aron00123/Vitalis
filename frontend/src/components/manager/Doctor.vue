@@ -153,7 +153,7 @@ const load = (page = 1) => {
   pageNum.value = page;
   request
       .post("/doctor/selectPage", {
-        params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
+        params: {pageNum: pageNum.value, pageSize: pageSize.value, userId: id.value},
       })
       .then((res) => {
         tableData.value = res.data?.list || [];
@@ -216,7 +216,7 @@ const del = (id) => {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {
     request
-        .post("/doctor/delete", {data: id})
+        .post("/doctor/delete", {id: id})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
@@ -244,7 +244,7 @@ const delBatch = () => {
   ElMessageBox.confirm("您确定批量删除这些数据吗？", "确认删除",
       {type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"}).then(() => {
     request
-        .post("/doctor/delete/batch", {data: ids.value})
+        .post("/doctor/delete/batch", {ids: ids.value})
         .then((res) => {
           if (res.code === "200") {
             ElMessage.success("操作成功");
