@@ -46,7 +46,7 @@
             </div>
             <div
                 style="margin-top: 10px; color: #455a64; padding: 10px; text-align: left; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; font-size: 13px; line-height: 1.6; background-color: #fafafa; border-radius: 8px;">
-              坐诊日：{{ item.date }}
+              坐诊日：{{ item.consultDays }}
             </div>
             <div
                 style="margin-top: 10px; color: #455a64; padding: 10px; text-align: left; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; font-size: 13px; line-height: 1.6; background-color: #fafafa; border-radius: 8px;">
@@ -125,56 +125,56 @@ import request from "../../utils/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 const tableData = ref([
-  {
-    id: 1,
-    name: 'zhangsan',
-    // photo: 'http://tiebapic.baidu.com/forum/w%3D580/sign=75bdfcc8e1efce1bea2bc8c29f51f3e8/2725b07fca806538e9851b2dd1dda144ad34825d.jpg?tbpicau=2024-12-22-05_979028a6c78587196516e915f6c3baa2',
-    departmentName: '111',
-    title: '222',
-    specialty: '333',
-    consultLimit: '444',
-    centerDialogVisible: 'false'
-  },
-  {
-    id: 2,
-    name: 'lisi',
-    photo: 'https://ts1.cn.mm.bing.net/th/id/R-C.0f2bcfb1fdeb20094ec4a2201204d80a?rik=SmaRHAEgqJotnw&riu=http%3a%2f%2ffiles.photops.com%3a81%2fattachment%2fMon_2212%2f88_578680_5c3118c518f5525.jpg%3f99&ehk=N4X3uvFVv8hfg%2fyWHdUNPwf4aGpwlfj3UIZ03ZIzoTE%3d&risl=&pid=ImgRaw&r=0',
-    departmentName: 'aaa',
-    title: 'aaa',
-    specialty: 'aaa',
-    consultLimit: 'bbb',
-    centerDialogVisible: 'false'
-  },
-  {
-    id: 3,
-    name: 'wangwu',
-    photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
-    departmentName: 'aaa',
-    title: 'aaa',
-    specialty: 'aaa',
-    consultLimit: 'bbb',
-    centerDialogVisible: 'false'
-  },
-  {
-    id: 4,
-    name: 'wangwu',
-    photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
-    departmentName: 'aaa',
-    title: 'aaa',
-    specialty: 'aaa',
-    consultLimit: 'bbb',
-    centerDialogVisible: 'false'
-  },
-  {
-    id: 5,
-    name: 'wangwu',
-    photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
-    departmentName: 'aaa',
-    title: 'aaa',
-    specialty: 'aaa',
-    consultLimit: 'bbb',
-    centerDialogVisible: 'false'
-  }
+  // {
+  //   id: 1,
+  //   name: 'zhangsan',
+  //   // photo: 'http://tiebapic.baidu.com/forum/w%3D580/sign=75bdfcc8e1efce1bea2bc8c29f51f3e8/2725b07fca806538e9851b2dd1dda144ad34825d.jpg?tbpicau=2024-12-22-05_979028a6c78587196516e915f6c3baa2',
+  //   departmentName: '111',
+  //   title: '222',
+  //   specialty: '333',
+  //   consultLimit: '444',
+  //   centerDialogVisible: 'false'
+  // },
+  // {
+  //   id: 2,
+  //   name: 'lisi',
+  //   photo: 'https://ts1.cn.mm.bing.net/th/id/R-C.0f2bcfb1fdeb20094ec4a2201204d80a?rik=SmaRHAEgqJotnw&riu=http%3a%2f%2ffiles.photops.com%3a81%2fattachment%2fMon_2212%2f88_578680_5c3118c518f5525.jpg%3f99&ehk=N4X3uvFVv8hfg%2fyWHdUNPwf4aGpwlfj3UIZ03ZIzoTE%3d&risl=&pid=ImgRaw&r=0',
+  //   departmentName: 'aaa',
+  //   title: 'aaa',
+  //   specialty: 'aaa',
+  //   consultLimit: 'bbb',
+  //   centerDialogVisible: 'false'
+  // },
+  // {
+  //   id: 3,
+  //   name: 'wangwu',
+  //   photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
+  //   departmentName: 'aaa',
+  //   title: 'aaa',
+  //   specialty: 'aaa',
+  //   consultLimit: 'bbb',
+  //   centerDialogVisible: 'false'
+  // },
+  // {
+  //   id: 4,
+  //   name: 'wangwu',
+  //   photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
+  //   departmentName: 'aaa',
+  //   title: 'aaa',
+  //   specialty: 'aaa',
+  //   consultLimit: 'bbb',
+  //   centerDialogVisible: 'false'
+  // },
+  // {
+  //   id: 5,
+  //   name: 'wangwu',
+  //   photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
+  //   departmentName: 'aaa',
+  //   title: 'aaa',
+  //   specialty: 'aaa',
+  //   consultLimit: 'bbb',
+  //   centerDialogVisible: 'false'
+  // }
 ])  // 所有的数据
 const pageNum = ref(1)   // 当前的页码
 const pageSize = ref(10)  // 每页显示的个数

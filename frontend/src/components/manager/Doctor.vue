@@ -22,7 +22,7 @@
                 :zoom-rate="1.2"
                 :max-scale="7"
                 :min-scale="0.2"
-                :preview-src-list="row.photo ? [row.photo] : ['https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png']"
+                style="width: 50px; height: 50px;"
                 fit="cover"
             />
           </template>
@@ -94,15 +94,6 @@
           <el-input type="textarea" :rows="4" v-model="form.description" placeholder="简介"/>
         </el-form-item>
 
-        <!--        <el-form-item label="入职时间" prop="time">-->
-        <!--          <el-date-picker-->
-        <!--              style="width: 100%"-->
-        <!--              v-model="form.time"-->
-        <!--              type="date"-->
-        <!--              value-format="yyyy-MM-dd"-->
-        <!--              placeholder="选择日期"-->
-        <!--          />-->
-        <!--        </el-form-item>-->
       </el-form>
 
       <template #footer>

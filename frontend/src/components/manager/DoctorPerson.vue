@@ -3,17 +3,21 @@
     <el-card style="width: 60%; ; margin: 0 auto;">
       <el-form :model="user" label-width="130px" style="padding-right: 50px">
         <div style="margin: 15px; text-align: center">
+          <!-- 上传图片按钮 -->
           <el-upload
               class="avatar-uploader"
-              :action="`${$baseUrl}/files/upload`"
               :show-file-list="false"
-              :on-success="handleAvatarSuccess"
+              :before-upload="uploadToThirdParty"
           >
-            <img v-if="user.photo" :src="user.photo" class="avatar"/>
-            <el-icon v-else class="avatar-uploader-icon">
-              <Plus/>
-            </el-icon>
+            < img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <el-icon v-if="!imageUrl" class="avatar-uploader-icon"><Plus /></el-icon>
           </el-upload>
+
+          <!-- 显示图片 URL -->
+          <div v-if="imageUrl" style="margin-top: 20px;">
+            <p>图片上传成功，URL：</p >
+            <a :href="imageUrl" target="_blank">{{ imageUrl }}</a >
+          </div>
         </div>
         <el-form-item label="账号" prop="id">
           <el-input v-model="user.id" placeholder="账号" disabled/>
@@ -77,6 +81,44 @@ const getPerson = () => {
 
 };
 
+const imageUrl = ref(""); // 存储返回的图片 URL
+
+// 上传到第三方网站
+const uploadToThirdParty = async (file) => {
+  console.log("Received file:", file);
+  if (!file) {
+    console.error("File is invalid or was rejected by validation rules.");
+    return false;
+  }
+  const formData = new FormData();
+  formData.append("smfile", file); // 上传文件字段名为 smfile
+
+  try {
+    // 使用 fetch 将图片上传到 SM.MS
+    const response = await fetch("http://localhost:9290/uploadImage", {
+      method: "POST",
+      //   headers: {
+      //     "Authorization": "QqM8QZ7fWLfMWKETCFC5eyYGWpDdY1pJ", // 替换为实际的 API Token
+      //   },
+      body: formData,
+    });
+
+    const result = await response.json();
+    console.log(result);
+
+    if (result.success) {
+      imageUrl.value = result.data.url; // 从响应中获取图片 URL
+      ElMessage.success("图片上传成功！");
+    } else {
+      ElMessage.error(`上传失败：${result.message}`);
+    }
+  } catch (error) {
+    console.error("上传失败:", error);
+    ElMessage.error("图片上传失败，请稍后重试！");
+  }
+
+  return false; // 阻止 el-upload 默认上传行为
+};
 
 // Update user info on the server
 const update = () => {

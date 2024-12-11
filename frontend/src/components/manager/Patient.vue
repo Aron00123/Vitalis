@@ -22,7 +22,7 @@
                 :zoom-rate="1.2"
                 :max-scale="7"
                 :min-scale="0.2"
-                :preview-src-list="row.avatar ? [row.avatar] : ['https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png']"
+                style="width: 50px; height: 50px;"
                 fit="cover"
             />
           </template>
@@ -32,7 +32,7 @@
         <el-table-column prop="gender" label="性别"/>
         <el-table-column prop="phone" label="电话"/>
         <el-table-column prop="emergencyPhone" label="紧急联系人电话"/>
-        <el-table-column prop="address" label="家庭住址" show-overflow-tooltip/>
+        <el-table-column prop="address" label="家庭住址"/>
 
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
