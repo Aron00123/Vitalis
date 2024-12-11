@@ -9,15 +9,17 @@
               :show-file-list="false"
               :before-upload="uploadToThirdParty"
           >
-            < img v-if="imageUrl" :src="imageUrl" class="avatar" />
-            <el-icon v-if="!imageUrl" class="avatar-uploader-icon"><Plus /></el-icon>
+            <img v-if="imageUrl" :src="imageUrl" class="avatar"/>
+            <el-icon v-if="!imageUrl" class="avatar-uploader-icon">
+              <Plus/>
+            </el-icon>
           </el-upload>
 
           <!-- 显示图片 URL -->
-          <div v-if="imageUrl" style="margin-top: 20px;">
-            <p>图片上传成功，URL：</p >
-            <a :href="imageUrl" target="_blank">{{ imageUrl }}</a >
-          </div>
+<!--          <div v-if="imageUrl" style="margin-top: 20px;">-->
+<!--            <p>图片上传成功，URL：</p>-->
+<!--            <a :href="imageUrl" target="_blank">{{ imageUrl }}</a>-->
+<!--          </div>-->
         </div>
         <el-form-item label="账号" prop="id">
           <el-input v-model="user.id" placeholder="账号" disabled/>
@@ -95,7 +97,7 @@ const uploadToThirdParty = async (file) => {
 
   try {
     // 使用 fetch 将图片上传到 SM.MS
-    const response = await fetch("http://localhost:9290/uploadImage", {
+    const response = await fetch("http://localhost:9090/uploadImage", {
       method: "POST",
       //   headers: {
       //     "Authorization": "QqM8QZ7fWLfMWKETCFC5eyYGWpDdY1pJ", // 替换为实际的 API Token
