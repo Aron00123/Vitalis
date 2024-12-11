@@ -18,10 +18,12 @@
         <el-table-column label="照片">
           <template #default="{ row }">
             <el-image
-                v-if="row.photo"
-                style="width: 40px; height: 40px; border-radius: 50%"
-                :src="row.photo"
-                :preview-src-list="[row.photo]"
+                :src="row.photo ? row.photo : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
+                :zoom-rate="1.2"
+                :max-scale="7"
+                :min-scale="0.2"
+                :preview-src-list="row.photo ? [row.photo] : ['https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png']"
+                fit="cover"
             />
           </template>
         </el-table-column>

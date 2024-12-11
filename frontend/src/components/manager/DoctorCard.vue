@@ -19,55 +19,87 @@
     <div class="table" style="padding: 15px 20px">
       <el-row :gutter="20">
         <el-col :span="6" v-for="item in tableData" :key="item.id" style="margin-bottom: 20px">
-          <div style="text-align: center; background-color: #ecf8fd" class="card">
-            <img :src="item.photo" alt="" style="width: 100px; height: 100px; border-radius: 50%">
-            <div style="font-weight: 550; margin-top: 10px">
+          <div
+              style="text-align: center; background-color: #f9fbfd; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 20px; width: 250px; margin: 10px auto;">
+            <el-image
+                style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto; border: 2px solid #dfe6ed;"
+                :src="item.photo ? item.photo : 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
+                :zoom-rate="1.2"
+                :max-scale="7"
+                :min-scale="0.2"
+                :preview-src-list="item.photo ? [item.photo] : ['https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png']"
+                :initial-index="0"
+                fit="cover"
+            />
+            <div style="font-weight: 550; margin-top: 15px; font-size: 16px; color: #2c3e50;">
               {{ item.name }}
             </div>
-            <div style=" margin-top: 10px">
-              <span style="padding: 10px">{{ item.departmentName }}</span>
-              <span>{{ item.title }}</span>
-
+            <div style="margin-top: 10px; font-size: 14px; color: #546e7a;">
+              <span style="padding: 5px; background-color: #e3f2fd; border-radius: 6px; margin-right: 5px;">{{
+                  item.departmentName
+                }}</span>
+              <span style="padding: 5px; background-color: #f1f8e9; border-radius: 6px;">{{ item.title }}</span>
             </div>
             <div
-                style="margin-top: 20px; color: #353523; padding: 0 10px; text-align: left; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 4;">
+                style="margin-top: 20px; color: #455a64; padding: 10px; text-align: left; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; font-size: 13px; line-height: 1.6; background-color: #fafafa; border-radius: 8px;">
               主治疾病：{{ item.specialty }}
             </div>
-
-            <div style="margin-top: 15px">
-              <el-button type="primary" size="mini" plain @click="open(item)">查看医生简介</el-button>
-              <el-button type="primary" size="mini" @click="item.centerDialogVisible = true"
-                         :disabled="item.consultLimit === 0">
+            <div
+                style="margin-top: 10px; color: #455a64; padding: 10px; text-align: left; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; font-size: 13px; line-height: 1.6; background-color: #fafafa; border-radius: 8px;">
+              坐诊日：{{ item.date }}
+            </div>
+            <div
+                style="margin-top: 10px; color: #455a64; padding: 10px; text-align: left; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; font-size: 13px; line-height: 1.6; background-color: #fafafa; border-radius: 8px;">
+              就诊限额：{{ item.consultLimit }}
+            </div>
+            <div style="margin-top: 15px; display: flex; justify-content: space-between;">
+              <el-button type="primary" size="mini" plain @click="open(item)"
+                         style="border-radius: 8px; padding: 5px 10px;">
+                查看医生简介
+              </el-button>
+              <el-button
+                  type="primary"
+                  size="mini"
+                  @click="item.centerDialogVisible = true"
+                  :disabled="item.consultLimit === 0"
+                  style="border-radius: 8px; padding: 5px 10px;">
                 挂号
               </el-button>
-
-              <el-dialog v-model="item.centerDialogVisible" title="确认挂号" width="500" center>
-                <div style="height: 200px ;padding-left: 20px">
-                  <div style="padding: 10px"><strong>预约挂号：</strong></div>
-                  <div style="padding: 10px;">
-                    <span><strong>{{ item.name }} {{ item.title }}</strong></span>
-                    <!--                    <span style="padding-left: 50px"><strong>{{ item.departmentName }}</strong></span>-->
-                  </div>
-                  <div style="padding: 10px;">
-                    <span><strong>预约时间：{{ item.date }}</strong></span>
-                  </div>
-                  <div style="padding: 10px;">
-                    <span><strong>剩余号数：{{ item.consultLimit }}</strong></span>
-                  </div>
-
-                </div>
-
-                <template #footer>
-                  <div class="dialog-footer">
-                    <el-button @click="item.centerDialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="reserve(item.id, item.centerDialogVisible)">
-                      确认
-                    </el-button>
-                  </div>
-                </template>
-              </el-dialog>
             </div>
+            <el-dialog
+                v-model="item.centerDialogVisible"
+                title="确认挂号"
+                width="500"
+                center
+                style="border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); background-color: #ffffff;">
+              <div style="height: auto; padding: 20px; font-size: 14px; line-height: 1.6; color: #37474f;">
+                <div style="margin-bottom: 15px; font-size: 16px; font-weight: bold; color: #1e88e5;">预约挂号</div>
+                <div style="margin-bottom: 10px;">
+                  <span style="font-size: 15px; font-weight: bold;">医生：</span>{{ item.name }} {{ item.title }}
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <span style="font-size: 15px; font-weight: bold;">科室：</span>{{ item.departmentName }}
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <span style="font-size: 15px; font-weight: bold;">预约时间：</span>{{ item.date }}
+                </div>
+                <div style="margin-bottom: 10px;">
+                  <span style="font-size: 15px; font-weight: bold;">剩余号数：</span>{{ item.consultLimit }}
+                </div>
+              </div>
+              <template #footer>
+                <div class="dialog-footer" style="text-align: center;">
+                  <el-button @click="item.centerDialogVisible = false" style="border-radius: 8px;">取消</el-button>
+                  <el-button type="primary" @click="reserve(item.id, item.centerDialogVisible)"
+                             style="border-radius: 8px;">
+                    确认
+                  </el-button>
+                </div>
+              </template>
+            </el-dialog>
           </div>
+
+
         </el-col>
       </el-row>
 
@@ -92,36 +124,57 @@ import {ref, onMounted} from 'vue'
 import request from "../../utils/request.js";
 import {ElMessage, ElMessageBox} from "element-plus";
 
-const centerDialogVisible = ref(false)
-
 const tableData = ref([
-  // {
-  //   id: 1,
-  //   name: 'zhangsan',
-  //   departmentName: '111',
-  //   title: '222',
-  //   specialty: '333',
-  //   consultLimit: '444',
-  //   centerDialogVisible: 'false'
-  // },
-  // {
-  //   id: 2,
-  //   name: 'lisi',
-  //   departmentName: 'aaa',
-  //   title: 'aaa',
-  //   specialty: 'aaa',
-  //   consultLimit: 'bbb',
-  //   centerDialogVisible: 'false'
-  // },
-  // {
-  //   id: 3,
-  //   name: 'wangwu',
-  //   departmentName: 'aaa',
-  //   title: 'aaa',
-  //   specialty: 'aaa',
-  //   consultLimit: 'bbb',
-  //   centerDialogVisible: 'false'
-  // }
+  {
+    id: 1,
+    name: 'zhangsan',
+    // photo: 'http://tiebapic.baidu.com/forum/w%3D580/sign=75bdfcc8e1efce1bea2bc8c29f51f3e8/2725b07fca806538e9851b2dd1dda144ad34825d.jpg?tbpicau=2024-12-22-05_979028a6c78587196516e915f6c3baa2',
+    departmentName: '111',
+    title: '222',
+    specialty: '333',
+    consultLimit: '444',
+    centerDialogVisible: 'false'
+  },
+  {
+    id: 2,
+    name: 'lisi',
+    photo: 'https://ts1.cn.mm.bing.net/th/id/R-C.0f2bcfb1fdeb20094ec4a2201204d80a?rik=SmaRHAEgqJotnw&riu=http%3a%2f%2ffiles.photops.com%3a81%2fattachment%2fMon_2212%2f88_578680_5c3118c518f5525.jpg%3f99&ehk=N4X3uvFVv8hfg%2fyWHdUNPwf4aGpwlfj3UIZ03ZIzoTE%3d&risl=&pid=ImgRaw&r=0',
+    departmentName: 'aaa',
+    title: 'aaa',
+    specialty: 'aaa',
+    consultLimit: 'bbb',
+    centerDialogVisible: 'false'
+  },
+  {
+    id: 3,
+    name: 'wangwu',
+    photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
+    departmentName: 'aaa',
+    title: 'aaa',
+    specialty: 'aaa',
+    consultLimit: 'bbb',
+    centerDialogVisible: 'false'
+  },
+  {
+    id: 4,
+    name: 'wangwu',
+    photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
+    departmentName: 'aaa',
+    title: 'aaa',
+    specialty: 'aaa',
+    consultLimit: 'bbb',
+    centerDialogVisible: 'false'
+  },
+  {
+    id: 5,
+    name: 'wangwu',
+    photo: 'https//tiebapic.baidu.com/forum/w%3D580/sign=15f07c0d358da9774e2f86238051f872/1f2e972ad40735fab9adf187d8510fb30f240862.jpg?tbpicau=2024-12-22-05_e704bea2c4c932d1cabd0eb782f4f03d',
+    departmentName: 'aaa',
+    title: 'aaa',
+    specialty: 'aaa',
+    consultLimit: 'bbb',
+    centerDialogVisible: 'false'
+  }
 ])  // 所有的数据
 const pageNum = ref(1)   // 当前的页码
 const pageSize = ref(10)  // 每页显示的个数
@@ -138,7 +191,7 @@ const disabledDate = (time) => {
   const today = new Date();
   const nextWeek = new Date();
   nextWeek.setDate(today.getDate() + 7);
-  today.setHours(0,0,0,0);
+  today.setHours(0, 0, 0, 0);
 
   return time < today || time > nextWeek;
 };
@@ -215,11 +268,7 @@ const load = (pageNum1) => {
       .then((res) => {
         if (res.code === "200") {
           tableData.value = res.data.list
-          // for(let obj in tableData.value) {
-          //   obj.centerDialogVisible = 'false';
-          // }
           total.value = res.data.total
-
         } else {
           ElMessage.error(res.msg);
         }
@@ -232,14 +281,11 @@ const load = (pageNum1) => {
 // 查看医生简介
 const open = (item) => {
   ElMessageBox.alert(
-      `<div><strong>坐诊日：${item.consultDays}</strong></div>
-// <div><strong>联系电话：${item.phone}</strong></div>
-// <div style="margin-top: 20px; color: #353523; padding: 0 10px; text-align: left; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 4;">
-//               简介：${item.description}</div>`,
-//       item.name,
-//       {
-//         dangerouslyUseHTMLString: true,
-//       }
+      `<div>${item.description}</div>`,
+      '医生简介',
+      {
+        dangerouslyUseHTMLString: true,
+      }
   )
 }
 
@@ -262,6 +308,15 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
-
-</style>
+<!--<style scoped>-->
+<!--.demo-image__error .image-slot {-->
+<!--  font-size: 30px;-->
+<!--}-->
+<!--.demo-image__error .image-slot .el-icon {-->
+<!--  font-size: 30px;-->
+<!--}-->
+<!--.demo-image__error .el-image {-->
+<!--  width: 100%;-->
+<!--  height: 200px;-->
+<!--}-->
+<!--</style>-->
