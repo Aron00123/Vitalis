@@ -141,7 +141,7 @@ const load = (page = 1) => {
   pageNum.value = page;
   request
       .post("/doctor/selectPage", {
-        params: {pageNum: pageNum.value, pageSize: pageSize.value, username: id.value},
+        pageNum: pageNum.value, pageSize: pageSize.value, userId: id.value
       })
       .then((res) => {
         if (res.code === "200") {

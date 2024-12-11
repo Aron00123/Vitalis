@@ -99,7 +99,7 @@ const load = (page = 1) => {
   pageNum.value = page;
   request
       .post("/prescription/selectPageForAdmin", {
-        pageNum: pageNum.value, pageSize: pageSize.value, username: id.value
+        pageNum: pageNum.value, pageSize: pageSize.value, id: id.value
       })
       .then((res) => {
         tableData.value = res.data?.list || [];

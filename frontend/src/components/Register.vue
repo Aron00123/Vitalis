@@ -41,7 +41,7 @@
             <el-button
                 type="primary"
                 class="signin-btn"
-                @click="onRegister"
+                @click="register"
             >
               注册
             </el-button>

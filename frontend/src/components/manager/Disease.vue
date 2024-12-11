@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search" style="padding-bottom: 20px">
-      <el-input placeholder="请输入疾病名称查询" style="width: 200px" v-model="id"/>
+      <el-input placeholder="请输入疾病ID查询" style="width: 200px" v-model="id"/>
       <el-button type="info" plain style="margin-left: 10px" @click="load(1)">查询</el-button>
       <el-button type="warning" plain style="margin-left: 10px" @click="reset">重置</el-button>
     </div>
@@ -104,7 +104,7 @@ const load = (page = 1) => {
   pageNum.value = page;
   request
       .post("/disease/selectPage", {
-        pageNum: pageNum.value, pageSize: pageSize.value, username: id.value
+        pageNum: pageNum.value, pageSize: pageSize.value, id: id.value
       })
       .then((res) => {
         tableData.value = res.data.list || [];
