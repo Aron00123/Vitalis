@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="card" style="padding: 15px">
-      您好，{{ user.name }}！欢迎使用Vitalis医疗服务系统
+    <div class="card" style="padding: 15px; font-family: Arial, sans-serif; color: #333; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); background-color: #f9f9f9; border-radius: 5px;">
+        您好，<strong>{{ user.name ? user.name : 'ADMIN' }}</strong>！欢迎使用Vitalis医疗服务系统
     </div>
 
     <div style="display: flex; margin: 10px 0">

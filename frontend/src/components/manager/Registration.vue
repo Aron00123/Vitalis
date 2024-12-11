@@ -36,7 +36,7 @@
                        @click="searchByRegistrationId(scope.row.id)">就诊记录
             </el-button>
             <el-button size="mini" type="primary" plain
-                       v-if="user.role === 'ADMIN'"  @click="AdminEditor(scope.row)">编辑
+                       v-if="user.role === 'ADMIN' && scope.row.status === '已就诊'"  @click="AdminEditor(scope.row)">编辑
             </el-button>
             <el-button size="mini" type="danger" plain
                        v-if="user.role === 'ADMIN'"  @click="AdminDel(scope.row.id)">删除
@@ -108,15 +108,7 @@ import {useRouter} from 'vue-router'
 const router = useRouter();
 
 // 定义响应式数据
-//const tableData = ref([])  // 所有的数据
-const tableData = ref([
-  {
-    status: '已就诊'
-  },
-  {
-    status: '未就诊'
-  }
-])
+const tableData = ref([])  // 所有的数据
 const pageNum = ref(1)     // 当前的页码
 const pageSize = ref(10)   // 每页显示的个数
 const total = ref(0)

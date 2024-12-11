@@ -9,21 +9,32 @@
 
       <div class="manager-header-center">
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: route.path }" v-if="route.meta.name !== '欢迎页'">{{
-              route.meta.name
-            }}
-          </el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: route.path }" v-else></el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
+
+            <el-breadcrumb-item :to="{ path: route.path }" v-if="route.meta.name === '我的挂号' && user.role === 'DOCTOR'">
+
+                待处理挂号
+            </el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: route.path }"
+                                v-else-if="route.meta.name === '我的挂号' && user.role === 'ADMIN'">
+                挂号单管理
+            </el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: route.path }"
+                                v-else-if="route.meta.name === '我的就诊' && user.role === 'DOCTOR'">
+                诊断记录
+            </el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: route.path }" v-else-if="route.meta.name !== '欢迎页'">
+                {{route.meta.name}}
+            </el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: route.path }" v-else></el-breadcrumb-item>
         </el-breadcrumb>
       </div>
 
       <div class="manager-header-right">
         <el-dropdown placement="bottom">
           <div class="avatar">
-            <!--            <img :src="user.avatar" || />-->
             <span>
-              <el-avatar :size="40" :src="user.avatar" v-if="user.avatar"/>
+              <el-avatar :size="40" :src="user.photo" v-if="user.photo"/>
               <el-avatar :size="40" :src="'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'"
                          v-else/>
             </span>

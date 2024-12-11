@@ -14,12 +14,6 @@
               <Plus/>
             </el-icon>
           </el-upload>
-
-          <!-- 显示图片 URL -->
-<!--          <div v-if="imageUrl" style="margin-top: 20px;">-->
-<!--            <p>图片上传成功，URL：</p>-->
-<!--            <a :href="imageUrl" target="_blank">{{ imageUrl }}</a>-->
-<!--          </div>-->
         </div>
         <el-form-item label="账号" prop="id">
           <el-input v-model="user.id" placeholder="账号" disabled/>
@@ -73,6 +67,7 @@ const getPerson = () => {
       .then((res) => {
         if (res.code === "200") {
           Object.assign(user, res.data);
+          imageUrl.value = user.photo;
         } else {
           ElMessage.error(res.msg);
         }
@@ -97,7 +92,7 @@ const uploadToThirdParty = async (file) => {
 
   try {
     // 使用 fetch 将图片上传到 SM.MS
-    const response = await fetch("http://localhost:9090/uploadImage", {
+    const response = await fetch("http://localhost:9290/uploadImage", {
       method: "POST",
       //   headers: {
       //     "Authorization": "QqM8QZ7fWLfMWKETCFC5eyYGWpDdY1pJ", // 替换为实际的 API Token
@@ -111,6 +106,15 @@ const uploadToThirdParty = async (file) => {
     if (result.success) {
       imageUrl.value = result.data.url; // 从响应中获取图片 URL
       ElMessage.success("图片上传成功！");
+      request
+      .post("/doctor/update", {
+        id: user.id,
+        photo: imageUrl.value
+        })
+      .then((res) => {})
+      .catch((err) => {
+        ElMessage.error("请求失败，请稍后重试");
+      });
     } else {
       ElMessage.error(`上传失败：${result.message}`);
     }

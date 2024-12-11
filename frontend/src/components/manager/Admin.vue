@@ -20,8 +20,8 @@
             <el-image
                 v-if="row.photo"
                 style="width: 40px; height: 40px; border-radius: 50%"
-                :src="row.avatar"
-                :preview-src-list="[row.avatar]"
+                :src="row.photo"
+                :preview-src-list="[row.photo]"
             />
           </template>
         </el-table-column>
