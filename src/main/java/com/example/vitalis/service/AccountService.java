@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.example.vitalis.entity.Account;
 import com.example.vitalis.entity.Doctor;
 import com.example.vitalis.entity.Patient;
-import com.example.vitalis.entity.PatientAccount;
 import com.example.vitalis.exception.CustomException;
 import com.example.vitalis.common.enums.ResultCodeEnum;
 import com.example.vitalis.mapper.AccountMapper;
@@ -14,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Objects;
 
 @Service
 public class AccountService {
@@ -28,7 +29,7 @@ public class AccountService {
     private PatientMapper patientMapper;
 
     // 登录
-    public PatientAccount login(Account account) {
+    public HashMap<String, Object> login(Account account) {
         Account account1 = accountMapper.selectById(account.getId());
         if (ObjectUtil.isNull(account1)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
@@ -36,10 +37,26 @@ public class AccountService {
         if (!account1.getPassword().equals(account.getPassword())) {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
-        Patient patient = patientMapper.selectById(account.getId());
-        PatientAccount patientAccount = new PatientAccount();
-        patientAccount.setByAccountAndPatient(account1, patient);
-        return patientAccount;
+
+        HashMap<String, Object> accountInfo = new HashMap<String, Object>();
+        accountInfo.put("account", account1);
+        if (Objects.equals(account1.getRole(), "ADMIN")) {
+            HashMap<String, Object> temp = new HashMap<>();
+            temp.put("id", account.getId());
+            accountInfo.put("roleInfo", temp);
+            return accountInfo;
+        }
+        switch (account1.getRole()) {
+            case "DOCTOR":
+                accountInfo.put("roleInfo", doctorMapper.selectById(account.getId()));
+                break;
+            case "PATIENT":
+                accountInfo.put("roleInfo", patientMapper.selectById(account.getId()));
+                break;
+            default:
+                break;
+        }
+        return accountInfo;
     }
 
     // 注册
@@ -49,12 +66,8 @@ public class AccountService {
             throw new CustomException(ResultCodeEnum.USER_EXIST_ERROR);
         }
         accountMapper.insert(account);
-        switch (account.getRole()){
-            case "PATIENT":
-                patientMapper.insert(patient);
-                break;
-            default:
-                throw new CustomException(ResultCodeEnum.PARAM_ROLE_ERROR);
+        if (Objects.equals(account.getRole(), "PATIENT")) {
+            patientMapper.insert(patient);
         }
     }
 
@@ -63,9 +76,6 @@ public class AccountService {
         Account account1 = accountMapper.selectById(account.getId());
         if (ObjectUtil.isNull(account1)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-        }
-        if (!account1.getPassword().equals(account.getPassword())) {
-            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
         }
         accountMapper.updateById(account);
     }

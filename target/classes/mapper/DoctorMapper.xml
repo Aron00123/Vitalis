@@ -6,7 +6,7 @@
 
     <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        id, name, gender, title, specialty, departId, consultLimit, consultDays, phone, photo
+        id, name, gender, title, specialty, departId, consultLimit, consultDays, phone, photo, description
     </sql>
 
     <!-- 查询所有记录 -->
@@ -16,6 +16,7 @@
         FROM Doctor
         <where>
             <if test="departId != null">departId = #{departId}</if>
+            <if test="id != null">id = #{id}</if>
         </where>
     </select>
 
@@ -29,8 +30,8 @@
 
     <!-- 插入新记录 -->
     <insert id="insert" parameterType="com.example.vitalis.entity.Doctor" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO Doctor (id, name, gender, title, specialty, departId, consultLimit, consultDays, phone, photo)
-        VALUES (#{id}, #{name}, #{gender}, #{title}, #{specialty}, #{departId}, #{consultLimit}, #{consultDays}, #{phone}, #{photo})
+        INSERT INTO Doctor (id, name, gender, title, specialty, departId, consultLimit, consultDays, phone, photo, description)
+        VALUES (#{id}, #{name}, #{gender}, #{title}, #{specialty}, #{departId}, #{consultLimit}, #{consultDays}, #{phone}, #{photo}, #{description})
     </insert>
 
     <!-- 根据ID删除记录 -->
@@ -52,6 +53,7 @@
             <if test="consultDays != null">consultDays = #{consultDays},</if>
             <if test="phone != null">phone = #{phone},</if>
             <if test="photo != null">photo = #{photo},</if>
+            <if test="description != null">description = #{description},</if>
         </set>
         WHERE id = #{id}
     </update>

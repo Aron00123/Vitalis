@@ -6,7 +6,7 @@
 
     <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        id, name, symptoms, sequelae, incubationPeriod
+        id, name, symptoms, description, cause, epidemic, checkWay
     </sql>
 
     <!-- 查询所有记录 -->
@@ -14,6 +14,9 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM Disease
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </select>
 
     <!-- 根据ID查询 -->
@@ -26,8 +29,8 @@
 
     <!-- 插入新记录 -->
     <insert id="insert" parameterType="com.example.vitalis.entity.Disease" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO Disease (id, name, symptoms, sequelae, incubationPeriod)
-        VALUES (#{id}, #{name}, #{symptoms}, #{sequelae}, #{incubationPeriod})
+        INSERT INTO Disease (name, symptoms, description, cause, epidemic, checkWay)
+        VALUES (#{name}, #{symptoms}, #{description}, #{cause}, #{epidemic}, #{checkWay})
     </insert>
 
     <!-- 根据ID删除记录 -->
@@ -42,8 +45,10 @@
         <set>
             <if test="name != null">name = #{name},</if>
             <if test="symptoms != null">symptoms = #{symptoms},</if>
-            <if test="sequelae != null">sequelae = #{sequelae},</if>
-            <if test="incubationPeriod != null">incubationPeriod = #{incubationPeriod},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="cause != null">cause = #{cause},</if>
+            <if test="epidemic != null">epidemic = #{epidemic},</if>
+            <if test="check != null">checkWay = #{checkWay},</if>
         </set>
         WHERE id = #{id}
     </update>

@@ -30,7 +30,9 @@ public enum ResultCodeEnum {
     DISEASE_NOT_EXIST_ERROR("5015", "不存在此id的疾病"),
     MEDICINE_NOT_EXIST_ERROR("5016", "不存在此id的药品"),
     PRESCRIPTION_NOT_EXIST_ERROR("5017", "不存在此id的处方"),
-    REGISTRATION_NOT_EXIST_ERROR("5018", "不存在此id的挂号")
+    REGISTRATION_NOT_EXIST_ERROR("5018", "不存在此id的挂号"),
+    HAS_BOOK_DOCTOR("5019", "当天已经挂过此医生"),
+    NOTICE_NOT_EXIST_ERROR("5020", "不存在通知")
     ;
 
     public String code;

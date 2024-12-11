@@ -14,6 +14,9 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM Medicine
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </select>
 
     <!-- 根据ID查询 -->

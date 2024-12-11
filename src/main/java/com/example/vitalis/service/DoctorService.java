@@ -1,12 +1,11 @@
 package com.example.vitalis.service;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.example.vitalis.common.enums.ResultCodeEnum;
-import com.example.vitalis.entity.Doctor;
-import com.example.vitalis.entity.Patient;
-import com.example.vitalis.entity.Registration;
+import com.example.vitalis.entity.*;
 import com.example.vitalis.exception.CustomException;
+import com.example.vitalis.mapper.AccountMapper;
+import com.example.vitalis.mapper.DepartmentMapper;
 import com.example.vitalis.mapper.DoctorMapper;
 import com.example.vitalis.mapper.RegistrationMapper;
 import com.github.pagehelper.PageHelper;
@@ -32,6 +31,10 @@ public class DoctorService {
     private DoctorMapper doctorMapper;
     @Autowired
     private RegistrationMapper registrationMapper;
+    @Autowired
+    private DepartmentMapper departmentMapper;
+    @Autowired
+    private AccountMapper accountMapper;
 
     public void add(Doctor doctor) {
         doctorMapper.insert(doctor);
@@ -39,11 +42,19 @@ public class DoctorService {
 
     public void deleteById(String id) {
         doctorMapper.deleteById(id);
+        Account account = accountMapper.selectById(id);
+        if (account != null) {
+            accountMapper.deleteById(id);
+        }
     }
 
     public void deleteBatch(List<String> ids) {
         for (String id : ids) {
             doctorMapper.deleteById(id);
+            Account account = accountMapper.selectById(id);
+            if (account != null) {
+                accountMapper.deleteById(id);
+            }
         }
     }
 
@@ -60,13 +71,23 @@ public class DoctorService {
     }
 
     public List<Doctor> selectAll(Doctor doctor) {
-        return doctorMapper.selectAll(doctor);
+        List<Doctor> doctorList = doctorMapper.selectAll(doctor);
+        for (Doctor doctor1 : doctorList) {
+            Department department = departmentMapper.selectById(doctor1.getDepartId());
+            doctor1.setDepartmentName(department.getType());
+        }
+        return doctorList;
     }
 
     public PageInfo<Doctor> selectPage(Doctor doctor, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Doctor> doctors = doctorMapper.selectAll(doctor);
-        return new PageInfo<>(doctors);
+        for (Doctor doctor1 : doctors) {
+            Department department = departmentMapper.selectById(doctor1.getDepartId());
+            doctor1.setDepartmentName(department.getType());
+        }
+
+        return PageInfo.of(doctors);
     }
 
 
@@ -95,7 +116,7 @@ public class DoctorService {
         List<Doctor> finalDoctorList = new ArrayList<>();
         // 计算查出来的在诊医生剩余多少个号
         for (Doctor dbDoctor : list) {
-            if (dbDoctor.getConsultDays().contains(weekday)) {
+            if (dbDoctor.getConsultDays() != null && dbDoctor.getConsultDays().contains(weekday)) {
                 // 查询出来当天已经挂过该医生号的数量
                 Registration registration = new Registration();
                 registration.setDoctorId(dbDoctor.getId());
@@ -109,15 +130,55 @@ public class DoctorService {
                 }
             }
         }
+
+        for (Doctor doctor1 : list) {
+            Department department = departmentMapper.selectById(doctor1.getDepartId());
+            doctor1.setDepartmentName(department.getType());
+        }
         return PageInfo.of(finalDoctorList);
     }
 
-    /**
-     * 获取今天是星期几
-     */
-    private String getTodayWeek() {
-        LocalDate today = LocalDate.now();
-        DayOfWeek dayOfWeek = today.getDayOfWeek();
-        return dayOfWeek.getDisplayName(TextStyle.FULL_STANDALONE, Locale.CHINA);
+    public List<Doctor> querySearch(String queryString) {
+        Doctor doctor = new Doctor();
+        List<Doctor> doctors = doctorMapper.selectAll(doctor);
+        List<Doctor> doctors1 = new ArrayList<>();
+        int cnt = 0;
+        for (Doctor doctor1 : doctors) {
+            if (cnt >= 10) {
+                break;
+            }
+            if (doctor1.getName().contains(queryString)) {
+                doctors1.add(doctor1);
+                cnt += 1;
+            }
+        }
+        return doctors1;
+    }
+    
+    public PageInfo<Doctor> querySearchAdmin(String queryString, Integer pageNum, Integer pageSize) {
+        Doctor doctor = new Doctor();
+        doctor.setName(queryString);
+        List<Doctor> doctors = doctorMapper.selectAll(doctor);
+        List<Doctor> doctors1 = new ArrayList<>();
+        for (Doctor doctor1: doctors) {
+            if (doctor1.getName().contains(queryString)) {
+                doctors1.add(doctor1);
+            }
+        }
+        int total = doctors1.size(); // 总记录数
+        int start = (pageNum - 1) * pageSize; // 起始索引
+        int end = Math.min(start + pageSize, total); // 结束索引
+
+        // 获取当前页数据
+        List<Doctor> pageList = doctors1.subList(start, end);
+
+        // 封装到 PageInfo 中
+        PageInfo<Doctor> pageInfo = new PageInfo<>(pageList);
+        pageInfo.setTotal(total); // 总记录数
+        pageInfo.setPageNum(pageNum); // 当前页
+        pageInfo.setPageSize(pageSize); // 每页大小
+        pageInfo.setPages((total + pageSize - 1) / pageSize); // 总页数
+
+        return pageInfo;
     }
 }

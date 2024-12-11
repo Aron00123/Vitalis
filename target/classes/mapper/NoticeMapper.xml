@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.vitalis.mapper.NoticeMapper">
+
+    <!-- 基本字段列表 -->
+    <sql id="Base_Column_List">
+        id, title, content, time, user
+    </sql>
+
+    <!-- 查询所有记录 -->
+    <select id="selectAll" resultType="com.example.vitalis.entity.Notice">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Notice
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="selectById" resultType="com.example.vitalis.entity.Notice">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM Notice
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入新记录 -->
+    <insert id="insert" parameterType="com.example.vitalis.entity.Notice" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO Notice (id, title, content, time, user)
+        VALUES (#{id}, #{title}, #{content}, #{time}, #{user})
+    </insert>
+
+    <!-- 根据ID删除记录 -->
+    <delete id="deleteById">
+        DELETE FROM Notice
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 根据ID更新记录 -->
+    <update id="updateById" parameterType="com.example.vitalis.entity.Notice">
+        UPDATE Notice
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="user != null">user = #{user},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

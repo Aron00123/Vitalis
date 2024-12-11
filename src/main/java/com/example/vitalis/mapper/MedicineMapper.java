@@ -8,7 +8,7 @@ public interface MedicineMapper {
 
     int insert(Medicine medicine);
 
-    int deleteById(Integer id);
+    int deleteById(String id);
 
     int updateById(Medicine medicine);
 

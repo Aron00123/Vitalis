@@ -13,9 +13,9 @@ public class Prescription {
     /** 医生身份证号 */
     private String doctorId;
     /** 所诊疾病ID */
-    private Integer diseaseId;
+    private String disease;
     /** 所开药品的ID列表 */
-    private List<Integer> medicineIds;
+    private String medicine;
     /** 对应挂号单ID */
     private Integer registrationId;
     /** 医嘱 */
@@ -45,20 +45,20 @@ public class Prescription {
         this.doctorId = doctorId;
     }
 
-    public Integer getDiseaseId() {
-        return diseaseId;
+    public String getDisease() {
+        return disease;
     }
 
-    public void setDiseaseId(Integer diseaseId) {
-        this.diseaseId = diseaseId;
+    public void setDisease(String disease) {
+        this.disease = disease;
     }
 
-    public List<Integer> getMedicineIds() {
-        return medicineIds;
+    public String getMedicine() {
+        return medicine;
     }
 
-    public void setMedicineIds(List<Integer> medicineIds) {
-        this.medicineIds = medicineIds;
+    public void setMedicine(String medicine) {
+        this.medicine = medicine;
     }
 
     public Integer getRegistrationId() {

@@ -6,7 +6,7 @@
 
     <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        id, gender, name, age, address, phone, emergencyPhone
+        id, gender, name, age, address, phone, emergencyPhone, photo
     </sql>
 
     <!-- 查询所有病人记录 -->
@@ -14,6 +14,9 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM Patient
+        <where>
+            <if test="id != null">id = #{id}</if>
+        </where>
     </select>
 
     <!-- 根据身份证号查询病人 -->
@@ -26,8 +29,8 @@
 
     <!-- 插入病人记录 -->
     <insert id="insert" parameterType="com.example.vitalis.entity.Patient" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO Patient (id, gender, name, age, address, phone, emergencyPhone)
-        VALUES (#{id}, #{gender}, #{name}, #{age}, #{address}, #{phone}, #{emergencyPhone})
+        INSERT INTO Patient (id, gender, name, age, address, phone, emergencyPhone, photo)
+        VALUES (#{id}, #{gender}, #{name}, #{age}, #{address}, #{phone}, #{emergencyPhone}, #{photo})
     </insert>
 
     <!-- 根据身份证号删除病人记录 -->
@@ -46,6 +49,7 @@
             <if test="address != null">address = #{address},</if>
             <if test="phone != null">phone = #{phone},</if>
             <if test="emergencyPhone != null">emergencyPhone = #{emergencyPhone},</if>
+            <if test="photo != null">photo = #{photo},</if>
         </set>
         WHERE id = #{id}
     </update>

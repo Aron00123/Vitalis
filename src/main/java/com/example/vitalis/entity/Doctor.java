@@ -25,6 +25,10 @@ public class Doctor implements Cloneable{
     /** 照片 */
     private String photo;
 
+    private String description;
+
+    private String departmentName;
+
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone(); // 浅克隆
@@ -109,5 +113,21 @@ public class Doctor implements Cloneable{
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 }

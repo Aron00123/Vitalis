@@ -6,7 +6,7 @@
 
     <!-- 基本字段列表 -->
     <sql id="Base_Column_List">
-        prescriptionId, patientId, doctorId, diseaseId, registrationId, medicalAdvice
+        prescriptionId, patientId, doctorId, disease, medicine, registrationId, medicalAdvice
     </sql>
 
     <!-- 查询所有处方记录 -->
@@ -14,6 +14,9 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM Prescription
+        <where>
+            <if test="prescriptionId != null">prescriptionId = #{prescriptionId}</if>
+        </where>
     </select>
 
     <!-- 根据处方ID查询处方记录 -->
@@ -26,8 +29,8 @@
 
     <!-- 插入处方记录 -->
     <insert id="insert" parameterType="com.example.vitalis.entity.Prescription" useGeneratedKeys="true" keyProperty="prescriptionId">
-        INSERT INTO Prescription (prescriptionId, patientId, doctorId, diseaseId, registrationId, medicalAdvice)
-        VALUES (#{prescriptionId}, #{patientId}, #{doctorId}, #{diseaseId}, #{registrationId}, #{medicalAdvice})
+        INSERT INTO Prescription (prescriptionId, patientId, doctorId, registrationId, medicalAdvice, medicine, disease)
+        VALUES (#{prescriptionId}, #{patientId}, #{doctorId}, #{registrationId}, #{medicalAdvice}, #{medicine}, #{disease})
     </insert>
 
     <!-- 根据处方ID删除处方记录 -->
@@ -42,7 +45,8 @@
         <set>
             <if test="patientId != null">patientId = #{patientId},</if>
             <if test="doctorId != null">doctorId = #{doctorId},</if>
-            <if test="diseaseId != null">diseaseId = #{diseaseId},</if>
+            <if test="disease != null">disease = #{disease},</if>
+            <if test="medicine != null">medicine = #{medicine},</if>
             <if test="registrationId != null">registrationId = #{registrationId},</if>
             <if test="medicalAdvice != null">medicalAdvice = #{medicalAdvice},</if>
         </set>

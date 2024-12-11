@@ -19,6 +19,8 @@ public class Patient {
     /** 紧急联系人电话 */
     private String emergencyPhone;
 
+    private String photo;
+
     public String getId() {
         return id;
     }
@@ -75,6 +77,14 @@ public class Patient {
         this.emergencyPhone = emergencyPhone;
     }
 
+    public String getPhoto() {
+        return this.photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public Patient(String id, String gender, String name, Integer age, String address, String phone, String emergencyPhone) {
         this.id = id;
         this.gender = gender;
@@ -83,5 +93,9 @@ public class Patient {
         this.address = address;
         this.phone = phone;
         this.emergencyPhone = emergencyPhone;
+    }
+
+    public Patient() {
+
     }
 }

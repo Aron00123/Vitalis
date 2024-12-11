@@ -24,14 +24,17 @@ public class DoctorController {
         return Result.success();
     }
 
-    @PostMapping("/delete/{id}")
-    public Result deleteById(@PathVariable String id) {
+    @PostMapping("/delete")
+    public Result deleteById(@RequestBody Map<String, Object> params) {
+        // 修改点：使用 @RequestBody Map<String, Object> 替代 @PathVariable
+        String id = (String) params.get("id");
         doctorService.deleteById(id);
         return Result.success();
     }
 
     @PostMapping("/delete/batch")
-    public Result deleteBatch(@RequestBody List<String> ids) {
+    public Result deleteBatch(@RequestBody Map<String, Object> params) {
+        List<String> ids = (List<String>) params.get("ids");
         doctorService.deleteBatch(ids);
         return Result.success();
     }
@@ -42,10 +45,10 @@ public class DoctorController {
         return Result.success();
     }
 
-    @PostMapping("/selectById/{id}")
-    public Result selectById(@PathVariable String id) {
-        Doctor doctor = doctorService.selectById(id);
-        return Result.success(doctor);
+    @PostMapping("/selectById")
+    public Result selectById(@RequestBody Doctor doctor) {
+        Doctor getDoctor = doctorService.selectById(doctor.getId());
+        return Result.success(getDoctor);
     }
 
     @PostMapping("/selectAll")
@@ -55,12 +58,23 @@ public class DoctorController {
     }
 
     @PostMapping("/selectPage")
-    public Result selectPage(Doctor doctor,
-                             @RequestParam(defaultValue = "1") Integer pageNum,
-                             @RequestParam(defaultValue = "10") Integer pageSize) {
+    public Result selectPage(@RequestBody Map<String, Object> params) {
+        // 获取 doctor 参数
+        Doctor doctor = new Doctor();
+        String id = (String) params.get("userId");
+        if (id == null || id.isEmpty()) {
+            id = null;
+        }
+        doctor.setId(id); // 假设 params 中包含 id，可以根据实际情况修改
+        
+        // 获取分页参数
+        Integer pageNum = (Integer) params.getOrDefault("pageNum", 1);  // 默认值为 1
+        Integer pageSize = (Integer) params.getOrDefault("pageSize", 10); // 默认值为 10
+        // 调用 service 层获取分页结果
         PageInfo<Doctor> page = doctorService.selectPage(doctor, pageNum, pageSize);
         return Result.success(page);
     }
+    
 
     @PostMapping("/selectPage2")
     public Result selectPage2(@RequestBody Map<String, Object> params) throws ParseException, CloneNotSupportedException {
@@ -70,6 +84,22 @@ public class DoctorController {
         Integer pageSize = (Integer) params.get("pageSize");
 
         PageInfo<Doctor> page = doctorService.selectPage2(dateStr, departmentId, pageNum, pageSize);
+        return Result.success(page);
+    }
+
+    @PostMapping("/querySearch")
+    public Result querySearch(@RequestBody Map<String, Object> params) {
+        String queryString = (String) params.get("queryString");
+        List<Doctor> list = doctorService.querySearch(queryString);
+        return Result.success(list);
+    }
+
+    @PostMapping("/querySearchAdmin")
+    public Result querySearchAdmin(@RequestBody Map<String, Object> params) {
+        Integer pageNum = (Integer) params.get("pageNum");
+        Integer pageSize = (Integer) params.get("pageSize");
+        String queryString = (String) params.get("id");
+        PageInfo<Doctor> page = doctorService.querySearchAdmin(queryString, pageNum, pageSize);
         return Result.success(page);
     }
 }

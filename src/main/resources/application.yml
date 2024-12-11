@@ -1,13 +1,13 @@
 server:
-  port: 9090
+  port: 9290
 
 # ?????
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: fhb
-    password: 12345
-    url: jdbc:mysql://localhost:3306/vitalisinfo?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+    username: u22373138
+    password: Aa861246
+    url: jdbc:mysql://120.46.3.97:3306/h_db22373138?useSSL=false
   servlet:
     multipart:
       max-file-size: 100MB
