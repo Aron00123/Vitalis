@@ -165,40 +165,8 @@ import {useRoute} from 'vue-router'
 
 const route = useRoute()
 
-const editor = ref(null);
-//const tableData = ref([]);
-const tableData = ref([
-  {
-    id: "15306",
-    name: "zhangsan",
-    doctor: "doctorWang",
-    date: "2024-12-4 16:31",
-    departmentName: "中医科",
-    medicalRecord: "医嘱",
-    prescription: "处方"
-  }
-])
+const tableData = ref([]);
 
-const diseaseData = ref([
-  {
-    id: 1,
-    name: '感冒'
-  },
-  {
-    id: 2,
-    name: '发烧'
-  }
-]);
-const medicineData = ref([
-  {
-    id: 1,
-    name: '布洛芬'
-  },
-  {
-    id: 2,
-    name: '口服液'
-  }
-]);
 const pageNum = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
@@ -284,8 +252,6 @@ function viewPrescription(row) {
 }
 
 function save() {
-  // form.medicalRecord = editor.value.txt.html();
-  console.log(form)
   request
       .post("/prescription/add", {
         registrationId: form.id,

@@ -107,14 +107,15 @@ const uploadToThirdParty = async (file) => {
       imageUrl.value = result.data.url; // 从响应中获取图片 URL
       ElMessage.success("图片上传成功！");
       request
-      .post("/doctor/update", {
-        id: user.id,
-        photo: imageUrl.value
-        })
-      .then((res) => {})
-      .catch((err) => {
-        ElMessage.error("请求失败，请稍后重试");
-      });
+          .post("/doctor/update", {
+            id: user.id,
+            photo: imageUrl.value
+          })
+          .then((res) => {
+          })
+          .catch((err) => {
+            ElMessage.error("请求失败，请稍后重试");
+          });
     } else {
       ElMessage.error(`上传失败：${result.message}`);
     }
@@ -142,11 +143,6 @@ const update = () => {
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");
       });
-};
-
-// Handle avatar upload success
-const handleAvatarSuccess = (response, file, fileList) => {
-  user.avatar = response.data;
 };
 
 // On mounted lifecycle hook

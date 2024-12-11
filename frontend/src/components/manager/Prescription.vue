@@ -21,7 +21,6 @@
 
         <el-table-column label="操作" align="center" width="180">
           <template #default="{ row }">
-<!--            <el-button size="mini" type="primary" plain @click="handleEdit(row)">编辑</el-button>-->
             <el-button size="mini" type="danger" plain @click="del(row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -80,9 +79,7 @@ import {ref, reactive, onMounted} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import request from "../../utils/request"; // 替换为实际的请求工具
 
-const tableData = ref([{
-  id: 1
-}]);
+const tableData = ref([]);
 const pageNum = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
@@ -108,17 +105,6 @@ const load = (page = 1) => {
       .catch((err) => {
         ElMessage.error("请求失败，请稍后重试");
       });
-};
-
-const handleAdd = () => {
-  Object.assign(form, {});
-  formVisible.value = true;
-  isHandleAdd.value = true;
-};
-
-const handleEdit = (row) => {
-  Object.assign(form, {...row});
-  formVisible.value = true;
 };
 
 const save = () => {

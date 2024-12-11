@@ -118,12 +118,10 @@
   import {ref, reactive, onMounted} from "vue";
   import {ElMessage, ElMessageBox} from "element-plus";
   import request from "../../utils/request"; // 替换为实际的请求工具
-  
-  // const tableData = ref([]);
-  const tableData = ref([])
+
+  const tableData = ref([]);
   const pageNum = ref(1);
   const pageSize = ref(10);
-  // const total = ref(0);
   const total = ref(1)
   
   const id = ref("");

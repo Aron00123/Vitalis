@@ -215,7 +215,6 @@ const AdminEditor = (row) => {
 }
 
 const AdminDel = (id) => {
-  console.log('wcnmd\n\n\n\n\n\n\n\n')
   ElMessageBox.confirm("您确定取消挂号吗？", "取消挂号", {
     type: "warning", confirmButtonText: "确认", cancelButtonText: "取消"
   }).then(() => {

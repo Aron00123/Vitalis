@@ -1,12 +1,10 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
 
-import Front from '../components/Front.vue';
 import Login from '../components/Login.vue';
 import Manager from "../components/Manager.vue";
 import Register from '../components/Register.vue';
 import NotFound from '../components/404.vue';
 import Plan from '../components/manager/Plan.vue'
-import NoAuth from '../components/manager/NoAuth.vue';
 import Admin from '../components/manager/Admin.vue';
 import Doctor from '../components/manager/Doctor.vue';
 import Patient from '../components/manager/Patient.vue';
@@ -33,12 +31,6 @@ const router = createRouter({
             component: Manager,
             redirect: 'welcome',
             children: [
-                {
-                    path: '403',
-                    name: 'NoAuth',
-                    meta: {name: '无权限'},
-                    component: NoAuth,
-                },
                 {
                     path: 'welcome',
                     name: 'Welcome',
