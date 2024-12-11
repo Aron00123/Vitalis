@@ -1,11 +1,11 @@
 .manager-container {
-    background-color: #f8f8ff;
+    background-color: white;
     min-height: 100vh;
 }
 
 .manager-header {
     display: flex;
-    background-color: white;
+    background-color: #4fc3f7;
 }
 
 .manager-header-left {
@@ -26,7 +26,6 @@
     margin-left: 5px;
     font-size: 20px;
     font-weight: bold;
-    color: #423f3f
 }
 
 .manager-header-center {
@@ -47,15 +46,15 @@
     display: flex;
     align-items: center;
     padding-right: 10px;
-    color: #ccc;
-    cursor: default
+    color: #99ccff;
+    cursor: default;
 }
 
 .manager-header-right .avatar img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 5px
+    margin-right: 5px;
 }
 
 .manager-main {
@@ -75,25 +74,25 @@
 
 .manager-main-right .search {
     padding: 10px;
-    background-color: #fff;
+    background-color: #e6f7ff;
     border-radius: 5px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 255, 0.1);
 }
 
 .manager-main-right .operation {
     margin-top: 5px;
     padding: 10px;
-    background-color: #fff;
+    background-color: #e6f7ff;
     border-radius: 5px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1)
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 255, 0.1);
 }
 
 .manager-main-right .table {
     margin-top: 5px;
     padding: 15px 10px;
-    background-color: #fff;
+    background-color: #e6f7ff;
     border-radius: 5px;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 255, 0.1);
 }
 
 .manager-main-right .table .pagination {
@@ -102,16 +101,16 @@
 
 .card {
     padding: 20px;
-    background-color: #fff;
+    background-color: #e6f7ff;
     border-radius: 5px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 255, 0.1);
 }
 
 /* ElementUI */
 .el-menu {
     width: 200px;
     height: 100%;
-    background-color: white;
+    background-color: #bbdefb;
 }
 
 .el-submenu__title {
@@ -122,12 +121,11 @@
 .el-menu-item {
     height: 50px;
     line-height: 50px;
-    background-color: white !important; /* 必须加上这个背景色，否则鼠标离开会出现白色 */
+    background-color: #bbdefb !important;
 }
 
 .el-menu-item.is-active {
-    /*background-color: #2bb7e5 !important;*/
-    /*color: #fff;*/
+    color: #003399 !important;
 }
 
 .el-menu--inline .el-menu-item {
@@ -135,20 +133,19 @@
 }
 
 .el-menu .is-active {
-    color: #3399ff !important;
+    color: #003399 !important;
 }
 
 .el-submenu__title:hover {
-    background-color: #f5f0f0 !important;
+    background-color: #bbdefb !important;
 }
 
 .el-menu-item:not(.is-active):hover {
-    /*background-color: #0376bf !important;*/
-    /*color: #fff;*/
+    background-color: #d6eaff !important;
 }
 
 .el-menu-item:hover {
-    background-color: #f5f0f0 !important;
+    background-color: #d6eaff !important;
 }
 
 .el-submenu__icon-arrow {
@@ -164,6 +161,6 @@
 }
 
 th.el-table__cell {
-    background-color: #f8f8f8 !important;
-    color: #666;
+    background-color: #e6f7ff !important;
+    color: #003366;
 }
