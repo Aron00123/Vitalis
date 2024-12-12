@@ -126,7 +126,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 
 const tableData = ref([]);  // 所有的数据
 const pageNum = ref(1);   // 当前的页码
-const pageSize = ref(10);  // 每页显示的个数
+const pageSize = ref(8);  // 每页显示的个数
 const total = ref(0);
 const departmentId = ref(null);
 const departmentData = ref([]);
@@ -256,16 +256,3 @@ onMounted(() => {
   loadDepartment()
 })
 </script>
-
-<!--<style scoped>-->
-<!--.demo-image__error .image-slot {-->
-<!--  font-size: 30px;-->
-<!--}-->
-<!--.demo-image__error .image-slot .el-icon {-->
-<!--  font-size: 30px;-->
-<!--}-->
-<!--.demo-image__error .el-image {-->
-<!--  width: 100%;-->
-<!--  height: 200px;-->
-<!--}-->
-<!--</style>-->

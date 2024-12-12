@@ -4,7 +4,7 @@ import Login from '../components/Login.vue';
 import Manager from "../components/Manager.vue";
 import Register from '../components/Register.vue';
 import NotFound from '../components/404.vue';
-import Plan from '../components/manager/Plan.vue'
+import Plan from '../components/manager/Plan.vue';
 import Admin from '../components/manager/Admin.vue';
 import Doctor from '../components/manager/Doctor.vue';
 import Patient from '../components/manager/Patient.vue';
@@ -18,9 +18,9 @@ import Welcome from '../components/manager/Welcome.vue';
 import DoctorCard from '../components/manager/DoctorCard.vue';
 import Registration from '../components/manager/Registration.vue';
 import Record from '../components/manager/Record.vue';
-import Prescription from '../components/manager/Prescription.vue'
-import Medicine from '../components/manager/Medicine.vue'
-import Disease from '../components/manager/Disease.vue'
+import Prescription from '../components/manager/Prescription.vue';
+import Medicine from '../components/manager/Medicine.vue';
+import Disease from '../components/manager/Disease.vue';
 
 const router = createRouter({
     history: createWebHashHistory(),

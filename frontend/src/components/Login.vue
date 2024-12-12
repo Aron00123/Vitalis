@@ -122,7 +122,7 @@ const onLogin = () => {
             }
           })
           .catch((err) => {
-            ElMessage.error("登录请求失败，请稍后重试");
+            ElMessage.error("账号或密码错误，请稍后重试");
             console.error(err);
           });
 
