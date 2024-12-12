@@ -160,6 +160,9 @@
   
   const handleAdd = () => {
     Object.assign(form, {});
+    Object.keys(form).forEach((key) => {
+      form[key] = null;
+    })
     formVisible.value = true;
     isHandleAdd.value = true;
   };
