@@ -10,7 +10,7 @@
           </el-form-item>
 
           <el-form-item label="姓名" prop="name">
-            <el-input v-model="form.name" placeholder="请输入账号"></el-input>
+            <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item label="年龄" prop="age">
             <el-input v-model="form.age" placeholder="年龄"></el-input>
