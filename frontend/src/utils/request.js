@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 // 创建 axios 实例
 const request = axios.create({
     // baseURL: import.meta.env.VITE_APP_BASEURL
-    baseURL: "http://localhost:9290",
+    baseURL: "http://8.155.24.29:9290",
     timeout: 30000, // 请求超时 30s
 });
 
